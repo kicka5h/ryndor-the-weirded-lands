@@ -21,10 +21,10 @@ enableXsrfProtection = false\n\
 \n\
 [theme]\n\
 base = "dark"\n\
-backgroundColor = "#110800"\n\
-secondaryBackgroundColor = "#2a1800"\n\
-textColor = "#f5ead0"\n\
-primaryColor = "#c9a84c"\n\
+backgroundColor = "#040010"\n\
+secondaryBackgroundColor = "#080118"\n\
+textColor = "#e2d9f3"\n\
+primaryColor = "#7c3aed"\n\
 ' > /root/.streamlit/config.toml
 
 EXPOSE 8501

@@ -177,6 +177,138 @@
       ],
       "suggested_classes": ["Sorcerer", "Warlock", "Wizard", "Rogue"],
       "icon": "🌌"
+    },
+    {
+      "id": "human",
+      "name": "Human",
+      "description": "The most widespread and adaptable people of Ryndor. Humans thrive everywhere—from city spires to frontier wilds—driven by ambition, curiosity, and an outsized impact on the world.",
+      "flavor": "\"Humans are brief candles that burn so bright the world remembers their light long after they are gone.\"",
+      "ability_scores": {"Strength": 1, "Dexterity": 1, "Constitution": 1, "Intelligence": 1, "Wisdom": 1, "Charisma": 1},
+      "age": "Reach adulthood in late teens; rarely live more than a century.",
+      "alignment": "No strong tendency — humans run the full gamut.",
+      "size": "Medium (5–6 feet tall, widely varying build).",
+      "speed": {"walk": 30},
+      "languages": ["Common"],
+      "bonus_skills": [],
+      "traits": [
+        {
+          "name": "Adaptable",
+          "description": "You gain proficiency in one additional skill of your choice, reflecting the breadth of human experience."
+        },
+        {
+          "name": "Extra Language",
+          "description": "You can speak, read, and write one extra language of your choice."
+        },
+        {
+          "name": "Determined",
+          "description": "When you fail an ability check by 1–4, you may reroll once per short rest. You must use the new result."
+        }
+      ],
+      "suggested_classes": ["Fighter", "Paladin", "Cleric", "Wizard", "Rogue", "Bard"],
+      "icon": "🧑"
+    },
+    {
+      "id": "elf",
+      "name": "Elf",
+      "description": "Ancient and graceful, elves are long-lived people deeply in tune with magic and nature. In Ryndor, elven communities are keepers of forgotten lore and guardians of primordial places.",
+      "flavor": "\"To know an elf is to know a living memory—they have walked paths that your great-grandparents never dreamed of.\"",
+      "ability_scores": {"Dexterity": 2, "Intelligence": 1},
+      "age": "Reach adulthood at 100; can live to 750 years.",
+      "alignment": "Lean toward freedom and self-expression, often neutral or chaotic good.",
+      "size": "Medium (5–6 feet tall, slender, 100–145 lbs).",
+      "speed": {"walk": 30},
+      "languages": ["Common", "Elvish"],
+      "bonus_skills": ["Perception"],
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "You can see in dim light within 60 feet as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
+        },
+        {
+          "name": "Keen Senses",
+          "description": "You have proficiency in the Perception skill."
+        },
+        {
+          "name": "Fey Ancestry",
+          "description": "You have advantage on saving throws against being charmed, and magic can't put you to sleep."
+        },
+        {
+          "name": "Trance",
+          "description": "Elves don't need to sleep. Instead, they meditate deeply for 4 hours a day (the elven trance), gaining the same benefit a human gets from 8 hours of sleep."
+        },
+        {
+          "name": "Elf Weapon Training",
+          "description": "You have proficiency with the longsword, shortsword, shortbow, and longbow."
+        }
+      ],
+      "suggested_classes": ["Wizard", "Rogue", "Ranger", "Fighter", "Sev'rinn"],
+      "icon": "🧝"
+    },
+    {
+      "id": "tiefling",
+      "name": "Tiefling",
+      "description": "Bearing the bloodline of an ancient infernal pact, tieflings carry the weight of a legacy they did not choose. In Ryndor, they are often wanderers and scholars, proving their worth against the world's suspicion.",
+      "flavor": "\"We did not ask for these horns. But we have learned to make the world answer for its stares.\"",
+      "ability_scores": {"Intelligence": 1, "Charisma": 2},
+      "age": "Mature at the same rate as humans; live slightly longer, up to 120 years.",
+      "alignment": "No intrinsic alignment, though their outsider status often pushes them toward chaos.",
+      "size": "Medium (5–6 feet tall, similar build to humans).",
+      "speed": {"walk": 30},
+      "languages": ["Common", "Infernal"],
+      "bonus_skills": [],
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "Thanks to your infernal heritage, you have superior vision in dark conditions. You can see in dim light within 60 feet as if it were bright light, and in darkness as if it were dim light."
+        },
+        {
+          "name": "Hellish Resistance",
+          "description": "You have resistance to fire damage."
+        },
+        {
+          "name": "Infernal Legacy",
+          "description": "You know the Thaumaturgy cantrip. At 3rd level, you can cast Hellish Rebuke as a 2nd-level spell once per long rest. At 5th level, you can cast Darkness once per long rest. Charisma is your spellcasting ability for these."
+        }
+      ],
+      "suggested_classes": ["Warlock", "Sorcerer", "Paladin", "Bard", "Wizard"],
+      "icon": "😈"
+    },
+    {
+      "id": "dwarf",
+      "name": "Dwarf",
+      "description": "Stout, resilient, and fiercely proud, dwarves are a people forged in stone and tempered by centuries of tradition. In Ryndor, dwarven clans are master craftsmen, warriors, and keepers of mountain strongholds.",
+      "flavor": "\"A dwarf does not bend. A dwarf endures. The mountain taught us that—and we have been teaching it to our enemies ever since.\"",
+      "ability_scores": {"Constitution": 2},
+      "age": "Considered young until age 50; live up to 350 years.",
+      "alignment": "Tend toward law and tradition, most often lawful good.",
+      "size": "Medium (4–5 feet tall, 150 lbs and above).",
+      "speed": {"walk": 25, "note": "Speed is not reduced by wearing heavy armor."},
+      "languages": ["Common", "Dwarvish"],
+      "bonus_skills": [],
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "Accustomed to life underground, you can see in dim light within 60 feet as if it were bright light, and in darkness as if it were dim light. You can't discern color in darkness, only shades of gray."
+        },
+        {
+          "name": "Dwarven Resilience",
+          "description": "You have advantage on saving throws against poison, and you have resistance against poison damage."
+        },
+        {
+          "name": "Dwarven Combat Training",
+          "description": "You have proficiency with the battleaxe, handaxe, light hammer, and warhammer."
+        },
+        {
+          "name": "Tool Proficiency",
+          "description": "You gain proficiency with one type of artisan's tools of your choice: smith's tools, brewer's supplies, or mason's tools."
+        },
+        {
+          "name": "Stonecunning",
+          "description": "Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check."
+        }
+      ],
+      "suggested_classes": ["Fighter", "Cleric", "Paladin", "Barbarian", "Artificer"],
+      "icon": "⛏️"
     }
   ]
 }
