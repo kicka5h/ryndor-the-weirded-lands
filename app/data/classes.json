@@ -1186,7 +1186,7 @@
             {
               "roll": 4,
               "name": "Gale Guard",
-              "effect": "+2 AC until your next turn."
+              "effect": "+2 AC."
             },
             {
               "roll": 5,
