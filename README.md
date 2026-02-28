@@ -43,7 +43,7 @@ All 12 PHB classes plus the Ryndor-original **Sev'rinn** — an elemental attune
 **Requirements:** Docker + Docker Compose
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/ryndor-character-maker.git
+git clone https://github.com/kicak5h/ryndor-character-maker.git
 cd ryndor-character-maker
 
 # Add your Anthropic API key (optional — enables AI name/trait generation)
