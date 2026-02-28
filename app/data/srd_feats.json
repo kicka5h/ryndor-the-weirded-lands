@@ -1,0 +1,296 @@
+[
+  {
+    "id": "alert",
+    "name": "Alert",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You gain a +5 bonus to initiative rolls and cannot be surprised while conscious. Other creatures don't gain advantage on attack rolls against you as a result of being hidden from you."
+  },
+  {
+    "id": "athlete",
+    "name": "Athlete",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Increase your Strength or Dexterity score by 1. You gain improved movement options: standing up costs only 5 feet of movement, climbing doesn't cost extra movement, and you can make a running long or high jump after moving only 5 feet."
+  },
+  {
+    "id": "actor",
+    "name": "Actor",
+    "prerequisite": null,
+    "stat_bonus": {"CHA": 1},
+    "description": "Increase your Charisma score by 1. You gain advantage on Charisma (Deception) and Charisma (Performance) checks when trying to pass as a different person, and you can mimic another person's speech or the sounds of a creature if you have heard them for at least 1 minute."
+  },
+  {
+    "id": "charger",
+    "name": "Charger",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "When you use your action to Dash, you can use a bonus action to make one melee weapon attack or shove a creature. If you move at least 10 feet in a straight line before making the attack, you gain a +5 bonus to the attack's damage roll or can push the target up to 10 feet."
+  },
+  {
+    "id": "crossbow_expert",
+    "name": "Crossbow Expert",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You ignore the loading quality of crossbows, being within 5 feet of a hostile creature doesn't impose disadvantage on your ranged attack rolls, and when you use the Attack action with a one-handed weapon you can use a bonus action to attack with a hand crossbow."
+  },
+  {
+    "id": "defensive_duelist",
+    "name": "Defensive Duelist",
+    "prerequisite": "Dexterity 13 or higher",
+    "stat_bonus": null,
+    "description": "When you are wielding a finesse weapon and another creature hits you with a melee attack, you can use your reaction to add your proficiency bonus to your AC for that attack, potentially causing it to miss."
+  },
+  {
+    "id": "dual_wielder",
+    "name": "Dual Wielder",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You gain a +1 bonus to AC while wielding a separate melee weapon in each hand. You can use two-weapon fighting even when the weapons you are wielding are not light, and you can draw or stow two one-handed weapons in a single interaction."
+  },
+  {
+    "id": "dungeon_delver",
+    "name": "Dungeon Delver",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You have advantage on Wisdom (Perception) and Intelligence (Investigation) checks made to detect secret doors, advantage on saving throws against traps, resistance to damage dealt by traps, and you can search for traps while traveling at a normal pace."
+  },
+  {
+    "id": "durable",
+    "name": "Durable",
+    "prerequisite": null,
+    "stat_bonus": {"CON": 1},
+    "description": "Increase your Constitution score by 1. When you roll a Hit Die to regain hit points, the minimum number of hit points you regain equals twice your Constitution modifier (minimum of 2)."
+  },
+  {
+    "id": "elemental_adept",
+    "name": "Elemental Adept",
+    "prerequisite": "The ability to cast at least one spell",
+    "stat_bonus": null,
+    "description": "Choose one damage type: acid, cold, fire, lightning, or thunder. Spells you cast ignore resistance to that damage type, and when you roll damage for a spell of that type, you can treat any 1 on a damage die as a 2. You can take this feat multiple times."
+  },
+  {
+    "id": "grappler",
+    "name": "Grappler",
+    "prerequisite": "Strength 13 or higher",
+    "stat_bonus": null,
+    "description": "You have advantage on attack rolls against a creature you are grappling. You can use your action to try to pin a creature you have grappled, restraining both you and the creature until the grapple ends."
+  },
+  {
+    "id": "great_weapon_master",
+    "name": "Great Weapon Master",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "When you score a critical hit or reduce a creature to 0 hit points with a melee weapon, you can make one melee weapon attack as a bonus action. Before making an attack with a heavy melee weapon, you can choose to take a -5 penalty to the attack roll to gain a +10 bonus to the damage roll."
+  },
+  {
+    "id": "healer",
+    "name": "Healer",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You can use a healer's kit to stabilize a creature at 1 hit point instead of 0. As an action, you can spend a use of a healer's kit to restore 1d6 + 4 + the creature's maximum number of Hit Dice hit points to a creature, usable once per creature per short rest."
+  },
+  {
+    "id": "heavily_armored",
+    "name": "Heavily Armored",
+    "prerequisite": "Proficiency with medium armor",
+    "stat_bonus": {"STR": 1},
+    "description": "Increase your Strength score by 1 and gain proficiency with heavy armor."
+  },
+  {
+    "id": "heavy_armor_master",
+    "name": "Heavy Armor Master",
+    "prerequisite": "Proficiency with heavy armor",
+    "stat_bonus": {"STR": 1},
+    "description": "Increase your Strength score by 1. While wearing heavy armor, bludgeoning, piercing, and slashing damage that you take from nonmagical weapons is reduced by 3."
+  },
+  {
+    "id": "inspiring_leader",
+    "name": "Inspiring Leader",
+    "prerequisite": "Charisma 13 or higher",
+    "stat_bonus": null,
+    "description": "You can spend 10 minutes inspiring your companions, choosing up to six friendly creatures within 30 feet. Each creature gains temporary hit points equal to your level + your Charisma modifier. A creature can't benefit from this feat again until it finishes a short or long rest."
+  },
+  {
+    "id": "keen_mind",
+    "name": "Keen Mind",
+    "prerequisite": null,
+    "stat_bonus": {"INT": 1},
+    "description": "Increase your Intelligence score by 1. You always know which way is north, always know the number of hours left before the next sunrise or sunset, and can accurately recall anything you have seen or heard within the past month."
+  },
+  {
+    "id": "lightly_armored",
+    "name": "Lightly Armored",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Increase your Strength or Dexterity score by 1 and gain proficiency with light armor."
+  },
+  {
+    "id": "linguist",
+    "name": "Linguist",
+    "prerequisite": null,
+    "stat_bonus": {"INT": 1},
+    "description": "Increase your Intelligence score by 1, learn three languages of your choice, and gain the ability to create written ciphers that only creatures you teach the cipher or who succeed on an Intelligence check (DC equal to your Intelligence score + your proficiency bonus) can decode."
+  },
+  {
+    "id": "lucky",
+    "name": "Lucky",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You have 3 luck points. Whenever you make an attack roll, ability check, or saving throw, you can spend one luck point to roll an additional d20 and choose which die to use. You can also spend a luck point when an attack roll is made against you to impose disadvantage on that roll. Luck points are replenished after a long rest."
+  },
+  {
+    "id": "mage_slayer",
+    "name": "Mage Slayer",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "When a creature within 5 feet of you casts a spell, you can use your reaction to make a melee weapon attack against that creature. When you damage a creature that is concentrating on a spell, it has disadvantage on the saving throw to maintain concentration, and you have advantage on saving throws against spells cast by creatures within 5 feet of you."
+  },
+  {
+    "id": "magic_initiate",
+    "name": "Magic Initiate",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Choose a class (bard, cleric, druid, sorcerer, warlock, or wizard). You learn two cantrips and one 1st-level spell from that class's spell list, and you can cast the 1st-level spell once per long rest without a spell slot using that class's spellcasting ability."
+  },
+  {
+    "id": "martial_adept",
+    "name": "Martial Adept",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You learn two maneuvers of your choice from among those available to the Battle Master archetype. If you have no superiority dice, you gain one superiority die (d6) to fuel these maneuvers, replenished after a short or long rest."
+  },
+  {
+    "id": "medium_armor_master",
+    "name": "Medium Armor Master",
+    "prerequisite": "Proficiency with medium armor",
+    "stat_bonus": null,
+    "description": "Wearing medium armor doesn't impose disadvantage on your Dexterity (Stealth) checks, and your maximum Dexterity bonus to AC when wearing medium armor increases to +3."
+  },
+  {
+    "id": "mobile",
+    "name": "Mobile",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Your speed increases by 10 feet, you are unaffected by difficult terrain when you Dash, and when you make a melee attack against a creature, you don't provoke opportunity attacks from that creature for the rest of the turn regardless of whether you hit."
+  },
+  {
+    "id": "moderately_armored",
+    "name": "Moderately Armored",
+    "prerequisite": "Proficiency with light armor",
+    "stat_bonus": {"DEX": 1},
+    "description": "Increase your Strength or Dexterity score by 1 and gain proficiency with medium armor and shields."
+  },
+  {
+    "id": "mounted_combatant",
+    "name": "Mounted Combatant",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You have advantage on melee attack rolls against unmounted creatures smaller than your mount, you can force attacks targeting your mount to target you instead, and your mount only takes half damage on failed Dexterity saving throws (no damage on a success)."
+  },
+  {
+    "id": "observant",
+    "name": "Observant",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Increase your Intelligence or Wisdom score by 1. If you can see a creature's mouth while it is speaking a language you understand, you can interpret what it is saying by reading lips, and your passive Wisdom (Perception) and passive Intelligence (Investigation) scores increase by 5."
+  },
+  {
+    "id": "polearm_master",
+    "name": "Polearm Master",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "When you take the Attack action with a glaive, halberd, quarterstaff, or spear, you can use a bonus action to make a melee attack with the weapon's opposite end (1d4 bludgeoning damage). While wielding such a weapon, other creatures provoke opportunity attacks from you when they enter your reach."
+  },
+  {
+    "id": "resilient",
+    "name": "Resilient",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Choose one ability score. Increase that score by 1 and gain proficiency in saving throws using that ability."
+  },
+  {
+    "id": "ritual_caster",
+    "name": "Ritual Caster",
+    "prerequisite": "Intelligence or Wisdom 13 or higher",
+    "stat_bonus": null,
+    "description": "Choose a class (bard, cleric, druid, sorcerer, warlock, or wizard). You acquire a ritual book and learn two 1st-level ritual spells from that class's spell list, which you can cast as rituals. You can add more ritual spells to your book when you find them in written form."
+  },
+  {
+    "id": "savage_attacker",
+    "name": "Savage Attacker",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon's damage dice and use either total."
+  },
+  {
+    "id": "sentinel",
+    "name": "Sentinel",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "When you hit a creature with an opportunity attack, its speed drops to 0 for the rest of the turn. Creatures within your reach provoke opportunity attacks even if they take the Disengage action, and when a creature makes an attack against a target other than you while within 5 feet of you, you can use your reaction to make a melee weapon attack against the attacker."
+  },
+  {
+    "id": "sharpshooter",
+    "name": "Sharpshooter",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Attacking at long range doesn't impose disadvantage, your ranged attacks ignore half and three-quarters cover, and before making a ranged attack you can choose to take a -5 penalty to the attack roll to gain a +10 bonus to the damage roll."
+  },
+  {
+    "id": "shield_master",
+    "name": "Shield Master",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "If you take the Attack action on your turn, you can use a bonus action to try to shove a creature within 5 feet. If you aren't incapacitated, you can add your shield's AC bonus to Dexterity saving throws, and when a Dexterity save allows half damage, you take no damage on a success and only half on a failure."
+  },
+  {
+    "id": "skilled",
+    "name": "Skilled",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "You gain proficiency in any combination of three skills or tools of your choice."
+  },
+  {
+    "id": "skulker",
+    "name": "Skulker",
+    "prerequisite": "Dexterity 13 or higher",
+    "stat_bonus": null,
+    "description": "You can try to hide when you are lightly obscured. When you fail to hide, you are not revealed. When you are hidden and miss with a ranged attack, making the attack doesn't reveal your position."
+  },
+  {
+    "id": "spell_sniper",
+    "name": "Spell Sniper",
+    "prerequisite": "The ability to cast at least one spell",
+    "stat_bonus": null,
+    "description": "When you cast a spell that requires an attack roll, the spell's range is doubled, your ranged spell attacks ignore half and three-quarters cover, and you learn one cantrip that requires an attack roll from any class's spell list."
+  },
+  {
+    "id": "tavern_brawler",
+    "name": "Tavern Brawler",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Increase your Strength or Constitution score by 1. You are proficient with improvised weapons and unarmed strikes deal 1d4 bludgeoning damage. When you hit a creature with an unarmed strike or improvised weapon on your turn, you can use a bonus action to attempt to grapple it."
+  },
+  {
+    "id": "tough",
+    "name": "Tough",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Your hit point maximum increases by an amount equal to twice your level. Each time you gain a level thereafter, your hit point maximum increases by an additional 2 hit points."
+  },
+  {
+    "id": "war_caster",
+    "name": "War Caster",
+    "prerequisite": "The ability to cast at least one spell",
+    "stat_bonus": null,
+    "description": "You have advantage on Constitution saving throws to maintain concentration when you take damage. You can perform somatic components of spells even when you have weapons or a shield in one or both hands, and when a creature provokes an opportunity attack from you, you can use your reaction to cast a spell at it instead."
+  },
+  {
+    "id": "weapon_master",
+    "name": "Weapon Master",
+    "prerequisite": null,
+    "stat_bonus": null,
+    "description": "Increase your Strength or Dexterity score by 1 and gain proficiency with four weapons of your choice."
+  }
+]

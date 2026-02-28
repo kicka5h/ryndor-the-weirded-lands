@@ -41,7 +41,15 @@ def load_classes():
 @st.cache_data
 def load_backgrounds():
     with open(DATA_DIR / "backgrounds.json") as f:
-        return json.load(f)["backgrounds"]
+        ryndor = json.load(f)["backgrounds"]
+    for b in ryndor:
+        b.setdefault("source", "Ryndor")
+    try:
+        with open(DATA_DIR / "srd_backgrounds.json") as f:
+            srd = json.load(f)["backgrounds"]
+    except FileNotFoundError:
+        srd = []
+    return ryndor + srd
 
 @st.cache_data
 def load_class_mechanics():
@@ -58,12 +66,37 @@ def load_srd_items():
     with open(DATA_DIR / "srd_items.json") as f:
         return json.load(f)
 
+@st.cache_data
+def load_srd_spells():
+    try:
+        with open(DATA_DIR / "srd_spells.json") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
+
+@st.cache_data
+def load_srd_feats():
+    try:
+        with open(DATA_DIR / "srd_feats.json") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
 RACES = load_races()
 CLASSES = load_classes()
 BACKGROUNDS = load_backgrounds()
 CLASS_MECHANICS = load_class_mechanics()
 CLASS_FEATURES = load_class_features()
 SRD_ITEMS = load_srd_items()
+SRD_SPELLS = load_srd_spells()
+SRD_FEATS  = load_srd_feats()
+
+# ASI level schedules (levels at which a class gains Ability Score Improvement)
+ASI_LEVELS = {
+    "fighter": [4, 6, 8, 12, 14, 16, 19],
+    "rogue":   [4, 8, 10, 12, 16, 19],
+}
+DEFAULT_ASI_LEVELS = [4, 8, 12, 16, 19]
 
 # ── Spell slot tables (SRD constants) ─────────────────────────────────────────
 # Index = level-1. Each inner list: [1st,2nd,3rd,4th,5th,6th,7th,8th,9th] slots.
@@ -805,6 +838,9 @@ defaults = {
     "equipped_offhand": None,
     "has_dual_wielder": False,
     "inv_gear": [],
+    "chosen_cantrips": [],
+    "chosen_spells": [],
+    "asi_choices": {},
 }
 for k, v in defaults.items():
     if k not in st.session_state:
@@ -843,17 +879,22 @@ def effective_stat(stat_key, race):
     name_map = {"STR": "Strength", "DEX": "Dexterity", "CON": "Constitution",
                 "INT": "Intelligence", "WIS": "Wisdom", "CHA": "Charisma"}
     bonus = asi.get(name_map[stat_key], 0) if isinstance(asi.get(name_map[stat_key], 0), int) else 0
-    return base + bonus
+    return base + bonus + get_asi_stat_bonus(stat_key)
 
 STAT_KEY_MAP = {"DEX":"DEX","STR":"STR","CON":"CON","INT":"INT","WIS":"WIS","CHA":"CHA"}
 ABILITY_SHORT = {"DEX":"Dex","STR":"Str","CON":"Con","INT":"Int","WIS":"Wis","CHA":"Cha"}
 
-def skill_modifier(skill_name, ability_key, race, prof_bonus, proficient_skills):
+def skill_modifier(skill_name, ability_key, race, prof_bonus, proficient_skills, half_prof=0):
     score = effective_stat(ability_key, race)
     mod = modifier_int(score)
     if skill_name in proficient_skills:
         mod += prof_bonus
+    elif half_prof:
+        mod += half_prof
     return mod
+
+def has_jack_of_all_trades():
+    return st.session_state.get("class_id") == "bard" and st.session_state.get("char_level", 1) >= 2
 
 def get_all_proficient_skills(race, bg, chosen_skills):
     """Return full set of proficient skill names from race + background + chosen class skills."""
@@ -951,6 +992,99 @@ def get_spells_known_or_prepared(sc, level, race):
             val = max(1, mod + level)
         return val, "Max Prepared"
     return None, None
+
+# ─────────────────────────────────────────────────────────────────────────────
+# FEAT / ASI HELPERS
+# ─────────────────────────────────────────────────────────────────────────────
+def get_feat(feat_id):
+    return next((f for f in SRD_FEATS if f["id"] == feat_id), None)
+
+def get_asi_stat_bonus(stat_key):
+    """Sum all ASI and feat stat bonuses for a given stat key."""
+    total = 0
+    for choice in st.session_state.get("asi_choices", {}).values():
+        t = choice.get("type")
+        if t == "asi_2" and choice.get("stat1") == stat_key:
+            total += 2
+        elif t == "asi_1_1":
+            if choice.get("stat1") == stat_key:
+                total += 1
+            if choice.get("stat2") == stat_key:
+                total += 1
+        elif t == "feat":
+            feat = get_feat(choice.get("feat_id", ""))
+            if feat and feat.get("stat_bonus"):
+                total += feat["stat_bonus"].get(stat_key, 0)
+    return total
+
+def get_class_asi_levels(class_id, level):
+    """Return list of ASI levels unlocked at or below given character level."""
+    schedule = ASI_LEVELS.get(class_id, DEFAULT_ASI_LEVELS)
+    return [lvl for lvl in schedule if lvl <= level]
+
+def get_spells_for_class(class_id, spell_level_str):
+    """Return spell list for a class at a given level string ('cantrips','1'..'9')."""
+    lookup_id = class_id
+    if class_id in ("fighter", "rogue"):
+        lookup_id = "wizard"
+    if class_id == "artificer":
+        lookup_id = "wizard"
+    return SRD_SPELLS.get(spell_level_str, {}).get(lookup_id, [])
+
+def lookup_spell_detail(name):
+    """Find a spell dict by name in SRD_SPELLS. Returns (spell_dict, level_key) or (None, None)."""
+    for level_key, classes in SRD_SPELLS.items():
+        for class_spells in classes.values():
+            for spell in class_spells:
+                if spell.get("name") == name:
+                    return spell, level_key
+    return None, None
+
+def _spell_level_label(level_key):
+    """Return a display label for a spell level key like 'cantrips', '1', '2' etc."""
+    if level_key == "cantrips":
+        return "Cantrip"
+    suffix = {"1":"st","2":"nd","3":"rd"}.get(level_key, "th")
+    return f"{level_key}{suffix} Level"
+
+def _build_slot_dict(sc_data, level):
+    """Return ({spell_level_int: slot_count}, is_pact) from spellcasting data."""
+    if not sc_data:
+        return {}, False
+    slot_type = sc_data.get("slot_type")
+    idx = min(level - 1, 19)
+    if slot_type == "full":
+        raw = FULL_CASTER_SLOTS[idx]
+        return {i + 1: n for i, n in enumerate(raw) if n > 0}, False
+    elif slot_type == "half":
+        raw = HALF_CASTER_SLOTS[idx]
+        return {i + 1: n for i, n in enumerate(raw) if n > 0}, False
+    elif slot_type == "pact":
+        count, slvl = PACT_SLOTS[idx]
+        return {slvl: count}, True
+    return {}, False
+
+def _spell_cast_label(level_key, slot_dict, is_pact):
+    """Return a human-readable slot count string for a spell level, e.g. '4 slots / long rest'."""
+    if level_key == "cantrips":
+        return "At will"
+    try:
+        lvl_num = int(level_key)
+    except (ValueError, TypeError):
+        return ""
+    count = slot_dict.get(lvl_num, 0)
+    if not count:
+        return ""
+    rest = "short rest" if is_pact else "long rest"
+    slot_word = "slot" if count == 1 else "slots"
+    return f"{count} {slot_word} / {rest}"
+
+def has_dual_wielder_feat():
+    """Return True if the Dual Wielder feat is active (via ASI choices or legacy checkbox)."""
+    for choice in st.session_state.get("asi_choices", {}).values():
+        if choice.get("type") == "feat" and choice.get("feat_id") == "dual_wielder":
+            return True
+    return st.session_state.get("has_dual_wielder", False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SRD ITEM HELPERS
@@ -1133,9 +1267,449 @@ def get_armor_restrictions(class_id, armor_type, has_shield):
     return restrictions
 
 # ─────────────────────────────────────────────────────────────────────────────
+# PDF GENERATION
+# ─────────────────────────────────────────────────────────────────────────────
+def _pdf_safe(text):
+    """Replace Unicode characters unsupported by Helvetica with ASCII equivalents."""
+    if not text:
+        return ""
+    return (str(text)
+        .replace("\u2014", "--")   # em dash
+        .replace("\u2013", "-")    # en dash
+        .replace("\u2019", "'")    # right single quote
+        .replace("\u2018", "'")    # left single quote
+        .replace("\u201c", '"')    # left double quote
+        .replace("\u201d", '"')    # right double quote
+        .replace("\u2026", "...")  # ellipsis
+        .replace("\u25cf", "*")    # bullet ●
+        .replace("\u25cb", "o")    # circle ○
+        .replace("\u2605", "*")    # star ★
+        .replace("\u00bd", "1/2")  # half ½
+        .replace("\u2019", "'")    # apostrophe variant
+        .replace("\u00b7", "·")    # middle dot (latin-1 OK, keep)
+        .replace("\u2022", "-")    # bullet •
+        .replace("\u2260", "!=")   # not equal
+        .replace("\u2192", "->")   # arrow →
+        .replace("\u2190", "<-")   # arrow ←
+        .encode("latin-1", errors="replace").decode("latin-1")
+    )
+
+def generate_character_pdf():
+    """Generate a formatted PDF character sheet. Returns bytes."""
+    try:
+        from fpdf import FPDF
+    except ImportError:
+        return b""
+
+    race   = get_race(st.session_state.race_id)
+    cls    = get_class(st.session_state.class_id)
+    sub    = get_subclass(cls, st.session_state.subclass_id)
+    bg     = get_background(st.session_state.background_id)
+    level  = st.session_state.char_level
+    prof   = proficiency_bonus(level)
+    STAT_KEYS = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+    STAT_FULL = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+    # ── Colour palette (mirrors Spell Details section) ──
+    C_HDR_FILL = (44, 30, 58)      # section header background
+    C_HDR_TEXT = (196, 181, 253)   # section header text / bold labels
+    C_SUB      = (160, 140, 200)   # italic sub-labels
+    C_STAT     = (180, 165, 220)   # stat values / key-value pairs
+    C_BODY     = (200, 190, 220)   # body text / list items
+
+    def _sec(title):
+        """Render a styled section header bar."""
+        pdf.set_fill_color(*C_HDR_FILL)
+        pdf.set_text_color(*C_HDR_TEXT)
+        pdf.set_font("Helvetica", "B", 9)
+        pdf.cell(0, 7, title, ln=True, fill=True)
+        pdf.ln(1)
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_margins(15, 15, 15)
+    pdf.set_auto_page_break(auto=True, margin=15)
+
+    # ── Header ──
+    char_name = st.session_state.char_name or "Unnamed Character"
+    race_name = race["name"] if race else "Unknown Race"
+    cls_name  = cls["name"]  if cls  else "Unknown Class"
+    sub_name  = sub["name"]  if sub  else ""
+    bg_name   = bg["name"]   if bg   else "Unknown Background"
+    alignment = st.session_state.alignment or ""
+
+    pdf.set_text_color(*C_HDR_TEXT)
+    pdf.set_font("Helvetica", "B", 22)
+    pdf.cell(0, 11, _pdf_safe(char_name), ln=True, align="C")
+    pdf.set_text_color(*C_SUB)
+    pdf.set_font("Helvetica", "I", 10)
+    sub_part = f" ({_pdf_safe(sub_name)})" if sub_name else ""
+    pdf.cell(0, 6, _pdf_safe(f"{race_name}  *  {cls_name}{sub_part} Lv.{level}  *  {bg_name}  *  {alignment}"), ln=True, align="C")
+    pdf.ln(4)
+
+    # ── Ability Scores ──
+    _sec("ABILITY SCORES")
+    col_w = (pdf.w - 30) / 6
+    pdf.set_text_color(*C_SUB)
+    pdf.set_font("Helvetica", "B", 8)
+    for full in STAT_FULL:
+        pdf.cell(col_w, 5, full[:3].upper(), border=0, align="C")
+    pdf.ln(5)
+    pdf.set_text_color(*C_HDR_TEXT)
+    pdf.set_font("Helvetica", "B", 11)
+    for key in STAT_KEYS:
+        eff = effective_stat(key, race)
+        mod = modifier(eff)
+        pdf.cell(col_w, 6, f"{eff} ({mod})", border=0, align="C")
+    pdf.ln(8)
+
+    # ── Combat Stats ──
+    con_mod = modifier_int(effective_stat("CON", race))
+    hit_die_num = int(cls["hit_die"][1:]) if cls else 8
+    hp = hit_die_num + con_mod + (level - 1) * (math.floor(hit_die_num / 2) + 1 + con_mod)
+    ac_val, ac_note = compute_ac(st.session_state.class_id or "", race, st.session_state.equip_choices)
+    all_prof_skills = get_all_proficient_skills(race, bg, st.session_state.chosen_skills)
+    joat_half_pdf = math.floor(prof / 2) if has_jack_of_all_trades() else 0
+    perc_mod = skill_modifier("Perception", "WIS", race, prof, all_prof_skills, half_prof=joat_half_pdf)
+    speed = str(race["speed"].get("walk", 30) if race else 30)
+    init_mod = modifier(effective_stat("DEX", race))
+
+    _sec("COMBAT")
+    pdf.set_font("Helvetica", "", 10)
+    combat_items = [
+        f"Max HP: {max(hp, 1)}", _pdf_safe(f"AC: {ac_val} ({ac_note})"),
+        f"Initiative: {init_mod}", f"Speed: {speed} ft",
+        f"Proficiency Bonus: +{prof}", f"Passive Perception: {10 + perc_mod}",
+    ]
+    third_w = (pdf.w - 30) / 3
+    for i, item in enumerate(combat_items):
+        if i % 3 == 0 and i > 0:
+            pdf.ln(5)
+        label, _, value = item.partition(": ")
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 9)
+        pdf.cell(third_w * 0.55, 5, _pdf_safe(label + ":"))
+        pdf.set_text_color(*C_HDR_TEXT)
+        pdf.set_font("Helvetica", "B", 10)
+        pdf.cell(third_w * 0.45, 5, _pdf_safe(value))
+    pdf.ln(9)
+
+    # ── Saving Throws ──
+    class_saves = cls["saves"] if cls else []
+    _sec("SAVING THROWS")
+    half_w = (pdf.w - 30) / 2
+    save_pairs = list(zip(STAT_FULL, STAT_KEYS))
+    for i, (full, key) in enumerate(save_pairs):
+        eff = effective_stat(key, race)
+        base_mod = modifier_int(eff)
+        save_val = base_mod + (prof if key in class_saves else 0)
+        sign = f"+{save_val}" if save_val >= 0 else str(save_val)
+        is_prof = key in class_saves
+        dot = "*" if is_prof else "o"
+        pdf.set_text_color(*C_HDR_TEXT if is_prof else C_STAT)
+        pdf.set_font("Helvetica", "B" if is_prof else "", 9)
+        pdf.cell(half_w * 0.12, 5, dot)
+        pdf.set_text_color(*C_STAT)
+        pdf.set_font("Helvetica", "", 9)
+        pdf.cell(half_w * 0.55, 5, _pdf_safe(full))
+        pdf.set_text_color(*C_HDR_TEXT if is_prof else C_STAT)
+        pdf.set_font("Helvetica", "B" if is_prof else "", 9)
+        pdf.cell(half_w * 0.33, 5, sign)
+        if i % 2 == 1:
+            pdf.ln(5)
+    if len(save_pairs) % 2 != 0:
+        pdf.ln(5)
+    pdf.ln(5)
+
+    # ── Skills ──
+    sheet_expertise = set(st.session_state.get("expertise_skills", []))
+    _sec("SKILLS")
+    skill_col_w = (pdf.w - 30) / 3
+    for i, (sname, akey) in enumerate(ALL_SKILLS):
+        is_exp   = sname in sheet_expertise
+        eff_prof = prof * 2 if is_exp else prof
+        mod_val  = skill_modifier(sname, akey, race, eff_prof, all_prof_skills, half_prof=joat_half_pdf)
+        sign     = f"+{mod_val}" if mod_val >= 0 else str(mod_val)
+        is_joat  = joat_half_pdf and sname not in all_prof_skills and not is_exp
+        is_prof  = sname in all_prof_skills
+        dot      = "**" if is_exp else ("*" if is_prof else "o")
+        joat_note = f" (+{joat_half_pdf})" if is_joat else ""
+        # dot
+        pdf.set_text_color(*(C_HDR_TEXT if (is_prof or is_exp) else C_SUB))
+        pdf.set_font("Helvetica", "B" if (is_prof or is_exp) else "", 8)
+        pdf.cell(skill_col_w * 0.10, 4.5, dot)
+        # name
+        pdf.set_text_color(*(C_HDR_TEXT if (is_prof or is_exp) else C_STAT))
+        pdf.set_font("Helvetica", "B" if is_exp else ("" if not is_prof else ""), 8)
+        pdf.cell(skill_col_w * 0.65, 4.5, _pdf_safe(sname + joat_note))
+        # value
+        pdf.set_text_color(*C_HDR_TEXT)
+        pdf.set_font("Helvetica", "B", 8)
+        pdf.cell(skill_col_w * 0.25, 4.5, sign)
+        if i % 3 == 2:
+            pdf.ln(4.5)
+    if len(ALL_SKILLS) % 3 != 0:
+        pdf.ln(4.5)
+    pdf.ln(4)
+
+    # ── Features (class + subclass + background) ──
+    cls_feats_data = CLASS_FEATURES.get(st.session_state.class_id or "", {})
+    cls_feats = [f for f in cls_feats_data.get("features", []) if f.get("level", 1) <= level]
+    sub_feats = [f for f in sub.get("features", []) if f.get("level", 1) <= level] if sub else []
+    bg_feat_data = bg.get("feature", {}) if bg else {}
+
+    has_features = cls_feats or sub_feats or bg_feat_data
+    if has_features:
+        _sec("FEATURES")
+
+    if cls_feats:
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.cell(0, 5, _pdf_safe(cls_name), ln=True)
+        for feat_item in cls_feats:
+            pdf.set_text_color(*C_HDR_TEXT)
+            pdf.set_font("Helvetica", "B", 8)
+            pdf.cell(0, 4.5, _pdf_safe(f"[Lv.{feat_item['level']}] {feat_item['name']}"), ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 7.5)
+            pdf.multi_cell(0, 3.5, _pdf_safe(feat_item.get("description", "")))
+            pdf.ln(0.5)
+        pdf.ln(2)
+
+    if sub_feats:
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.cell(0, 5, _pdf_safe(sub_name), ln=True)
+        for feat_item in sub_feats:
+            pdf.set_text_color(*C_HDR_TEXT)
+            pdf.set_font("Helvetica", "B", 8)
+            pdf.cell(0, 4.5, _pdf_safe(f"[Lv.{feat_item['level']}] {feat_item['name']}"), ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 7.5)
+            pdf.multi_cell(0, 3.5, _pdf_safe(feat_item.get("description", "")))
+            pdf.ln(0.5)
+        pdf.ln(2)
+
+    if bg and bg_feat_data:
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.cell(0, 5, _pdf_safe(bg_name), ln=True)
+        pdf.set_text_color(*C_HDR_TEXT)
+        pdf.set_font("Helvetica", "B", 8)
+        pdf.cell(0, 4.5, _pdf_safe(bg_feat_data.get("name", "")), ln=True)
+        pdf.set_text_color(*C_BODY)
+        pdf.set_font("Helvetica", "", 7.5)
+        pdf.multi_cell(0, 3.5, _pdf_safe(bg_feat_data.get("description", "")))
+        pdf.ln(3)
+
+    # ── Character Details (after Features) ──
+    details = [
+        ("Personality Traits", st.session_state.get("personality", "")),
+        ("Ideals",             st.session_state.get("ideals", "")),
+        ("Bonds",              st.session_state.get("bonds", "")),
+        ("Flaws",              st.session_state.get("flaws", "")),
+        ("Notes",              st.session_state.get("notes", "")),
+    ]
+    if any(v for _, v in details):
+        _sec("CHARACTER DETAILS")
+        for label, val in details:
+            if not val:
+                continue
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 5, _pdf_safe(label), ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 9)
+            pdf.multi_cell(0, 4.5, _pdf_safe(val))
+            pdf.ln(1)
+        pdf.ln(2)
+
+    # ── Spellcasting ──
+    mech_pdf = get_mech(st.session_state.class_id or "")
+    sc_data = mech_pdf.get("spellcasting")
+    chosen_c = st.session_state.get("chosen_cantrips", [])
+    chosen_s = st.session_state.get("chosen_spells", [])
+    if sc_data and st.session_state.class_id != "sevrinn":
+        sc_ability = sc_data["ability"]
+        sc_key_map = {"Wisdom": "WIS", "Intelligence": "INT", "Charisma": "CHA"}
+        sc_key  = sc_key_map.get(sc_ability, "WIS")
+        sc_mod  = modifier_int(effective_stat(sc_key, race))
+        spell_dc  = 8 + prof + sc_mod
+        spell_atk = f"+{prof + sc_mod}" if (prof + sc_mod) >= 0 else str(prof + sc_mod)
+        cantrips  = sc_data.get("cantrips_known")
+        cantrips_val = str(cantrips[min(level - 1, 19)]) if cantrips else "--"
+        slots = get_spell_slots(sc_data.get("slot_type"), level)
+
+        _sec(f"SPELLCASTING ({sc_ability.upper()})")
+        sc_stats = [
+            ("Spell Save DC", str(spell_dc)),
+            ("Spell Attack", spell_atk),
+            ("Cantrips Known", cantrips_val),
+        ]
+        for label, val in sc_stats:
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 9)
+            pdf.cell(third_w * 0.65, 5, _pdf_safe(label + ":"))
+            pdf.set_text_color(*C_HDR_TEXT)
+            pdf.set_font("Helvetica", "B", 10)
+            pdf.cell(third_w * 0.35, 5, _pdf_safe(val))
+        pdf.ln(6)
+        if slots:
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 4.5, "Spell Slots:", ln=True)
+            pdf.set_text_color(*C_STAT)
+            pdf.set_font("Helvetica", "", 9)
+            slot_str = "  |  ".join(f"{lvl}: {cnt}" for lvl, cnt in slots)
+            pdf.cell(0, 4.5, _pdf_safe(slot_str), ln=True)
+        if chosen_c:
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 5, "Cantrips:", ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 9)
+            pdf.cell(0, 4.5, _pdf_safe(", ".join(chosen_c)), ln=True)
+        if chosen_s:
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 5, "Known / Prepared Spells:", ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 9)
+            pdf.cell(0, 4.5, _pdf_safe(", ".join(chosen_s)), ln=True)
+        pdf.ln(3)
+
+    # ── Equipment & Armor/Weapons ──
+    mech_eq = mech_pdf
+    eq_fixed   = mech_eq.get("equipment_fixed", [])
+    eq_choices = mech_eq.get("equipment_choices", [])
+    eq_items   = list(eq_fixed)
+    for choice in eq_choices:
+        cid = choice["id"]
+        idx = st.session_state.equip_choices.get(cid, 0)
+        if idx < len(choice["options"]):
+            eq_items.extend(choice["options"][idx]["items"])
+    if bg:
+        eq_items.append(bg.get("equipment", ""))
+    main_wep_pdf = get_weapon(st.session_state.get("equipped_main"))
+    off_wep_pdf  = get_weapon(st.session_state.get("equipped_offhand"))
+    if main_wep_pdf:
+        eq_items.append(f"{main_wep_pdf['name']} (main hand)")
+    if off_wep_pdf:
+        eq_items.append(f"{off_wep_pdf['name']} (off-hand)")
+    armor_weapons = (cls.get("armor", []) + cls.get("weapons", [])) if cls else []
+
+    _sec("EQUIPMENT & ARMOR / WEAPONS")
+    if armor_weapons:
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.cell(0, 4.5, "Proficiencies:", ln=True)
+        pdf.set_text_color(*C_BODY)
+        pdf.set_font("Helvetica", "", 9)
+        pdf.cell(0, 4.5, _pdf_safe(", ".join(armor_weapons)), ln=True)
+        pdf.ln(1)
+    if eq_items:
+        pdf.set_text_color(*C_SUB)
+        pdf.set_font("Helvetica", "I", 8)
+        pdf.cell(0, 4.5, "Carried:", ln=True)
+        pdf.set_text_color(*C_BODY)
+        pdf.set_font("Helvetica", "", 9)
+        for item in eq_items:
+            if item:
+                pdf.cell(0, 4.5, _pdf_safe(f"- {item}"), ln=True)
+
+    # ── Languages ──
+    race_langs = [l for l in (race.get("languages", []) if race else [])
+                  if "of your choice" not in l.lower()]
+    chosen_langs = [l for l in st.session_state.get("chosen_languages", [])
+                    if "of your choice" not in l.lower()]
+    all_langs = list(dict.fromkeys(race_langs + chosen_langs))
+    tool_profs = bg.get("tool_proficiencies", []) if bg else []
+    if all_langs or tool_profs:
+        pdf.ln(2)
+        _sec("LANGUAGES & TOOLS")
+        if all_langs:
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 4.5, "Languages:", ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 9)
+            pdf.cell(0, 4.5, _pdf_safe(", ".join(all_langs)), ln=True)
+        if tool_profs:
+            pdf.ln(1)
+            pdf.set_text_color(*C_SUB)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.cell(0, 4.5, "Tool Proficiencies:", ln=True)
+            pdf.set_text_color(*C_BODY)
+            pdf.set_font("Helvetica", "", 9)
+            pdf.cell(0, 4.5, _pdf_safe(", ".join(tool_profs)), ln=True)
+
+    # ── Spell Details (last page) ──
+    all_pdf_spells = chosen_c + chosen_s
+    if all_pdf_spells:
+        _slot_dict_pdf, _is_pact_pdf = _build_slot_dict(sc_data, level)
+        _spells_by_lk_pdf = {}
+        for sn in chosen_s:
+            _, lk = lookup_spell_detail(sn)
+            if lk:
+                _spells_by_lk_pdf.setdefault(lk, []).append(sn)
+        _sorted_lks_pdf = sorted(_spells_by_lk_pdf.keys(), key=lambda x: int(x) if x.isdigit() else 0)
+
+        pdf.add_page()
+        _sec("SPELL DETAILS")
+        pdf.ln(1)
+
+        def _pdf_spell_entry(spell_name, lk):
+            sp, _ = lookup_spell_detail(spell_name)
+            if not sp:
+                return
+            school = sp.get("school", "")
+            meta = f"{_spell_level_label(lk)}{' -- ' + school if school else ''}"
+            pdf.set_font("Helvetica", "B", 10)
+            pdf.set_text_color(*C_HDR_TEXT)
+            pdf.cell(0, 6, _pdf_safe(spell_name), ln=True)
+            pdf.set_font("Helvetica", "I", 8)
+            pdf.set_text_color(*C_SUB)
+            pdf.cell(0, 4.5, _pdf_safe(meta), ln=True)
+            stat_parts = []
+            if sp.get("casting_time"): stat_parts.append(f"Casting Time: {sp['casting_time']}")
+            if sp.get("range"):        stat_parts.append(f"Range: {sp['range']}")
+            if sp.get("components"):   stat_parts.append(f"Components: {sp['components']}")
+            if sp.get("duration"):     stat_parts.append(f"Duration: {sp['duration']}")
+            if stat_parts:
+                pdf.set_font("Helvetica", "", 8)
+                pdf.set_text_color(*C_STAT)
+                pdf.cell(0, 4.5, _pdf_safe("  |  ".join(stat_parts)), ln=True)
+            if sp.get("description"):
+                pdf.set_font("Helvetica", "", 9)
+                pdf.set_text_color(*C_BODY)
+                pdf.multi_cell(0, 4.5, _pdf_safe(sp["description"]))
+            pdf.ln(2.5)
+
+        def _pdf_level_subheader(lk):
+            cast_lbl = _spell_cast_label(lk, _slot_dict_pdf, _is_pact_pdf)
+            lv_text = "CANTRIPS" if lk == "cantrips" else _spell_level_label(lk).upper()
+            header = f"{lv_text}  --  {cast_lbl}" if cast_lbl else lv_text
+            pdf.set_fill_color(30, 18, 44)
+            pdf.set_text_color(*C_HDR_TEXT)
+            pdf.set_font("Helvetica", "BI", 8)
+            pdf.cell(0, 6, _pdf_safe(header), ln=True, fill=True)
+            pdf.ln(1)
+
+        if chosen_c:
+            _pdf_level_subheader("cantrips")
+            for sn in chosen_c:
+                _pdf_spell_entry(sn, "cantrips")
+        for lk in _sorted_lks_pdf:
+            _pdf_level_subheader(lk)
+            for sn in _spells_by_lk_pdf[lk]:
+                _pdf_spell_entry(sn, lk)
+
+    return bytes(pdf.output())
+
+# ─────────────────────────────────────────────────────────────────────────────
 # STEP BAR
 # ─────────────────────────────────────────────────────────────────────────────
-STEPS = ["Basics", "Race", "Class", "Features", "Background", "Stats", "Skills", "Gear", "Inventory", "Sheet"]
+STEPS = ["Basics", "Race", "Class", "Features", "Background", "Stats", "Skills", "Gear & Inventory", "Feats", "Sheet"]
 
 def render_step_bar():
     current = st.session_state.step
@@ -1164,12 +1738,52 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# CHARACTER IMPORT HELPER
+# ─────────────────────────────────────────────────────────────────────────────
+def _apply_character_upload(uploaded_file):
+    """Load a character JSON into session state. Returns True on success."""
+    if uploaded_file is None:
+        return False
+    # Guard against re-processing the same file on every rerun
+    if st.session_state.get("_loaded_file") == uploaded_file.name:
+        return False
+    try:
+        saved = json.load(uploaded_file)
+        for k, v in defaults.items():
+            if k == "step":
+                continue
+            st.session_state[k] = saved.get(k, v)
+        st.session_state.step = 10
+        st.session_state["_loaded_file"] = uploaded_file.name
+        return True
+    except Exception as e:
+        st.error(f"Could not load file: {e}")
+        return False
+
+# ─────────────────────────────────────────────────────────────────────────────
+# SIDEBAR — Load Character
+# ─────────────────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 📂 Load Character")
+    sidebar_upload = st.file_uploader("Upload a saved character (.json)", type="json", label_visibility="collapsed")
+    if _apply_character_upload(sidebar_upload):
+        st.rerun()
+
 render_step_bar()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # STEP 1 — BASICS
 # ─────────────────────────────────────────────────────────────────────────────
 if st.session_state.step == 1:
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">📂 Import Character</div>', unsafe_allow_html=True)
+    st.markdown('<p style="font-family:Crimson Text,serif; color:#a99cbf; font-style:italic; margin-bottom:1rem;">Already have a saved character? Upload it here to pick up where you left off.</p>', unsafe_allow_html=True)
+    step1_upload = st.file_uploader("Upload character JSON", type="json", label_visibility="collapsed", key="step1_upload")
+    if _apply_character_upload(step1_upload):
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-header">⚔️ Character Basics</div>', unsafe_allow_html=True)
     st.markdown('<p style="font-family: Crimson Text, serif; color: #a99cbf; font-style: italic; margin-bottom:1.5rem;">In a world as vast and diverse as Ryndor, every face tells a story and every soul carries the essence of something greater. What story will yours tell?</p>', unsafe_allow_html=True)
@@ -1354,7 +1968,7 @@ elif st.session_state.step == 3:
                 st.markdown(f'<div class="ryndor-alert">⚠️ {cls["special_note"]}</div>', unsafe_allow_html=True)
 
             # Subclass selection
-            st.markdown('<div class="section-header">Ryndor Subclass</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-header">Choose Your Path</div>', unsafe_allow_html=True)
             subs = cls.get("subclasses", [])
             for sub in subs:
                 selected = st.session_state.subclass_id == sub["id"]
@@ -1374,7 +1988,7 @@ elif st.session_state.step == 3:
             sub = get_subclass(cls, st.session_state.subclass_id)
             if sub:
                 level = st.session_state.char_level
-                st.markdown('<div class="section-header" style="margin-top:1rem">Subclass Features</div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="section-header" style="margin-top:1rem">{sub["name"]} Features</div>', unsafe_allow_html=True)
 
                 # Patron list for Warlock
                 if "patrons" in sub:
@@ -1389,7 +2003,7 @@ elif st.session_state.step == 3:
                 # Oath spells or domain spells
                 for spell_key in ["domain_spells", "oath_spells", "circle_spells"]:
                     if spell_key in sub:
-                        with st.expander("📜 Subclass Spells"):
+                        with st.expander(f"📜 {sub['name']} Spells"):
                             for lvl, spells in sub[spell_key].items():
                                 spell_list = ", ".join(spells)
                                 st.markdown(f'<p style="font-family:Crimson Text,serif; color:#a99cbf; margin:0.2rem 0"><b style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.8rem">{lvl}:</b> {spell_list}</p>', unsafe_allow_html=True)
@@ -1475,7 +2089,11 @@ elif st.session_state.step == 4:
 
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown(
-        f'<div class="section-header">⚡ Class Features — {cls["name"] if cls else ""}</div>',
+        '<div class="section-header">✨ Features</div>',
+        unsafe_allow_html=True
+    )
+    st.markdown(
+        f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0 0 0.6rem">{cls["name"] if cls else "Class"}</p>',
         unsafe_allow_html=True
     )
     st.markdown(
@@ -1586,7 +2204,167 @@ elif st.session_state.step == 4:
                 unsafe_allow_html=True
             )
 
+    # ── Subclass features ──
+    sub_feat_step = get_subclass(cls, st.session_state.subclass_id)
+    if sub_feat_step:
+        avail_sub_feats = [f for f in sub_feat_step.get("features", []) if f["level"] <= level]
+        if avail_sub_feats:
+            st.markdown(
+                f'<div class="section-header" style="margin-top:1.2rem">'
+                f'{sub_feat_step["name"]} Features</div>',
+                unsafe_allow_html=True
+            )
+            for feat in avail_sub_feats:
+                st.markdown(
+                    f'<div class="trait-block">'
+                    f'<div class="name">{feat["name"]} '
+                    f'<span style="color:#4e3d6e; font-size:0.75rem">(Level {feat["level"]})</span></div>'
+                    f'<div class="desc">{feat["description"]}</div></div>',
+                    unsafe_allow_html=True
+                )
+
+    # ── Background feature ──
+    bg_feat_step = get_background(st.session_state.background_id)
+    if bg_feat_step:
+        bg_feat_data = bg_feat_step.get("feature", {})
+        st.markdown(
+            f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:1rem 0 0.4rem">'
+            f'{bg_feat_step["icon"]} {bg_feat_step["name"]}</p>',
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            f'<div class="trait-block">'
+            f'<div class="name">{bg_feat_data.get("name","")}</div>'
+            f'<div class="desc">{bg_feat_data.get("description","")}</div></div>',
+            unsafe_allow_html=True
+        )
+
     st.markdown('</div>', unsafe_allow_html=True)
+
+    # ── SPELL SELECTION (spellcasting classes only) ──────────────────────────
+    mech_feat_step = get_mech(st.session_state.class_id or "")
+    sc_feat = mech_feat_step.get("spellcasting")
+    race_feat_step = get_race(st.session_state.race_id)
+    if sc_feat and st.session_state.class_id != "sevrinn":
+        sc_ability = sc_feat["ability"]
+        sc_key_map = {"Wisdom": "WIS", "Intelligence": "INT", "Charisma": "CHA"}
+        sc_key = sc_key_map.get(sc_ability, "WIS")
+        sc_mod = modifier_int(effective_stat(sc_key, race_feat_step))
+        spell_dc_feat = 8 + proficiency_bonus(level) + sc_mod
+        spell_atk_val = proficiency_bonus(level) + sc_mod
+        spell_atk_feat = f"+{spell_atk_val}" if spell_atk_val >= 0 else str(spell_atk_val)
+
+        st.markdown('<div class="card" style="margin-top:0.8rem">', unsafe_allow_html=True)
+        st.markdown(
+            f'<div class="section-header">✨ Spell Selection — {sc_ability} · DC {spell_dc_feat} · Atk {spell_atk_feat}</div>',
+            unsafe_allow_html=True
+        )
+
+        # Cantrips
+        cantrips_list = sc_feat.get("cantrips_known")
+        cantrip_limit = cantrips_list[min(level - 1, 19)] if cantrips_list else 0
+        if cantrip_limit > 0:
+            available_cantrips = get_spells_for_class(st.session_state.class_id, "cantrips")
+            if available_cantrips:
+                chosen_c = list(st.session_state.chosen_cantrips)
+                # Filter valid
+                valid_names = {s["name"] for s in available_cantrips}
+                chosen_c = [n for n in chosen_c if n in valid_names]
+
+                st.markdown(
+                    f'<div style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.88rem; '
+                    f'margin:0.8rem 0 0.4rem; font-weight:700; letter-spacing:0.06em">'
+                    f'CANTRIPS — choose {cantrip_limit} '
+                    f'<span style="color:{"#10b981" if len(chosen_c)==cantrip_limit else "#e04040"}; font-size:0.8rem">'
+                    f'[{len(chosen_c)}/{cantrip_limit}]</span></div>',
+                    unsafe_allow_html=True
+                )
+                cantrip_search = st.text_input("Search cantrips", key="cantrip_search_4", label_visibility="collapsed", placeholder="Search cantrips…")
+                filtered_cantrips = [s for s in available_cantrips if not cantrip_search or cantrip_search.lower() in s["name"].lower()]
+                if not filtered_cantrips and cantrip_search:
+                    st.caption(f"No cantrips match \"{cantrip_search}\"")
+                else:
+                    c_cols = st.columns(3)
+                    for i, spell in enumerate(filtered_cantrips):
+                        is_checked = spell["name"] in chosen_c
+                        at_limit = len(chosen_c) >= cantrip_limit and not is_checked
+                        checked = c_cols[i % 3].checkbox(
+                            f"{spell['name']} ({spell.get('school','')})",
+                            value=is_checked,
+                            disabled=at_limit,
+                            key=f"cantrip4_{spell['name'].replace(' ','_').replace('/','_')}"
+                        )
+                        if checked and spell["name"] not in chosen_c:
+                            chosen_c.append(spell["name"])
+                        elif not checked and spell["name"] in chosen_c:
+                            chosen_c.remove(spell["name"])
+                st.session_state.chosen_cantrips = chosen_c[:cantrip_limit]
+
+        # Leveled spells
+        spells_val_feat, spells_label_feat = get_spells_known_or_prepared(sc_feat, level, race_feat_step)
+        if spells_val_feat is not None:
+            chosen_s = list(st.session_state.chosen_spells)
+            # Filter valid across all levels
+            all_spell_names = set()
+            for sl in range(1, 10):
+                for sp in get_spells_for_class(st.session_state.class_id, str(sl)):
+                    all_spell_names.add(sp["name"])
+            chosen_s = [n for n in chosen_s if n in all_spell_names]
+
+            # Determine which spell levels are accessible
+            slot_type = sc_feat.get("slot_type", "full")
+            is_spells_known = sc_feat.get("spells_known") is not None
+            spell_limit = spells_val_feat
+
+            for sl in range(1, 10):
+                level_spells = get_spells_for_class(st.session_state.class_id, str(sl))
+                if not level_spells:
+                    continue
+                slots_at_level = get_spell_slots(slot_type, level)
+                # For pact magic, all accessible if slot level >= spell level
+                if slot_type == "pact":
+                    pact_lvl = PACT_SLOTS[min(level - 1, 19)][1]
+                    if sl > pact_lvl:
+                        continue
+                elif sl > len([x for x in (FULL_CASTER_SLOTS if slot_type == "full" else HALF_CASTER_SLOTS)[min(level - 1, 19)] if x > 0]):
+                    continue
+
+                suffix = "st" if sl == 1 else "nd" if sl == 2 else "rd" if sl == 3 else "th"
+                at_level_count = sum(1 for n in chosen_s if n in {sp["name"] for sp in level_spells})
+                total_chosen = len(chosen_s)
+
+                st.markdown(
+                    f'<div style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.85rem; '
+                    f'margin:0.8rem 0 0.3rem; font-weight:700; letter-spacing:0.06em">'
+                    f'{sl}{suffix}-LEVEL SPELLS '
+                    f'<span style="color:{"#10b981" if total_chosen==spell_limit else "#e8c87a"}; font-size:0.78rem">'
+                    f'[{total_chosen}/{spell_limit} total {spells_label_feat}]</span></div>',
+                    unsafe_allow_html=True
+                )
+                spell_search = st.text_input(f"Search {sl}{suffix}-level spells", key=f"spell_search_4_{sl}", label_visibility="collapsed", placeholder=f"Search {sl}{suffix}-level spells…")
+                filtered_spells = [s for s in level_spells if not spell_search or spell_search.lower() in s["name"].lower()]
+                if not filtered_spells and spell_search:
+                    st.caption(f"No {sl}{suffix}-level spells match \"{spell_search}\"")
+                else:
+                    s_cols = st.columns(3)
+                    for i, spell in enumerate(filtered_spells):
+                        is_checked = spell["name"] in chosen_s
+                        at_limit = total_chosen >= spell_limit and not is_checked
+                        checked = s_cols[i % 3].checkbox(
+                            f"{spell['name']}",
+                            value=is_checked,
+                            disabled=at_limit,
+                            key=f"spell4_{sl}_{spell['name'].replace(' ','_').replace('/','_')}"
+                        )
+                        if checked and spell["name"] not in chosen_s:
+                            chosen_s.append(spell["name"])
+                            total_chosen += 1
+                        elif not checked and spell["name"] in chosen_s:
+                            chosen_s.remove(spell["name"])
+                            total_chosen -= 1
+                st.session_state.chosen_spells = chosen_s
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
     col1, _, col3 = st.columns([1, 5, 1])
     with col1:
@@ -1620,14 +2398,39 @@ elif st.session_state.step == 5:
         st.markdown('<div class="section-header">📜 Choose Your Background</div>', unsafe_allow_html=True)
         st.markdown('<p style="font-family: Crimson Text, serif; color: #a99cbf; font-style: italic; margin-bottom:1rem;">Where did your story begin?</p>', unsafe_allow_html=True)
 
-        for bg in BACKGROUNDS:
+        ryndor_bgs = [bg for bg in BACKGROUNDS if bg.get("source", "Ryndor") == "Ryndor"]
+        srd_bgs    = [bg for bg in BACKGROUNDS if bg.get("source") == "SRD"]
+
+        if ryndor_bgs:
+            st.markdown('<div style="font-family:Cinzel,serif; font-size:0.72rem; color:#4e3d6e; letter-spacing:0.1em; margin:0.6rem 0 0.3rem">── RYNDOR BACKGROUNDS ──</div>', unsafe_allow_html=True)
+        for bg in ryndor_bgs:
             selected = st.session_state.background_id == bg["id"]
             sel_cls = "selected" if selected else ""
             st.markdown(
                 f'<div class="sel-card {sel_cls}">'
                 f'<div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.3rem">'
                 f'<span style="font-size:1.4rem">{bg["icon"]}</span>'
-                f'<h3 style="margin:0">{bg["name"]}</h3></div>'
+                f'<h3 style="margin:0">{bg["name"]}</h3>'
+                f'<span class="badge" style="font-size:0.65rem;padding:1px 5px">Ryndor</span></div>'
+                f'<p style="margin:0">{bg["description"][:100]}…</p>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+            if st.button(f"Select {bg['name']}", key=f"bg_{bg['id']}", use_container_width=True):
+                st.session_state.background_id = bg["id"]
+                st.rerun()
+
+        if srd_bgs:
+            st.markdown('<div style="font-family:Cinzel,serif; font-size:0.72rem; color:#4e3d6e; letter-spacing:0.1em; margin:1rem 0 0.3rem">── SRD BACKGROUNDS ──</div>', unsafe_allow_html=True)
+        for bg in srd_bgs:
+            selected = st.session_state.background_id == bg["id"]
+            sel_cls = "selected" if selected else ""
+            st.markdown(
+                f'<div class="sel-card {sel_cls}">'
+                f'<div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.3rem">'
+                f'<span style="font-size:1.4rem">{bg["icon"]}</span>'
+                f'<h3 style="margin:0">{bg["name"]}</h3>'
+                f'<span class="badge teal" style="font-size:0.65rem;padding:1px 5px">SRD</span></div>'
                 f'<p style="margin:0">{bg["description"][:100]}…</p>'
                 f'</div>',
                 unsafe_allow_html=True
@@ -1882,6 +2685,13 @@ elif st.session_state.step == 7:
     st.markdown('<div class="card">', unsafe_allow_html=True)
     st.markdown('<div class="section-header">🎯 Choose Skill Proficiencies</div>', unsafe_allow_html=True)
 
+    if has_jack_of_all_trades():
+        joat_preview = math.floor(prof / 2)
+        st.markdown(
+            f'<span class="badge teal">⚡ Jack of All Trades: +{joat_preview} to untrained skills</span>',
+            unsafe_allow_html=True
+        )
+
     if bg_skills or race_skills:
         auto_badges = " ".join(
             [f'<span class="badge teal">✔ {s} (background)</span>' for s in bg_skills] +
@@ -1994,18 +2804,21 @@ elif st.session_state.step == 7:
     st.markdown('<div class="section-header" style="color:#a78bfa; margin-top:1.5rem">📋 All Skills Preview</div>', unsafe_allow_html=True)
     expertise_set = set(st.session_state.expertise_skills)
     cols = st.columns(3)
+    joat_half = math.floor(prof / 2) if has_jack_of_all_trades() else 0
     for i, (sname, akey) in enumerate(ALL_SKILLS):
         is_exp = sname in expertise_set
         eff_prof = prof * 2 if is_exp else prof
-        mod_val = skill_modifier(sname, akey, race, eff_prof, all_prof)
+        mod_val = skill_modifier(sname, akey, race, eff_prof, all_prof, half_prof=joat_half)
         sign    = f"+{mod_val}" if mod_val >= 0 else str(mod_val)
-        dot     = "★" if is_exp else ("●" if sname in all_prof else "○")
-        color   = "#c4b5fd" if is_exp else ("#a78bfa" if sname in all_prof else "#5a4a7a")
+        is_joat_boosted = joat_half and sname not in all_prof and not is_exp
+        dot   = "★" if is_exp else ("●" if sname in all_prof else "○")
+        color = "#c4b5fd" if is_exp else ("#a78bfa" if sname in all_prof else "#5a4a7a")
+        joat_tag = f' <span style="font-size:0.7rem;color:#5a6a6a">(+{joat_half})</span>' if is_joat_boosted else ""
         cols[i % 3].markdown(
             f'<div style="display:flex;justify-content:space-between;padding:0.2rem 0;'
             f'border-bottom:1px solid rgba(255,255,255,0.04)">'
             f'<span style="font-family:Crimson Text,serif;color:{color}">'
-            f'<span style="font-size:0.85rem">{dot}</span> {sname} '
+            f'<span style="font-size:0.85rem">{dot}</span> {sname}{joat_tag} '
             f'<span style="font-size:0.75rem;opacity:0.6">({ABILITY_SHORT[akey]})</span></span>'
             f'<span style="font-family:Cinzel,serif;color:{color};font-weight:700">{sign}</span>'
             f'</div>',
@@ -2091,26 +2904,11 @@ elif st.session_state.step == 8:
     )
     st.markdown('</div>', unsafe_allow_html=True)
 
-    col1, _, col3 = st.columns([1, 5, 1])
-    with col1:
-        if st.button("← Back", use_container_width=True):
-            st.session_state.step = 7
-            st.rerun()
-    with col3:
-        if st.button("Inventory →", type="primary", use_container_width=True):
-            st.session_state.step = 9
-            st.rerun()
-
-# ─────────────────────────────────────────────────────────────────────────────
-# STEP 9 — INVENTORY & WEAPONS
-# ─────────────────────────────────────────────────────────────────────────────
-elif st.session_state.step == 9:
-    cls  = get_class(st.session_state.class_id)
-    race = get_race(st.session_state.race_id)
     level = st.session_state.char_level
 
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="section-header">🗡 Inventory & Weapons</div>', unsafe_allow_html=True)
+    # ── Weapons & Loadout ──
+    st.markdown('<div class="card" style="margin-top:0.8rem">', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">🗡 Weapons & Loadout</div>', unsafe_allow_html=True)
     st.markdown('<p style="font-family:Crimson Text,serif; color:#a99cbf; margin-bottom:1rem">Browse SRD weapons, build your inventory, and equip your loadout.</p>', unsafe_allow_html=True)
 
     # ── Armor Restrictions Banner ──
@@ -2241,7 +3039,7 @@ elif st.session_state.step == 9:
             )
 
         # Dual wield check
-        dw_ok, dw_reason = check_dual_wield(main_wep, off_wep, st.session_state.has_dual_wielder)
+        dw_ok, dw_reason = check_dual_wield(main_wep, off_wep, has_dual_wielder_feat())
         if main_wep and off_wep:
             if not dw_ok:
                 st.markdown(
@@ -2257,12 +3055,24 @@ elif st.session_state.step == 9:
                     unsafe_allow_html=True
                 )
 
-        st.session_state.has_dual_wielder = st.checkbox(
-            "Dual Wielder feat",
-            value=st.session_state.has_dual_wielder,
-            key="dw_feat_chk",
-            help="Allows dual wielding non-Light one-handed weapons"
+        dw_from_feat = any(
+            c.get("type") == "feat" and c.get("feat_id") == "dual_wielder"
+            for c in st.session_state.get("asi_choices", {}).values()
         )
+        if dw_from_feat:
+            st.markdown(
+                '<div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);'
+                'border-radius:3px;padding:0.3rem 0.7rem;font-size:0.8rem;color:#6ee7b7;margin:0.3rem 0">'
+                '✓ Dual Wielder feat active (via Feats step)</div>',
+                unsafe_allow_html=True
+            )
+        else:
+            st.session_state.has_dual_wielder = st.checkbox(
+                "Dual Wielder feat (manual override)",
+                value=st.session_state.has_dual_wielder,
+                key="dw_feat_chk",
+                help="Select the Dual Wielder feat in the Feats step, or enable here manually"
+            )
 
         # My weapon inventory
         if st.session_state.inv_weapons:
@@ -2309,10 +3119,184 @@ elif st.session_state.step == 9:
     col1, _, col3 = st.columns([1, 5, 1])
     with col1:
         if st.button("← Back", use_container_width=True):
+            st.session_state.step = 7
+            st.rerun()
+    with col3:
+        if st.button("Feats →", type="primary", use_container_width=True):
+            st.session_state.step = 9
+            st.rerun()
+
+# ─────────────────────────────────────────────────────────────────────────────
+# STEP 9 — FEATS & ABILITY SCORE IMPROVEMENTS
+# ─────────────────────────────────────────────────────────────────────────────
+elif st.session_state.step == 9:
+    cls_asi  = get_class(st.session_state.class_id)
+    level_asi = st.session_state.char_level
+    class_id_asi = st.session_state.class_id or ""
+
+    eligible_levels = get_class_asi_levels(class_id_asi, level_asi)
+
+    st.markdown('<div class="card">', unsafe_allow_html=True)
+    st.markdown(
+        f'<div class="section-header">⚡ Ability Improvements & Feats'
+        f'{"  —  " + cls_asi["name"] if cls_asi else ""} Level {level_asi}</div>',
+        unsafe_allow_html=True
+    )
+
+    if not eligible_levels:
+        st.markdown(
+            '<p style="font-family:Crimson Text,serif; color:#5a4a7a; font-style:italic">'
+            'No Ability Score Improvements available yet at your current level. '
+            'The first ASI unlocks at level 4.</p>',
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            f'<p style="font-family:Crimson Text,serif; color:#a99cbf; margin-bottom:1rem">'
+            f'You have <b style="color:#a78bfa">{len(eligible_levels)}</b> Ability Score Improvement'
+            f'{"s" if len(eligible_levels) != 1 else ""} available. '
+            f'For each, choose +2 to one stat, +1 to two stats, or a feat.</p>',
+            unsafe_allow_html=True
+        )
+
+    STAT_KEYS_ASI = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+    asi_choices = dict(st.session_state.asi_choices)
+
+    for asi_lvl in eligible_levels:
+        key_str = f"L{asi_lvl}"
+        current = asi_choices.get(key_str, {"type": "asi_2", "stat1": "STR"})
+
+        st.markdown(
+            f'<div style="border-top:1px solid rgba(124,58,237,0.25); margin:1rem 0 0.5rem; '
+            f'padding-top:0.8rem; font-family:Cinzel,serif; color:#a78bfa; font-size:0.88rem; '
+            f'font-weight:700; letter-spacing:0.08em">LEVEL {asi_lvl}</div>',
+            unsafe_allow_html=True
+        )
+
+        asi_type = st.radio(
+            f"Type at L{asi_lvl}",
+            ["+2 to one ability score", "+1 to two ability scores", "Choose a Feat"],
+            index={"asi_2": 0, "asi_1_1": 1, "feat": 2}.get(current.get("type","asi_2"), 0),
+            key=f"asi_type_{key_str}",
+            label_visibility="collapsed"
+        )
+
+        if asi_type == "+2 to one ability score":
+            stat1 = st.selectbox(
+                "Ability", STAT_KEYS_ASI,
+                index=STAT_KEYS_ASI.index(current.get("stat1","STR")),
+                key=f"asi_stat1_{key_str}"
+            )
+            asi_choices[key_str] = {"type": "asi_2", "stat1": stat1}
+
+        elif asi_type == "+1 to two ability scores":
+            col_a, col_b = st.columns(2)
+            with col_a:
+                stat1 = st.selectbox(
+                    "First ability", STAT_KEYS_ASI,
+                    index=STAT_KEYS_ASI.index(current.get("stat1","STR")),
+                    key=f"asi_s1_{key_str}"
+                )
+            with col_b:
+                stat2_opts = [s for s in STAT_KEYS_ASI if s != stat1]
+                prev2 = current.get("stat2","DEX")
+                if prev2 not in stat2_opts:
+                    prev2 = stat2_opts[0]
+                stat2 = st.selectbox(
+                    "Second ability", stat2_opts,
+                    index=stat2_opts.index(prev2),
+                    key=f"asi_s2_{key_str}"
+                )
+            asi_choices[key_str] = {"type": "asi_1_1", "stat1": stat1, "stat2": stat2}
+
+        else:  # Choose a Feat
+            feat_search = st.text_input(
+                f"Search feats (L{asi_lvl})", key=f"feat_search_{key_str}",
+                label_visibility="collapsed", placeholder="Search feats…"
+            )
+            current_feat_id = current.get("feat_id") if current.get("type") == "feat" else None
+
+            for feat_obj in SRD_FEATS:
+                if feat_search and feat_search.lower() not in feat_obj["name"].lower():
+                    continue
+                is_selected = feat_obj["id"] == current_feat_id
+                stat_str = ""
+                if feat_obj.get("stat_bonus"):
+                    for sk, sv in feat_obj["stat_bonus"].items():
+                        stat_str += f" (+{sv} {sk})"
+                prereq_str = f" · *Prereq: {feat_obj['prerequisite']}*" if feat_obj.get("prerequisite") else ""
+                label = f"{'✓ ' if is_selected else ''}{feat_obj['name']}{stat_str}{prereq_str}"
+
+                f_col1, f_col2 = st.columns([5, 1])
+                with f_col1:
+                    prereq_html = (
+                        f'<br><span style="font-family:Crimson Text,serif;color:#4e3d6e;font-size:0.72rem">'
+                        f'Prereq: {feat_obj["prerequisite"]}</span>'
+                    ) if feat_obj.get("prerequisite") else ""
+                    name_color = "#a78bfa" if is_selected else "#9d8dbf"
+                    check_mark = "✓ " if is_selected else ""
+                    st.markdown(
+                        f'<div style="padding:0.25rem 0; border-bottom:1px solid rgba(124,58,237,0.1)">'
+                        f'<span style="font-family:Cinzel,serif; color:{name_color}; font-size:0.88rem">'
+                        f'{check_mark}{feat_obj["name"]}{stat_str}</span>'
+                        f'<span style="font-family:Crimson Text,serif; color:#5a4a7a; font-size:0.8rem"> — {feat_obj["description"][:80]}…</span>'
+                        f'{prereq_html}'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+                with f_col2:
+                    if is_selected:
+                        if st.button("✕", key=f"feat_rm_{key_str}_{feat_obj['id']}", help="Remove"):
+                            asi_choices[key_str] = {"type": "feat", "feat_id": None}
+                            st.rerun()
+                    else:
+                        if st.button("Pick", key=f"feat_pick_{key_str}_{feat_obj['id']}", help=f"Select {feat_obj['name']}"):
+                            asi_choices[key_str] = {"type": "feat", "feat_id": feat_obj["id"]}
+                            st.rerun()
+
+            if current_feat_id:
+                picked = get_feat(current_feat_id)
+                if picked:
+                    st.markdown(
+                        f'<div style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.35);'
+                        f'border-radius:4px;padding:0.5rem 0.8rem;margin:0.5rem 0">'
+                        f'<span style="font-family:Cinzel,serif;color:#a78bfa;font-size:0.9rem">✓ {picked["name"]}</span>'
+                        f'{"".join(f" <span class=badge>+{sv} {sk}</span>" for sk,sv in (picked["stat_bonus"] or {}).items())}'
+                        f'<br><span style="font-family:Crimson Text,serif;color:#9d8dbf;font-size:0.88rem">{picked["description"]}</span>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+            else:
+                asi_choices[key_str] = {"type": "feat", "feat_id": None}
+
+    st.session_state.asi_choices = asi_choices
+
+    # Summary of stat bonuses
+    if eligible_levels:
+        bonus_parts = []
+        for sk in STAT_KEYS_ASI:
+            total_b = get_asi_stat_bonus(sk)
+            if total_b != 0:
+                sign_b = f"+{total_b}" if total_b > 0 else str(total_b)
+                bonus_parts.append(f"<b style='color:#a78bfa'>{sk}</b> {sign_b}")
+        if bonus_parts:
+            st.markdown(
+                f'<div style="margin-top:1.2rem; padding:0.6rem 1rem; background:rgba(124,58,237,0.06);'
+                f'border:1px solid rgba(124,58,237,0.2); border-radius:4px; font-family:Crimson Text,serif; color:#a99cbf">'
+                f'<span style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.78rem; margin-right:0.5rem">STAT BONUSES:</span>'
+                f'{" &nbsp;·&nbsp; ".join(bonus_parts)}</div>',
+                unsafe_allow_html=True
+            )
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    col1, _, col3 = st.columns([1, 5, 1])
+    with col1:
+        if st.button("← Back", use_container_width=True, key="asi_back"):
             st.session_state.step = 8
             st.rerun()
     with col3:
-        if st.button("View Sheet →", type="primary", use_container_width=True):
+        if st.button("View Sheet →", type="primary", use_container_width=True, key="asi_next"):
             st.session_state.step = 10
             st.rerun()
 
@@ -2347,7 +3331,7 @@ elif st.session_state.step == 10:
         f'<div class="char-name">{st.session_state.char_name}</div>'
         f'<div class="char-sub">'
         f'{race_icon} {race_name} &nbsp;·&nbsp; {cls_icon} {cls_name}'
-        f'{" — " + sub_name if sub_name else ""}'
+        f'{" (" + sub_name + ")" if sub_name else ""}'
         f' &nbsp;·&nbsp; 📜 {bg_name}'
         f'</div>'
         f'<div style="margin-top:0.5rem">'
@@ -2374,6 +3358,32 @@ elif st.session_state.step == 10:
             f'</div>',
             unsafe_allow_html=True
         )
+    # ASI / Feat bonus summary row
+    asi_sheet_choices = st.session_state.get("asi_choices", {})
+    if asi_sheet_choices:
+        bonus_sheet_parts = []
+        for sk_s in STAT_KEYS:
+            total_b = get_asi_stat_bonus(sk_s)
+            if total_b != 0:
+                sign_b = f"+{total_b}" if total_b > 0 else str(total_b)
+                bonus_sheet_parts.append(f"<b style='color:#a78bfa'>{sk_s}</b> {sign_b}")
+        feat_parts = []
+        for lk, cv in asi_sheet_choices.items():
+            if cv.get("type") == "feat" and cv.get("feat_id"):
+                feat_sh = get_feat(cv["feat_id"])
+                if feat_sh:
+                    feat_parts.append(feat_sh["name"])
+        if bonus_sheet_parts or feat_parts:
+            row_html = '<p style="font-family:Crimson Text,serif; color:#5a4a7a; font-size:0.82rem; margin:0.4rem 0 0; font-style:italic">'
+            row_html += '<b style="font-family:Cinzel,serif; color:#4e3d6e; font-size:0.72rem">ASI/FEAT BONUSES:</b> '
+            if bonus_sheet_parts:
+                row_html += " &nbsp;·&nbsp; ".join(bonus_sheet_parts)
+            if feat_parts:
+                if bonus_sheet_parts:
+                    row_html += " &nbsp;·&nbsp; "
+                row_html += "Feats: " + ", ".join(feat_parts)
+            row_html += '</p>'
+            st.markdown(row_html, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
     # ── Derived Stats ──
@@ -2387,7 +3397,8 @@ elif st.session_state.step == 10:
     all_prof_skills = get_all_proficient_skills(race, bg, st.session_state.chosen_skills)
 
     # Passive Perception: 10 + Perception modifier
-    perc_mod = skill_modifier("Perception", "WIS", race, prof, all_prof_skills)
+    joat_half_sheet = math.floor(prof / 2) if has_jack_of_all_trades() else 0
+    perc_mod = skill_modifier("Perception", "WIS", race, prof, all_prof_skills, half_prof=joat_half_sheet)
 
     st.markdown('<div class="sheet-section">', unsafe_allow_html=True)
     st.markdown('<div class="sheet-section-title">Combat Statistics</div>', unsafe_allow_html=True)
@@ -2539,15 +3550,17 @@ elif st.session_state.step == 10:
     for i, (sname, akey) in enumerate(ALL_SKILLS):
         is_exp    = sname in sheet_expertise
         eff_prof  = prof * 2 if is_exp else prof
-        mod_val   = skill_modifier(sname, akey, race, eff_prof, all_prof_skills)
+        mod_val   = skill_modifier(sname, akey, race, eff_prof, all_prof_skills, half_prof=joat_half_sheet)
         sign      = f"+{mod_val}" if mod_val >= 0 else str(mod_val)
-        dot       = "★" if is_exp else ("●" if sname in all_prof_skills else "○")
-        color     = "#c4b5fd" if is_exp else ("#a78bfa" if sname in all_prof_skills else "#5a4a7a")
+        is_joat_sh = joat_half_sheet and sname not in all_prof_skills and not is_exp
+        dot   = "★" if is_exp else ("●" if sname in all_prof_skills else "○")
+        color = "#c4b5fd" if is_exp else ("#a78bfa" if sname in all_prof_skills else "#5a4a7a")
+        joat_tag_sh = f' <span style="font-size:0.68rem;color:#5a6a6a">(+{joat_half_sheet})</span>' if is_joat_sh else ""
         skill_cols[i % 3].markdown(
             f'<div style="display:flex;justify-content:space-between;padding:0.2rem 0;'
             f'border-bottom:1px solid rgba(255,255,255,0.04)">'
             f'<span style="font-family:Crimson Text,serif;color:{color}">'
-            f'<span style="font-size:0.85rem">{dot}</span> {sname} '
+            f'<span style="font-size:0.85rem">{dot}</span> {sname}{joat_tag_sh} '
             f'<span style="font-size:0.72rem;opacity:0.55">({ABILITY_SHORT[akey]})</span></span>'
             f'<span style="font-family:Cinzel,serif;color:{color};font-weight:700;font-size:0.9rem">{sign}</span>'
             f'</div>',
@@ -2567,6 +3580,13 @@ elif st.session_state.step == 10:
             eq_items.extend(choice["options"][idx]["items"])
     if bg:
         eq_items.append(bg.get("equipment", ""))
+    # Append equipped weapons
+    main_wep_obj = get_weapon(st.session_state.get("equipped_main"))
+    off_wep_obj  = get_weapon(st.session_state.get("equipped_offhand"))
+    if main_wep_obj:
+        eq_items.append(f"{main_wep_obj['name']} (main hand)")
+    if off_wep_obj:
+        eq_items.append(f"{off_wep_obj['name']} (off-hand)")
 
     st.markdown('<div class="sheet-section">', unsafe_allow_html=True)
     st.markdown('<div class="sheet-section-title">🎒 Equipment</div>', unsafe_allow_html=True)
@@ -2613,6 +3633,94 @@ elif st.session_state.step == 10:
                 st.markdown('<p style="font-family:Crimson Text,serif; color:#4e3d6e; font-size:0.82rem; margin-top:0.3rem; font-style:italic">Pact Magic slots recover on a short rest.</p>', unsafe_allow_html=True)
             else:
                 st.markdown('<p style="font-family:Crimson Text,serif; color:#4e3d6e; font-size:0.82rem; margin-top:0.3rem; font-style:italic">Spell slots recover on a long rest.</p>', unsafe_allow_html=True)
+
+        # Chosen cantrips and spells from Features step
+        chosen_c_sheet = st.session_state.get("chosen_cantrips", [])
+        chosen_s_sheet = st.session_state.get("chosen_spells", [])
+        if chosen_c_sheet:
+            st.markdown('<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.75rem; margin:0.8rem 0 0.2rem; letter-spacing:0.1em">CANTRIPS</p>', unsafe_allow_html=True)
+            st.markdown(
+                f'<p style="font-family:Crimson Text,serif; color:#a99cbf; font-size:0.92rem">{", ".join(chosen_c_sheet)}</p>',
+                unsafe_allow_html=True
+            )
+        if chosen_s_sheet:
+            st.markdown('<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.75rem; margin:0.8rem 0 0.2rem; letter-spacing:0.1em">KNOWN/PREPARED SPELLS</p>', unsafe_allow_html=True)
+            # Group by level for display
+            by_level = {}
+            for sl in range(1, 10):
+                level_spell_names = {sp["name"] for sp in get_spells_for_class(st.session_state.class_id or "", str(sl))}
+                at_level = [n for n in chosen_s_sheet if n in level_spell_names]
+                if at_level:
+                    suffix = "st" if sl==1 else "nd" if sl==2 else "rd" if sl==3 else "th"
+                    by_level[f"{sl}{suffix} level"] = at_level
+            for lvl_label, spell_names in by_level.items():
+                st.markdown(
+                    f'<div style="font-family:Crimson Text,serif; color:#a99cbf; padding:0.15rem 0; font-size:0.9rem">'
+                    f'<b style="font-family:Cinzel,serif; color:#c4b5fd; font-size:0.75rem">{lvl_label}:</b> {", ".join(spell_names)}</div>',
+                    unsafe_allow_html=True
+                )
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # ── Spell Details ──
+    all_chosen_spells_sheet = (
+        st.session_state.get("chosen_cantrips", []) +
+        st.session_state.get("chosen_spells", [])
+    )
+    if sc_data and all_chosen_spells_sheet and st.session_state.class_id != "sevrinn":
+        _slot_dict_sh, _is_pact_sh = _build_slot_dict(sc_data, level)
+        _cantrips_grp = st.session_state.get("chosen_cantrips", [])
+        _spells_by_lk_sh = {}
+        for sn in st.session_state.get("chosen_spells", []):
+            _, lk = lookup_spell_detail(sn)
+            if lk:
+                _spells_by_lk_sh.setdefault(lk, []).append(sn)
+        _sorted_lks_sh = sorted(_spells_by_lk_sh.keys(), key=lambda x: int(x) if x.isdigit() else 0)
+
+        st.markdown('<div class="sheet-section">', unsafe_allow_html=True)
+        st.markdown('<div class="sheet-section-title">📜 Spell Details</div>', unsafe_allow_html=True)
+
+        def _render_spell_html(spell_name, lk):
+            sp, _ = lookup_spell_detail(spell_name)
+            if not sp:
+                return
+            school = sp.get("school", "")
+            meta = f"{_spell_level_label(lk)}{' — ' + school if school else ''}"
+            stat_parts = []
+            if sp.get("casting_time"): stat_parts.append(f"<b>Casting Time:</b> {sp['casting_time']}")
+            if sp.get("range"):        stat_parts.append(f"<b>Range:</b> {sp['range']}")
+            if sp.get("components"):   stat_parts.append(f"<b>Components:</b> {sp['components']}")
+            if sp.get("duration"):     stat_parts.append(f"<b>Duration:</b> {sp['duration']}")
+            st.markdown(
+                f'<div style="margin:0.6rem 0 0.3rem; padding:0.6rem 0 0.4rem; border-top:1px solid rgba(167,139,250,0.1)">'
+                f'<div style="font-family:Cinzel,serif; color:#c4b5fd; font-size:0.92rem; font-weight:600">{spell_name}</div>'
+                f'<div style="font-family:Crimson Text,serif; color:#7c6d9a; font-size:0.78rem; font-style:italic; margin-bottom:0.3rem">{meta}</div>'
+                f'<div style="font-family:Crimson Text,serif; color:#a99cbf; font-size:0.8rem; margin-bottom:0.3rem">{"  &nbsp;·&nbsp;  ".join(stat_parts)}</div>'
+                f'<div style="font-family:Crimson Text,serif; color:#a99cbf; font-size:0.88rem; line-height:1.5">{sp.get("description","")}</div>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+
+        def _level_subheader(lk):
+            cast_lbl = _spell_cast_label(lk, _slot_dict_sh, _is_pact_sh)
+            lv_text = "Cantrips" if lk == "cantrips" else _spell_level_label(lk)
+            slot_part = f'<span style="color:#5a4a7a; font-weight:400"> — {cast_lbl}</span>' if cast_lbl else ""
+            st.markdown(
+                f'<div style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.78rem; '
+                f'letter-spacing:0.08em; margin:1.2rem 0 0.2rem; padding-bottom:0.35rem; '
+                f'border-bottom:2px solid rgba(167,139,250,0.2)">'
+                f'{lv_text.upper()}{slot_part}</div>',
+                unsafe_allow_html=True
+            )
+
+        if _cantrips_grp:
+            _level_subheader("cantrips")
+            for sn in _cantrips_grp:
+                _render_spell_html(sn, "cantrips")
+        for lk in _sorted_lks_sh:
+            _level_subheader(lk)
+            for sn in _spells_by_lk_sh[lk]:
+                _render_spell_html(sn, lk)
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     # ── Racial Traits ──
@@ -2630,16 +3738,16 @@ elif st.session_state.step == 10:
         st.markdown('</div>', unsafe_allow_html=True)
 
     # ── Class Features ──
-    if sub:
+    if cls:
         st.markdown('<div class="sheet-section">', unsafe_allow_html=True)
-        st.markdown(f'<div class="sheet-section-title">{cls["icon"]} {sub["name"]} Features</div>', unsafe_allow_html=True)
+        st.markdown('<div class="sheet-section-title">✨ Features</div>', unsafe_allow_html=True)
 
-        if cls and cls["id"] == "sevrinn":
+        if cls["id"] == "sevrinn":
             # ── Sev'rinn: class-level features from CLASS_FEATURES ──
             sv_feats = CLASS_FEATURES.get("sevrinn", {}).get("features", [])
             avail_sv_feats = [f for f in sv_feats if f["level"] <= level]
             if avail_sv_feats:
-                st.markdown('<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0 0 0.4rem">CLASS FEATURES</p>', unsafe_allow_html=True)
+                st.markdown(f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0 0 0.4rem">{cls["name"]}</p>', unsafe_allow_html=True)
                 for feat in avail_sv_feats:
                     st.markdown(
                         f'<div class="feat-row">'
@@ -2714,32 +3822,77 @@ elif st.session_state.step == 10:
                     )
 
         else:
-            # Non-Sev'rinn: show subclass features filtered by level
-            available = [f for f in sub.get("features", []) if f["level"] <= level]
-            for feat in available:
-                st.markdown(
-                    f'<div class="feat-row">'
-                    f'<div class="fname">{feat["name"]} <span style="color:#4e3d6e; font-size:0.75rem">(L{feat["level"]})</span></div>'
-                    f'<div class="fdesc">{feat["description"]}</div>'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
+            # Non-Sev'rinn: show class features from CLASS_FEATURES filtered by level
+            cf_sheet = CLASS_FEATURES.get(st.session_state.class_id or "", {}).get("features", [])
+            avail_cf = [f for f in cf_sheet if f["level"] <= level]
+            if avail_cf:
+                st.markdown(f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0 0 0.4rem">{cls["name"]}</p>', unsafe_allow_html=True)
+                for feat in avail_cf:
+                    st.markdown(
+                        f'<div class="feat-row">'
+                        f'<div class="fname">{feat["name"]} <span style="color:#4e3d6e; font-size:0.75rem">(L{feat["level"]})</span></div>'
+                        f'<div class="fdesc">{feat["description"]}</div>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
 
-        st.markdown('</div>', unsafe_allow_html=True)
+            # ASI choices summary
+            asi_ch = st.session_state.get("asi_choices", {})
+            if asi_ch:
+                st.markdown('<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0.8rem 0 0.4rem">ABILITY IMPROVEMENTS & FEATS</p>', unsafe_allow_html=True)
+                for lk, cv in sorted(asi_ch.items()):
+                    if not cv:
+                        continue
+                    t = cv.get("type")
+                    if t == "asi_2" and cv.get("stat1"):
+                        desc = f"+2 {cv['stat1']}"
+                    elif t == "asi_1_1" and cv.get("stat1") and cv.get("stat2"):
+                        desc = f"+1 {cv['stat1']}, +1 {cv['stat2']}"
+                    elif t == "feat" and cv.get("feat_id"):
+                        f_obj = get_feat(cv["feat_id"])
+                        desc = f_obj["name"] if f_obj else cv["feat_id"]
+                    else:
+                        continue
+                    lvl_num = lk.replace("L","")
+                    st.markdown(
+                        f'<div style="font-family:Crimson Text,serif; color:#a99cbf; padding:0.12rem 0; font-size:0.9rem">'
+                        f'<span style="font-family:Cinzel,serif; color:#c4b5fd; font-size:0.72rem">Level {lvl_num}:</span> {desc}</div>',
+                        unsafe_allow_html=True
+                    )
 
-    # ── Background Feature ──
-    if bg:
-        st.markdown('<div class="sheet-section">', unsafe_allow_html=True)
-        st.markdown(f'<div class="sheet-section-title">{bg["icon"]} Background Feature — {bg["name"]}</div>', unsafe_allow_html=True)
-        feat = bg.get("feature", {})
-        st.markdown(
-            f'<div class="feat-row">'
-            f'<div class="fname">{feat.get("name","")}</div>'
-            f'<div class="fdesc">{feat.get("description","")}</div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
-        st.markdown(f'<div style="margin-top:0.5rem"><b style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.8rem">EQUIPMENT:</b> <span style="font-family:Crimson Text,serif; color:#a99cbf">{bg["equipment"]}</span></div>', unsafe_allow_html=True)
+            # Subclass features
+            if sub:
+                sub_available = [f for f in sub.get("features", []) if f["level"] <= level]
+                if sub_available:
+                    st.markdown(
+                        f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0.8rem 0 0.4rem">'
+                        f'{sub["name"]}</p>',
+                        unsafe_allow_html=True
+                    )
+                    for feat in sub_available:
+                        st.markdown(
+                            f'<div class="feat-row">'
+                            f'<div class="fname">{feat["name"]} <span style="color:#4e3d6e; font-size:0.75rem">(L{feat["level"]})</span></div>'
+                            f'<div class="fdesc">{feat["description"]}</div>'
+                            f'</div>',
+                            unsafe_allow_html=True
+                        )
+
+        if bg:
+            bg_feat = bg.get("feature", {})
+            st.markdown(
+                f'<p style="font-family:Cinzel,serif; color:#a78bfa; font-size:0.72rem; letter-spacing:0.1em; margin:0.8rem 0 0.4rem">'
+                f'{bg["icon"]} {bg["name"]}</p>',
+                unsafe_allow_html=True
+            )
+            st.markdown(
+                f'<div class="feat-row">'
+                f'<div class="fname">{bg_feat.get("name","")}</div>'
+                f'<div class="fdesc">{bg_feat.get("description","")}</div>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+
         st.markdown('</div>', unsafe_allow_html=True)
 
     # ── Character Details ──
@@ -2769,7 +3922,7 @@ elif st.session_state.step == 10:
     st.markdown('<br>', unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
-        if st.button("← Edit Inventory", use_container_width=True):
+        if st.button("← Edit Feats", use_container_width=True):
             st.session_state.step = 9
             st.rerun()
     with col2:
@@ -2778,12 +3931,17 @@ elif st.session_state.step == 10:
                 st.session_state[k] = v
             st.rerun()
     with col3:
-        st.button("🖨️ Print / Save PDF", use_container_width=True, help="Use your browser's Print function (Ctrl+P / Cmd+P) to save as PDF")
+        pdf_bytes = generate_character_pdf()
+        if pdf_bytes:
+            fname = f"{(st.session_state.char_name or 'character').lower().replace(' ', '_')}_sheet.pdf"
+            st.download_button("⬇ Download PDF", data=pdf_bytes, file_name=fname,
+                               mime="application/pdf", use_container_width=True)
+        else:
+            st.info("Install fpdf2 to enable PDF download.", icon="ℹ")
 
-    st.markdown(
-        '<p style="font-family:Crimson Text,serif; color:#4e3d6e; font-style:italic; text-align:center; margin-top:1rem; font-size:0.85rem">'
-        'To save as PDF: use your browser\'s Print function → "Save as PDF" &nbsp;·&nbsp; '
-        'Ryndor: The Weirded Lands character sheet builder'
-        '</p>',
-        unsafe_allow_html=True
-    )
+    # Save character JSON
+    save_data = {k: st.session_state.get(k, v) for k, v in defaults.items() if k != "step"}
+    save_json = json.dumps(save_data, indent=2)
+    save_fname = f"{(st.session_state.char_name or 'character').lower().replace(' ', '_')}_character.json"
+    st.download_button("💾 Save Character", data=save_json, file_name=save_fname,
+                       mime="application/json", use_container_width=True)

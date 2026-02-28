@@ -1,0 +1,199 @@
+{
+  "backgrounds": [
+    {
+      "id": "srd_acolyte",
+      "name": "Acolyte",
+      "source": "SRD",
+      "icon": "⛪",
+      "description": "You have spent your life in the service of a temple to a specific god or pantheon of gods. You act as an intermediary between the realm of the holy and the mortal world, performing sacred rites and offering sacrifices in order to conduct worshippers into the presence of the divine.",
+      "skill_proficiencies": ["Insight", "Religion"],
+      "tool_proficiencies": [],
+      "languages": ["Two of your choice"],
+      "equipment": "Holy symbol, prayer book or prayer wheel, 5 sticks of incense, vestments, common clothes, 15 gp",
+      "feature": {
+        "name": "Shelter of the Faithful",
+        "description": "As an acolyte, you command the respect of those who share your faith, and you can perform the religious ceremonies of your deity. You and your companions can receive free healing and care at a temple, shrine, or other established presence of your faith, though you must provide any material components needed for spells."
+      }
+    },
+    {
+      "id": "srd_charlatan",
+      "name": "Charlatan",
+      "source": "SRD",
+      "icon": "🃏",
+      "description": "You have always had a talent for making people believe what you want them to believe. You know what makes people tick, and can tease out their secret fears and desires after a few minutes of conversation. You have a naturally persuasive manner and a way with words.",
+      "skill_proficiencies": ["Deception", "Sleight of Hand"],
+      "tool_proficiencies": ["Disguise kit", "Forgery kit"],
+      "languages": [],
+      "equipment": "Fine clothes, disguise kit, tools of the con of your choice (ten stoppered bottles filled with colored liquid, a set of weighted dice, a deck of marked cards, or a signet ring of an imaginary duke), 15 gp",
+      "feature": {
+        "name": "False Identity",
+        "description": "You have created a second identity that includes documentation, established acquaintances, and disguises that allow you to assume that persona. Additionally, you can forge documents including official papers and personal letters, as long as you have seen an example of the kind of document or the handwriting you are trying to copy."
+      }
+    },
+    {
+      "id": "srd_criminal",
+      "name": "Criminal",
+      "source": "SRD",
+      "icon": "🗡",
+      "description": "You are an experienced criminal with a history of breaking the law. You have spent a lot of time among other criminals and still have contacts within the criminal underworld. You're far closer than most people to the world of murder, theft, and violence that pervades the underbelly of civilization.",
+      "skill_proficiencies": ["Deception", "Stealth"],
+      "tool_proficiencies": ["One type of gaming set", "Thieves' tools"],
+      "languages": [],
+      "equipment": "A crowbar, dark common clothes including a hood, 15 gp",
+      "feature": {
+        "name": "Criminal Contact",
+        "description": "You have a reliable and trustworthy contact who acts as your liaison to a network of other criminals. You know how to get messages to and from your contact, even over great distances; specifically, you know the local messengers, corrupt caravan masters, and seedy sailors who can deliver messages for you."
+      }
+    },
+    {
+      "id": "srd_entertainer",
+      "name": "Entertainer",
+      "source": "SRD",
+      "icon": "🎭",
+      "description": "You thrive in front of an audience. You know how to entrance them, entertain them, and even inspire them. Your poetics can stir the hearts of those who hear you, awakening grief or joy, laughter or anger. Your music raises their spirits or captures their sorrow. Your dance steps captivate, your humor cuts to the quick.",
+      "skill_proficiencies": ["Acrobatics", "Performance"],
+      "tool_proficiencies": ["Disguise kit", "One type of musical instrument"],
+      "languages": [],
+      "equipment": "A musical instrument of your choice, the favor of an admirer (love letter, lock of hair, or trinket), costume clothes, 15 gp",
+      "feature": {
+        "name": "By Popular Demand",
+        "description": "You can always find a place to perform, usually in an inn or tavern but possibly with a circus, at a theater, or even in a noble's court. At such a place, you receive free lodging and food of a modest or comfortable standard (depending on the quality of the establishment), as long as you perform each night."
+      }
+    },
+    {
+      "id": "srd_folk_hero",
+      "name": "Folk Hero",
+      "source": "SRD",
+      "icon": "🌾",
+      "description": "You come from a humble social rank, but you are destined for so much more. Already the people of your home village regard you as their champion, and your destiny calls you to stand against the tyrants and monsters that threaten the common folk everywhere.",
+      "skill_proficiencies": ["Animal Handling", "Survival"],
+      "tool_proficiencies": ["One type of artisan's tools", "Vehicles (land)"],
+      "languages": [],
+      "equipment": "A set of artisan's tools (one of your choice), a shovel, an iron pot, common clothes, 10 gp",
+      "feature": {
+        "name": "Rustic Hospitality",
+        "description": "Since you come from the ranks of the common folk, you fit in among them with ease. You can find a place to hide, rest, or recuperate among other commoners, unless you have shown yourself to be a danger to them. They will shield you from the law or anyone else searching for you, though they will not risk their lives for you."
+      }
+    },
+    {
+      "id": "srd_guild_artisan",
+      "name": "Guild Artisan",
+      "source": "SRD",
+      "icon": "⚒",
+      "description": "You are a member of an artisan's guild, skilled in a particular field and closely associated with other artisans. You are a well-established part of the mercantile world, freed by talent and wealth from the constraints of a feudal social order.",
+      "skill_proficiencies": ["Insight", "Persuasion"],
+      "tool_proficiencies": ["One type of artisan's tools"],
+      "languages": ["One of your choice"],
+      "equipment": "A set of artisan's tools (one of your choice), a letter of introduction from your guild, a set of traveler's clothes, 15 gp",
+      "feature": {
+        "name": "Guild Membership",
+        "description": "As an established and respected member of a guild, you can rely on certain benefits that membership provides. Your fellow guild members will provide you with lodging and food if necessary, and pay for your funeral if needed. In some cities and towns, a guildhall offers a central place to meet other members of your profession."
+      }
+    },
+    {
+      "id": "srd_hermit",
+      "name": "Hermit",
+      "source": "SRD",
+      "icon": "🏕",
+      "description": "You lived in seclusion—either in a sheltered community such as a monastery, or entirely alone—for a formative part of your life. In your time apart from the clamor of society, you found quiet, solitude, and perhaps some of the answers you were looking for.",
+      "skill_proficiencies": ["Medicine", "Religion"],
+      "tool_proficiencies": ["Herbalism kit"],
+      "languages": ["One of your choice"],
+      "equipment": "A scroll case stuffed full of notes from your studies or prayers, a winter blanket, common clothes, an herbalism kit, 5 gp",
+      "feature": {
+        "name": "Discovery",
+        "description": "The quiet seclusion of your extended hermitage gave you access to a unique and powerful discovery. The exact nature of this revelation depends on the nature of your seclusion. It might be a great truth about the cosmos, the deities, the powerful beings of the outer planes, or the forces of nature."
+      }
+    },
+    {
+      "id": "srd_noble",
+      "name": "Noble",
+      "source": "SRD",
+      "icon": "👑",
+      "description": "You understand wealth, power, and privilege. You carry a noble title, and your family owns land, collects taxes, and wields significant political influence. You might be a pampered aristocrat unfamiliar with work or discomfort, a former merchant just elevated to the nobility, or a disinherited scoundrel with a disproportionate sense of entitlement.",
+      "skill_proficiencies": ["History", "Persuasion"],
+      "tool_proficiencies": ["One type of gaming set"],
+      "languages": ["One of your choice"],
+      "equipment": "Fine clothes, a signet ring, a scroll of pedigree, 25 gp",
+      "feature": {
+        "name": "Position of Privilege",
+        "description": "Thanks to your noble birth, people are inclined to think the best of you. You are welcome in high society, and people assume you have the right to be wherever you are. The common folk make every effort to accommodate you and avoid your displeasure, and other people of high birth treat you as a member of the same social sphere."
+      }
+    },
+    {
+      "id": "srd_outlander",
+      "name": "Outlander",
+      "source": "SRD",
+      "icon": "🌲",
+      "description": "You grew up in the wilds, far from civilization and the comforts of town and technology. You've witnessed the migration of herds larger than forests, survived weather more extreme than any city-dweller could comprehend, and enjoyed the solitude of being the only thinking creature for miles in any direction.",
+      "skill_proficiencies": ["Athletics", "Survival"],
+      "tool_proficiencies": ["One type of musical instrument"],
+      "languages": ["One of your choice"],
+      "equipment": "A staff, a hunting trap, a trophy from an animal you killed, traveler's clothes, 10 gp",
+      "feature": {
+        "name": "Wanderer",
+        "description": "You have an excellent memory for maps and geography, and you can always recall the general layout of terrain, settlements, and other features around you. In addition, you can find food and fresh water for yourself and up to five other people each day, provided that the land offers berries, small game, water, and so forth."
+      }
+    },
+    {
+      "id": "srd_sage",
+      "name": "Sage",
+      "source": "SRD",
+      "icon": "📚",
+      "description": "You spent years learning the lore of the multiverse. You scoured manuscripts, studied scrolls, and listened to the greatest experts on the subjects that interest you. Your efforts have made you a master in your fields of study.",
+      "skill_proficiencies": ["Arcana", "History"],
+      "tool_proficiencies": [],
+      "languages": ["Two of your choice"],
+      "equipment": "A bottle of black ink, a quill, a small knife, a letter from a dead colleague posing a question you have not yet been able to answer, common clothes, 10 gp",
+      "feature": {
+        "name": "Researcher",
+        "description": "When you attempt to learn or recall a piece of lore, if you do not know that information, you often know where and from whom you can obtain it. Usually, this information comes from a library, scriptorium, university, or a sage or other learned person or creature. Your DM might rule that the knowledge you seek is secreted away in an almost inaccessible place."
+      }
+    },
+    {
+      "id": "srd_sailor",
+      "name": "Sailor",
+      "source": "SRD",
+      "icon": "⚓",
+      "description": "You sailed on a seagoing vessel for years. In that time, you faced down mighty storms, monsters of the deep, and those who wanted to sink your craft to the bottom of the freshwater sea. Your first love is the distant line of the horizon, but the time has come to try your hand at something new.",
+      "skill_proficiencies": ["Athletics", "Perception"],
+      "tool_proficiencies": ["Navigator's tools", "Vehicles (water)"],
+      "languages": [],
+      "equipment": "A belaying pin (club), silk rope (50 feet), a lucky charm, common clothes, 10 gp",
+      "feature": {
+        "name": "Ship's Passage",
+        "description": "When you need to, you can secure free passage on a sailing ship for yourself and your adventuring companions. You might sail on the ship you served on, or another ship you have good relations with. Because you're calling in a favor, you can't be certain of a schedule or route that will meet your every need."
+      }
+    },
+    {
+      "id": "srd_soldier",
+      "name": "Soldier",
+      "source": "SRD",
+      "icon": "🛡",
+      "description": "War has been your life for as long as you care to remember. You trained as a youth, studied the use of weapons and armor, learned basic survival techniques, including how to stay alive on the battlefield. You might have been part of a standing national army or a mercenary company, or perhaps a member of a local militia who rose to prominence during a recent war.",
+      "skill_proficiencies": ["Athletics", "Intimidation"],
+      "tool_proficiencies": ["One type of gaming set", "Vehicles (land)"],
+      "languages": [],
+      "equipment": "An insignia of rank, a trophy taken from a fallen enemy (a dagger, broken blade, or piece of a banner), a set of bone dice or deck of cards, common clothes, 10 gp",
+      "feature": {
+        "name": "Military Rank",
+        "description": "You have a military rank from your career as a soldier. Soldiers loyal to your former military organization still recognize your authority and influence, and they defer to you if they are of a lower rank. You can invoke your rank to exert influence over other soldiers and requisition simple equipment or horses for temporary use."
+      }
+    },
+    {
+      "id": "srd_urchin",
+      "name": "Urchin",
+      "source": "SRD",
+      "icon": "🏚",
+      "description": "You grew up on the streets alone, orphaned, and poor. You had no one to watch over you or to provide for you, so you learned to provide for yourself. You fought fiercely over food and kept a constant watch out for other desperadoes who wanted to take what you had. You slept on rooftops and in alleyways, exposed to the elements, and endured sickness without the advantage of medicine or a place to recuperate.",
+      "skill_proficiencies": ["Sleight of Hand", "Stealth"],
+      "tool_proficiencies": ["Disguise kit", "Thieves' tools"],
+      "languages": [],
+      "equipment": "A small knife, a map of the city you grew up in, a pet mouse, a token to remember your parents by, common clothes, 10 gp",
+      "feature": {
+        "name": "City Secrets",
+        "description": "You know the secret patterns and flow to cities and can find passages through the urban sprawl that others would miss. When you are not in combat, you (and companions you lead) can travel between any two locations in the city twice as fast as your speed would normally allow."
+      }
+    }
+  ]
+}
