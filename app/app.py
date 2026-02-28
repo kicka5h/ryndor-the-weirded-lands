@@ -2,7 +2,16 @@ import streamlit as st
 import json
 import math
 import re
+import random
+import os
 from pathlib import Path
+try:
+    from anthropic import Anthropic as _Anthropic
+    _ai_key = os.environ.get("ANTHROPIC_API_KEY")
+    _ai_client = _Anthropic(api_key=_ai_key) if _ai_key else None
+except Exception:
+    _ai_client = None
+    _ai_key = None
 
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE CONFIG
@@ -849,6 +858,156 @@ defaults = {
 for k, v in defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
+
+# ─────────────────────────────────────────────────────────────────────────────
+# RANDOM CHARACTER GENERATOR
+# ─────────────────────────────────────────────────────────────────────────────
+def generate_random_character():
+    race = random.choice(RACES)
+    cls  = random.choice(CLASSES)
+    sub  = random.choice(cls["subclasses"]) if cls.get("subclasses") else None
+    bg   = random.choice(BACKGROUNDS)
+    alignments = [
+        "Lawful Good", "Neutral Good", "Chaotic Good",
+        "Lawful Neutral", "True Neutral", "Chaotic Neutral",
+        "Lawful Evil", "Neutral Evil", "Chaotic Evil",
+    ]
+    st.session_state.race_id       = race["id"]
+    st.session_state.class_id      = cls["id"]
+    st.session_state.subclass_id   = sub["id"] if sub else None
+    st.session_state.background_id = bg["id"]
+    st.session_state.alignment     = random.choice(alignments)
+    st.session_state.char_level    = 1
+
+    # Stats: shuffle Standard Array using class priority order
+    array = [15, 14, 13, 12, 10, 8]
+    random.shuffle(array)
+    st.session_state.stats       = dict(zip(["STR", "DEX", "CON", "INT", "WIS", "CHA"], array))
+    st.session_state.stat_method = "Standard Array"
+
+    # Skills: random sample from class options, excluding auto-granted skills
+    mech = CLASS_MECHANICS.get(cls["id"], {})
+    sc   = mech.get("skill_choices", {})
+    opts = sc.get("options", [])
+    pick = sc.get("count", 2)
+    auto = set(bg.get("skill_proficiencies", [])) | set(race.get("bonus_skills", []))
+    eligible = [s for s in opts if s not in auto]
+    st.session_state.chosen_skills = random.sample(eligible, min(pick, len(eligible)))
+
+    # Equipment: random option index for each choice group
+    equip = {
+        ch["id"]: random.randrange(len(ch["options"]))
+        for ch in mech.get("equipment_choices", [])
+        if ch.get("options")
+    }
+    st.session_state.equip_choices = equip
+
+    # Class options (Fighting Style, Pact Boon, etc.)
+    class_opts = {}
+    for ch in CLASS_FEATURES.get(cls["id"], {}).get("choices", []):
+        o = ch.get("options", [])
+        if o:
+            class_opts[ch["key"]] = (
+                [random.choice(o)["id"]] if ch.get("multi") else random.choice(o)["id"]
+            )
+    st.session_state.class_options = class_opts
+
+    # Languages: fill "of your choice" slots
+    race_langs = [l for l in race.get("languages", []) if "of your choice" not in l.lower()]
+    bg_langs   = [l for l in bg.get("languages", [])   if "of your choice" not in l.lower()]
+    auto_langs = list(dict.fromkeys(race_langs + bg_langs))
+    slots = sum(
+        1 for l in race.get("languages", []) + bg.get("languages", [])
+        if "of your choice" in l.lower()
+    )
+    pool = [l for l in ALL_LANGUAGES if l not in auto_langs]
+    st.session_state.chosen_languages = random.sample(pool, min(slots, len(pool)))
+
+    # Drakarim ancestry
+    if race["id"] == "drakarim":
+        anc = race.get("draconic_ancestry_table", [])
+        if anc:
+            st.session_state.draconic_ancestry = random.choice(anc)["dragon"]
+
+    # Equip first weapon found in the chosen equipment items
+    inv_names = []
+    for ch in mech.get("equipment_choices", []):
+        idx = equip.get(ch["id"], 0)
+        if idx < len(ch.get("options", [])):
+            inv_names.extend(ch["options"][idx].get("items", []))
+    inv_names.extend(mech.get("equipment_fixed", []))
+    equipped = next(
+        (w["id"] for name in inv_names
+         for w in SRD_ITEMS["weapons"] if w["name"].lower() == name.lower()), None
+    )
+    st.session_state.equipped_main    = equipped
+    st.session_state.equipped_offhand = None
+    st.session_state.inv_weapons      = [equipped] if equipped else []
+
+    # Clear fields left for AI or user to fill
+    for k in ["char_name", "player_name", "notes", "personality", "ideals", "bonds", "flaws",
+              "chosen_cantrips", "chosen_spells", "asi_choices", "combat_tactics",
+              "expertise_skills", "damage_resistances", "inv_gear", "has_dual_wielder"]:
+        st.session_state[k] = defaults[k]
+
+
+def _ai_enrich_character():
+    """Call Claude to generate a name and personality details for the rolled character."""
+    if not _ai_client:
+        if not _ai_key:
+            print("[AI] ANTHROPIC_API_KEY not set — skipping AI enrichment.", flush=True)
+        return
+    race   = next((r for r in RACES       if r["id"] == st.session_state.race_id),       None)
+    cls    = next((c for c in CLASSES      if c["id"] == st.session_state.class_id),      None)
+    bg     = next((b for b in BACKGROUNDS  if b["id"] == st.session_state.background_id), None)
+    sub    = next(
+        (s for s in (cls.get("subclasses", []) if cls else [])
+         if s["id"] == st.session_state.subclass_id), None
+    )
+    if not (race and cls and bg):
+        return
+
+    race_name  = race["name"]
+    class_name = cls["name"]
+    sub_name   = sub["name"] if sub else ""
+    bg_name    = bg["name"]
+    alignment  = st.session_state.alignment
+
+    prompt = f"""You are a creative D&D character writer for the world of Ryndor: The Weirded Lands.
+
+Generate a character profile for:
+- Race: {race_name}
+- Class: {class_name}{f" ({sub_name})" if sub_name else ""}
+- Background: {bg_name}
+- Alignment: {alignment}
+
+Return ONLY valid JSON (no markdown, no commentary) with exactly these keys:
+{{
+  "name": "a fitting fantasy name for this race and character",
+  "personality": "1–2 sentences describing their demeanor and quirks",
+  "ideals": "one core belief or principle that drives them",
+  "bonds": "one person, place, or duty they are loyal to",
+  "flaws": "one weakness, vice, or fear that holds them back"
+}}"""
+
+    try:
+        resp = _ai_client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=300,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        raw = resp.content[0].text.strip()
+        # Strip markdown code fences if present
+        if raw.startswith("```"):
+            raw = re.sub(r"^```[a-z]*\n?", "", raw)
+            raw = re.sub(r"\n?```$", "", raw.strip())
+        data = json.loads(raw)
+        for key in ("name", "personality", "ideals", "bonds", "flaws"):
+            if key in data and isinstance(data[key], str):
+                st.session_state["char_name" if key == "name" else key] = data[key]
+        print(f"[AI] Character enriched: {data.get('name', '?')}", flush=True)
+    except Exception as e:
+        print(f"[AI] ERROR: {e}\nRaw response: {raw if 'raw' in dir() else 'N/A'}", flush=True)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # HELPERS
@@ -2228,6 +2387,15 @@ if st.session_state.step == 1:
         index=alignments.index(st.session_state.alignment) if st.session_state.alignment in alignments else 4
     )
     st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("---")
+    if st.button("🎲 Roll Random Character", use_container_width=True,
+                 help="Randomly pick race, class, background, stats and jump to the sheet."):
+        generate_random_character()
+        with st.spinner("✨ Weaving your fate…"):
+            _ai_enrich_character()
+        st.session_state.step = 10
+        st.rerun()
 
     _, right = st.columns([6, 1])
     with right:
