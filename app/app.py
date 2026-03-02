@@ -767,6 +767,9 @@ button[data-testid="baseButton-headerNoPadding"]:hover {
     color: var(--weird-glow) !important;
     background: rgba(124,58,237,0.12) !important;
 }
+/* Hide the three-dot (⋮) menu */
+[data-testid="stMainMenu"] { display: none !important; }
+
 /* Dropdown menu from toolbar */
 [data-testid="stMainMenu"] ul,
 [data-testid="stMainMenu"] li,
@@ -806,13 +809,61 @@ input:focus, textarea:focus, [data-baseweb="select"]:focus-within {
 
 /* ── Print styles ── */
 @media print {
+    /* Light parchment base */
+    html, body, .stApp, [class*="css"] {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        background: #f5f0e8 !important;
+        color: #1a1020 !important;
+    }
     .no-print { display: none !important; }
-    .stApp, html, body { background: #040010 !important; }
-    .sheet-header { background: rgba(124,58,237,0.15) !important; }
-    .sheet-section { background: rgba(8,1,24,0.95) !important; border-color: rgba(124,58,237,0.3) !important; }
-    * { color: var(--text) !important; }
-    .char-name { color: var(--weird-glow) !important; }
-    .fname { color: var(--elem-glow) !important; }
+
+    /* Force ALL text to dark — covers CSS-class-set and inline-style colors.
+       -webkit-text-fill-color overrides the gradient-clip trick on .char-name. */
+    * {
+        color: #1a1020 !important;
+        -webkit-text-fill-color: #1a1020 !important;
+    }
+
+    /* Reset dark-background elements so dark text is readable */
+    .card {
+        background: transparent !important;
+        border-color: rgba(124,58,237,0.25) !important;
+        box-shadow: none !important;
+    }
+    .stat-box {
+        background: #ede8f5 !important;
+        border-color: rgba(124,58,237,0.45) !important;
+        box-shadow: none !important;
+    }
+    .stat-box .stat-mod {
+        background: rgba(124,58,237,0.15) !important;
+        box-shadow: none !important;
+    }
+    .sheet-header {
+        background: rgba(124,58,237,0.06) !important;
+        box-shadow: none !important;
+    }
+    .sheet-section {
+        background: #ffffff !important;
+        border-color: rgba(124,58,237,0.35) !important;
+        box-shadow: none !important;
+    }
+    .trait-block {
+        background: rgba(124,58,237,0.05) !important;
+    }
+
+    /* Re-apply accent colours (visible on light bg) */
+    .char-name {
+        -webkit-text-fill-color: #4c1d95 !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        filter: none !important;
+    }
+    .fname, .trait-block .name { color: #0e7490 !important; -webkit-text-fill-color: #0e7490 !important; }
+    .sheet-section-title, .section-header { color: #4c1d95 !important; -webkit-text-fill-color: #4c1d95 !important; }
+    .fdesc, .trait-block .desc, .char-sub { color: #3a2d50 !important; -webkit-text-fill-color: #3a2d50 !important; }
 }
 </style>
 """
@@ -1559,6 +1610,727 @@ def _pdf_safe(text):
         .encode("latin-1", errors="replace").decode("latin-1")
     )
 
+def build_print_html():
+    """Generate a standalone, print-ready HTML character sheet with its own light-theme CSS."""
+    import math as _m
+    ss    = st.session_state
+    STAT_KEYS = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+    STAT_FULL = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
+
+    race  = get_race(ss.get("race_id"))
+    cls   = get_class(ss.get("class_id"))
+    sub   = get_subclass(cls, ss.get("subclass_id")) if cls else None
+    bg    = get_background(ss.get("background_id"))
+    mech  = get_mech(ss.get("class_id") or "")
+    level = ss.get("char_level", 1)
+    prof  = proficiency_bonus(level)
+    name  = (ss.get("char_name") or "Unnamed").strip()
+
+    def eff(k):  return effective_stat(k, race)
+    def modn(k): return modifier_int(eff(k))
+    def mods(k): return modifier(eff(k))
+
+    con_mod     = modn("CON")
+    hit_die_num = int(cls["hit_die"][1:]) if cls else 8
+    hp          = hit_die_num + con_mod + (level - 1) * (_m.floor(hit_die_num / 2) + 1 + con_mod)
+    ac_val, ac_note = compute_ac(ss.get("class_id") or "", race, ss.get("equip_choices", {}))
+    all_prof_sk  = get_all_proficient_skills(race, bg, ss.get("chosen_skills", []))
+    joat_half    = _m.floor(prof / 2) if has_jack_of_all_trades() else 0
+    expertise_set = set(ss.get("expertise_skills", []))
+    perc_mod     = skill_modifier("Perception", "WIS", race, prof, all_prof_sk, half_prof=joat_half)
+    speed        = race["speed"].get("walk", 30) if race else 30
+
+    # ── Skill-to-ability map ──────────────────────────────────────────────────
+    ABILITY_SKILLS = {
+        "STR": ["Athletics"],
+        "DEX": ["Acrobatics", "Sleight of Hand", "Stealth"],
+        "CON": [],
+        "INT": ["Arcana", "History", "Investigation", "Nature", "Religion"],
+        "WIS": ["Animal Handling", "Insight", "Medicine", "Perception", "Survival"],
+        "CHA": ["Deception", "Intimidation", "Performance", "Persuasion"],
+    }
+    SKILL_ABILITY = {}
+    for ab, skills in ABILITY_SKILLS.items():
+        for s in skills:
+            SKILL_ABILITY[s] = ab
+
+    # ── CSS ───────────────────────────────────────────────────────────────────
+    CSS = """
+* { margin:0; padding:0; box-sizing:border-box; }
+@page { margin:1.4cm 1.2cm; size:letter; }
+body {
+    font-family: 'Crimson Text', Georgia, serif;
+    background: #f9f7f4;
+    color: #1a1020;
+    font-size: 9.5pt;
+    line-height: 1.4;
+    padding: 0.8rem;
+    max-width: 960px;
+    margin: 0 auto;
+}
+@media print { body { padding:0; background:#fff; } }
+.print-btn {
+    font-family: 'Cinzel', serif;
+    background: #4c1d95; color: #fff;
+    border: none; border-radius: 4px;
+    padding: 0.5rem 1.3rem; cursor: pointer;
+    font-size: 0.85rem; margin-bottom: 0.9rem;
+    display: inline-block;
+}
+@media print { .print-btn { display:none !important; } }
+
+/* ── Top header: 2 columns ── */
+.top-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+.box {
+    background: #fff;
+    border: 1px solid rgba(100,50,200,0.25);
+    border-radius: 4px;
+    padding: 0.55rem 0.7rem;
+}
+.char-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.7rem; font-weight: 900;
+    color: #3b0d8a; letter-spacing: 0.04em;
+    line-height: 1.1;
+}
+.field-row {
+    display: flex; align-items: baseline;
+    border-bottom: 1px solid rgba(100,50,200,0.15);
+    padding: 0.18rem 0; gap: 0.4rem;
+    font-size: 0.85rem; color: #1a1020;
+}
+.field-row:last-child { border-bottom: none; }
+.field-lbl {
+    font-family: 'Cinzel', serif;
+    font-size: 0.52rem; font-weight: 700;
+    color: #3b0d8a; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap; min-width: 80px;
+}
+.field-val { flex: 1; color: #1a1020; }
+.field-blank {
+    flex: 1;
+    border-bottom: 1px solid #aaa;
+    min-height: 0.9rem;
+}
+
+/* ── Main 3-column grid ── */
+.main-grid {
+    display: grid;
+    grid-template-columns: 190px 200px 1fr;
+    gap: 0.55rem;
+    align-items: stretch;
+}
+
+/* ── Left col: ability + skill groups ── */
+.ab-group {
+    display: flex; gap: 0.3rem;
+    align-items: flex-start;
+    margin-bottom: 0.28rem;
+}
+.ab-box {
+    width: 50px; min-width: 50px;
+    background: #ede8f5;
+    border: 1px solid rgba(100,50,200,0.4);
+    border-radius: 4px; text-align: center;
+    padding: 0.3rem 0.15rem;
+}
+.ab-key  { font-family:'Cinzel',serif; font-size:0.5rem; font-weight:700;
+           color:#0e6a80; letter-spacing:0.08em; text-transform:uppercase; }
+.ab-score{ font-family:'Cinzel',serif; font-size:1.35rem; font-weight:900;
+           color:#1a1020; line-height:1.05; }
+.ab-mod  { font-family:'Cinzel',serif; font-size:0.72rem; font-weight:700;
+           color:#3b0d8a; }
+.ab-skills { flex:1; padding-top:0.1rem; }
+.sk-row {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; padding: 0.08rem 0.2rem;
+    border-bottom: 1px solid rgba(100,50,200,0.08);
+    color: #1a1020;
+}
+.sk-row.prof { color:#3b0d8a; font-weight:600; }
+.sk-row.exp  { color:#0e6a80; font-weight:700; }
+.sk-mod { font-family:'Cinzel',serif; font-weight:700; font-size:0.73rem; }
+.no-skills { font-size:0.7rem; color:#9a8aaa; font-style:italic; padding:0.2rem 0.2rem; }
+
+/* ── Middle col: combat grid ── */
+.cs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.32rem;
+    margin-bottom: 0.35rem;
+}
+.cs-item {
+    background: #ede8f5;
+    border: 1px solid rgba(100,50,200,0.32);
+    border-radius: 4px;
+    text-align: center;
+    padding: 0.28rem 0.15rem 0.22rem;
+}
+.cs-item.blank {
+    background: #fff;
+}
+.cs-item.full { grid-column: 1 / -1; }
+.cs-lbl {
+    font-family:'Cinzel',serif; font-size:0.46rem; font-weight:700;
+    color:#0e6a80; letter-spacing:0.08em; text-transform:uppercase;
+    display:block; margin-bottom:0.12rem;
+}
+.cs-val {
+    font-family:'Cinzel',serif; font-size:1.05rem; font-weight:900;
+    color:#1a1020; line-height:1;
+    display:block;
+}
+.cs-line {
+    border-bottom: 1px solid #999;
+    display: block; height: 1.1rem; margin: 0 0.3rem;
+}
+.death-boxes { display:flex; gap:0.25rem; justify-content:center; flex-wrap:wrap; margin-top:0.1rem; }
+.dbox { width:11px; height:11px; border:1px solid #7c5c9a; border-radius:50%; display:inline-block; }
+.sec-title {
+    font-family:'Cinzel',serif; font-size:0.6rem; font-weight:700;
+    color:#3b0d8a; letter-spacing:0.14em; text-transform:uppercase;
+    border-bottom:1px solid rgba(100,50,200,0.18);
+    padding-bottom:0.22rem; margin-bottom:0.45rem;
+}
+table { width:100%; border-collapse:collapse; font-size:0.78rem; }
+th { font-family:'Cinzel',serif; font-size:0.55rem; color:#3b0d8a;
+     text-align:left; padding:0.1rem 0.25rem;
+     border-bottom:1px solid rgba(100,50,200,0.2); }
+td { padding:0.12rem 0.25rem; border-bottom:1px solid rgba(100,50,200,0.06); color:#1a1020;
+     word-break:break-word; overflow-wrap:break-word; }
+td.an { font-family:'Cinzel',serif; font-weight:700; font-size:0.7rem; }
+td.ar { color:#3b0d8a; font-weight:600; }
+td.ad { color:#5a4a7a; font-size:0.7rem; }
+.atk-table { table-layout:fixed; }
+.atk-table col.c-name { width:36%; }
+.atk-table col.c-roll { width:22%; }
+.atk-table col.c-dmg  { width:24%; }
+.atk-table col.c-type { width:18%; }
+
+/* ── Right col: features ── */
+.feat-row { margin:0.45rem 0; }
+.fname { font-family:'Cinzel',serif; color:#0e6a80;
+         font-size:0.75rem; font-weight:600;
+         display:block; margin-bottom:0.07rem; }
+.fdesc { font-size:0.82rem; color:#2a1f40; line-height:1.4; }
+
+/* ── Spell detail entries ── */
+.spell-entry { margin:0.35rem 0; border-bottom:1px solid rgba(100,50,200,0.1); padding-bottom:0.28rem; }
+.spell-entry:last-child { border-bottom:none; }
+.sp-meta { font-size:0.68rem; color:#5a4a7a; display:block; margin-bottom:0.1rem; }
+
+/* ── Page 2+ sections ── */
+.page-break { page-break-before:always; padding-top:0.5rem; }
+.sec-box {
+    background:#fff; border:1px solid rgba(100,50,200,0.22);
+    border-radius:4px; padding:0.65rem 0.8rem; margin:0.4rem 0;
+    page-break-inside:avoid;
+}
+.lbl {
+    font-family:'Cinzel',serif; font-size:0.55rem; font-weight:700;
+    color:#3b0d8a; letter-spacing:0.1em; text-transform:uppercase;
+    display:block; margin-bottom:0.1rem;
+}
+ul { padding-left:1rem; }
+li { margin:0.1rem 0; font-size:0.84rem; color:#1a1020; }
+"""
+
+    # ── Left column: abilities + skills ──────────────────────────────────────
+    left_col = '<div class="box" style="flex:1">'
+    for key, full in zip(STAT_KEYS, STAT_FULL):
+        e = eff(key); m = mods(key)
+        left_col += f'<div class="ab-group">'
+        left_col += (f'<div class="ab-box">'
+                     f'<div class="ab-key">{key}</div>'
+                     f'<div class="ab-score">{e}</div>'
+                     f'<div class="ab-mod">{m}</div>'
+                     f'</div>')
+        left_col += '<div class="ab-skills">'
+        skill_list = ABILITY_SKILLS.get(key, [])
+        if skill_list:
+            for sname in skill_list:
+                is_exp = sname in expertise_set
+                eff_pr = prof * 2 if is_exp else prof
+                mv     = skill_modifier(sname, key, race, eff_pr, all_prof_sk, half_prof=joat_half)
+                sign   = f"+{mv}" if mv >= 0 else str(mv)
+                dot    = "★" if is_exp else ("●" if sname in all_prof_sk else "○")
+                cls_s  = "exp" if is_exp else ("prof" if sname in all_prof_sk else "")
+                left_col += (f'<div class="sk-row {cls_s}">'
+                             f'<span>{dot} {sname}</span>'
+                             f'<span class="sk-mod">{sign}</span></div>')
+        else:
+            left_col += '<div class="no-skills">—</div>'
+        left_col += '</div></div>'
+    left_col += '</div>'
+
+    # ── Middle column: combat stats + attacks ─────────────────────────────────
+    class_saves = cls["saves"] if cls else []
+
+    def save_sign(full, key):
+        total = modn(key) + (prof if full in class_saves else 0)
+        return f"+{total}" if total >= 0 else str(total)
+
+    saving_throws = " / ".join(
+        f'<b>{full[:3]}</b> {save_sign(full, key)}{"★" if full in class_saves else ""}'
+        for full, key in zip(STAT_FULL, STAT_KEYS)
+    )
+
+    def cs_item(label, val=None, blank=False, full=False):
+        cls_str = "cs-item" + (" blank" if blank else "") + (" full" if full else "")
+        inner = f'<span class="cs-line"></span>' if blank else f'<span class="cs-val">{val}</span>'
+        return f'<div class="{cls_str}"><span class="cs-lbl">{label}</span>{inner}</div>'
+
+    dboxes = '<div class="death-boxes">' + ''.join('<span class="dbox"></span>' * 3) + '</div>'
+
+    combat_box = (
+        f'<div class="box" style="margin-bottom:0.45rem">'
+        f'<div class="sec-title">Combat</div>'
+        f'<div class="cs-grid">'
+        + cs_item("Armor Class", ac_val)
+        + cs_item("Initiative", mods("DEX"))
+        + cs_item("Speed", f"{speed} ft")
+        + cs_item("Hit Point Maximum", str(max(hp, 1)))
+        + cs_item("Hit Dice", f"{level}{cls['hit_die'] if cls else 'd8'}")
+        + cs_item("Passive Perception", str(10 + perc_mod))
+        + f'<div class="cs-item full"><span class="cs-lbl">Death Saves</span>'
+        + f'<span style="font-size:0.6rem;color:#5a4a7a">Successes</span> {dboxes}'
+        + f'<span style="font-size:0.6rem;color:#5a4a7a">Failures</span> {dboxes}</div>'
+        + '</div></div>'
+    )
+
+    # Attacks table
+    all_actions = []
+    main_wep = get_weapon(ss.get("equipped_main"))
+    off_wep  = get_weapon(ss.get("equipped_offhand"))
+    if main_wep:
+        ms = calc_weapon_attack(main_wep, race, cls, level)
+        vd = f" + {ms['versatile_damage']} (2h)" if ms.get("versatile_damage") else ""
+        all_actions.append({"name": main_wep["name"],
+                            "roll": ms["attack"], "dmg": ms["damage"] + vd,
+                            "note": "Proficient" if ms["proficient"] else "—"})
+    if off_wep:
+        ms2 = calc_weapon_attack(off_wep, race, cls, level, for_offhand=True)
+        all_actions.append({"name": off_wep["name"] + " (off-hand)",
+                            "roll": ms2["attack"], "dmg": ms2["damage"], "note": "Off-hand"})
+    for a in _race_combat_actions(race, con_mod, prof, level):
+        all_actions.append({"name": a["name"],
+                            "roll": a.get("hit") or (f'DC {a.get("save") or ""}' if a.get("save") else "—"),
+                            "dmg": a.get("damage","—"), "note": a.get("category","")})
+    for a in _class_combat_actions(ss.get("class_id") or "", level, race, prof):
+        all_actions.append({"name": a["name"],
+                            "roll": a.get("hit") or (f'DC {a.get("save") or ""}' if a.get("save") else "—"),
+                            "dmg": a.get("damage","—"), "note": a.get("category","")})
+
+    sc_data = mech.get("spellcasting")
+    if sc_data:
+        sc_key_map = {"Wisdom":"WIS","Intelligence":"INT","Charisma":"CHA"}
+        sc_key = sc_key_map.get(sc_data.get("ability","Wisdom"), "WIS")
+        sc_mod = modn(sc_key)
+        sp_atk = f"+{prof+sc_mod}" if (prof+sc_mod) >= 0 else str(prof+sc_mod)
+        sp_dc  = 8 + prof + sc_mod
+        for cname in ss.get("chosen_cantrips", []):
+            csd, _ = lookup_spell_detail(cname)
+            if csd:
+                cp = _parse_spell_combat(csd)
+                if cp:
+                    cdice, cdtype, catk, csave = cp
+                    roll = sp_atk if catk=="attack" else (f"DC {sp_dc} {csave}" if catk=="save" else "—")
+                    all_actions.append({"name": cname, "roll": roll,
+                                        "dmg": f"{cdice} {cdtype.lower()}", "note": "Cantrip"})
+        for sname_sp in ss.get("chosen_spells", []):
+            spd, slk = lookup_spell_detail(sname_sp)
+            if spd:
+                sp2 = _parse_spell_combat(spd)
+                if sp2:
+                    sdice, sdtype, satk, ssave = sp2
+                    roll = sp_atk if satk=="attack" else (f"DC {sp_dc} {ssave}" if satk=="save" else "—")
+                    all_actions.append({"name": sname_sp, "roll": roll,
+                                        "dmg": f"{sdice} {sdtype.lower()}", "note": slk or "Spell"})
+
+    atk_mid = ('<div class="box"><div class="sec-title">Attacks &amp; Damaging Actions</div>'
+               + ('<table class="atk-table">'
+                  '<colgroup>'
+                  '<col class="c-name"><col class="c-roll"><col class="c-dmg"><col class="c-type">'
+                  '</colgroup>'
+                  '<tr><th>Name</th><th>ATK / Save</th><th>Damage</th><th>Type</th></tr>'
+                  + "".join(
+                      f'<tr><td class="an">{a["name"]}</td>'
+                      f'<td class="ar">{a["roll"]}</td>'
+                      f'<td>{a["dmg"]}</td>'
+                      f'<td class="ad">{a["note"]}</td></tr>'
+                      for a in all_actions)
+                  + '</table>' if all_actions
+                  else '<p style="font-size:0.78rem;color:#9a8aaa;font-style:italic">No attacks configured.</p>')
+               + '</div>')
+
+    # ── Middle bottom: spellcasting (if any) else languages + equipment ────────
+    _mid_has_spell = False
+    _mid_has_lang  = False
+    _mid_has_equip = False
+
+    def _spell_block_html(sname, force_label=""):
+        spd, slk = lookup_spell_detail(sname)
+        lvl_str = force_label or (_spell_level_label(slk) if slk else "")
+        badge = (f'<span style="font-family:Cinzel,serif;font-size:0.46rem;color:#0e6a80;'
+                 f'margin-left:0.35rem;font-weight:400;text-transform:uppercase;'
+                 f'letter-spacing:0.06em">{lvl_str}</span>')
+        if not spd:
+            return f'<div class="spell-entry"><span class="fname">{sname}{badge}</span></div>'
+        parts = []
+        if spd.get("casting_time"): parts.append(f"Cast: {spd['casting_time']}")
+        if spd.get("range"):        parts.append(f"Range: {spd['range']}")
+        if spd.get("components"):   parts.append(f"Comp: {spd['components']}")
+        if spd.get("duration"):     parts.append(f"Dur: {spd['duration']}")
+        meta = " &nbsp;·&nbsp; ".join(parts)
+        desc = spd.get("description", "")
+        return (f'<div class="spell-entry">'
+                f'<span class="fname">{sname}{badge}</span>'
+                + (f'<span class="sp-meta">{meta}</span>' if meta else "")
+                + (f'<span class="fdesc">{desc}</span>' if desc else "")
+                + '</div>')
+
+    if sc_data and (ss.get("chosen_cantrips") or ss.get("chosen_spells")):
+        _mid_has_spell = True
+        sc_ab   = sc_data.get("ability", "Wisdom")
+        sc_key2 = {"Wisdom":"WIS","Intelligence":"INT","Charisma":"CHA"}.get(sc_ab, "WIS")
+        sc_mod2 = modn(sc_key2)
+        sp_dc2  = 8 + prof + sc_mod2
+        sp_atk2 = f"+{prof+sc_mod2}" if (prof+sc_mod2) >= 0 else str(prof+sc_mod2)
+        sp_html_mid = (f'<p style="font-size:0.8rem;margin-bottom:0.4rem">'
+                       f'<b>Ability:</b> {sc_ab} &nbsp;·&nbsp; '
+                       f'<b>DC:</b> {sp_dc2} &nbsp;·&nbsp; '
+                       f'<b>Atk:</b> {sp_atk2}</p>')
+        cantrips_mid = ss.get("chosen_cantrips", [])
+        spells_mid   = ss.get("chosen_spells", [])
+        total_known  = len(cantrips_mid) + len(spells_mid)
+        sp_html_mid += (f'<p style="font-size:0.78rem;color:#5a4a7a;margin-bottom:0.35rem">'
+                        f'<b>Spells Known:</b> {total_known}</p>')
+        if cantrips_mid:
+            sp_html_mid += ('<p style="font-family:Cinzel,serif;font-size:0.55rem;color:#3b0d8a;'
+                            'letter-spacing:0.1em;margin:0.3rem 0 0.12rem">CANTRIPS</p>'
+                            + "".join(
+                                f'<div style="font-size:0.82rem;padding:0.07rem 0;'
+                                f'border-bottom:1px solid rgba(100,50,200,0.08);color:#1a1020">{s}</div>'
+                                for s in cantrips_mid))
+        if spells_mid:
+            sp_html_mid += ('<p style="font-family:Cinzel,serif;font-size:0.55rem;color:#3b0d8a;'
+                            'letter-spacing:0.1em;margin:0.4rem 0 0.12rem">SPELLS KNOWN</p>'
+                            + "".join(
+                                f'<div style="font-size:0.82rem;padding:0.07rem 0;'
+                                f'border-bottom:1px solid rgba(100,50,200,0.08);color:#1a1020">{s}</div>'
+                                for s in spells_mid))
+        mid_bottom = (f'<div class="box" style="flex:1">'
+                      f'<div class="sec-title">Spellcasting</div>{sp_html_mid}</div>')
+    else:
+        _mid_has_lang  = True
+        _mid_has_equip = True
+        # Languages & Proficiencies
+        _all_langs = list(dict.fromkeys(
+            (race.get("languages", []) if race else []) +
+            (bg.get("languages", []) if bg else []) +
+            ss.get("chosen_languages", [])
+        ))
+        _prof_html = ""
+        if _all_langs:
+            _prof_html += f'<span class="lbl">Languages</span>{", ".join(_all_langs)}<br>'
+        if bg and bg.get("tool_proficiencies"):
+            _prof_html += f'<span class="lbl" style="margin-top:0.35rem">Tools</span>{", ".join(bg["tool_proficiencies"])}<br>'
+        if cls:
+            _aw = cls.get("armor", []) + cls.get("weapons", [])
+            if _aw:
+                _prof_html += f'<span class="lbl" style="margin-top:0.35rem">Armor &amp; Weapons</span>{", ".join(_aw)}'
+        # Equipment
+        _eq_fixed   = mech.get("equipment_fixed", [])
+        _eq_choices = mech.get("equipment_choices", [])
+        _eq_items   = list(_eq_fixed)
+        for _ch in _eq_choices:
+            _idx = ss.get("equip_choices", {}).get(_ch["id"], 0)
+            if _idx < len(_ch["options"]):
+                _eq_items.extend(_ch["options"][_idx]["items"])
+        if bg:   _eq_items.append(bg.get("equipment", ""))
+        if main_wep: _eq_items.append(f"{main_wep['name']} (main hand)")
+        if off_wep:  _eq_items.append(f"{off_wep['name']} (off-hand)")
+        _eq_html = "<ul>" + "".join(f"<li>{i}</li>" for i in _eq_items if i) + "</ul>"
+        _combined = ""
+        if _prof_html:
+            _combined += f'<div style="margin-bottom:0.5rem"><div class="sec-title">Languages &amp; Proficiencies</div>{_prof_html}</div>'
+        _combined += f'<div class="sec-title">Equipment &amp; Inventory</div>{_eq_html}'
+        mid_bottom = f'<div class="box" style="flex:1">{_combined}</div>'
+
+    # ── Right column: Features & Traits ───────────────────────────────────────
+    def feat_item(fname, fdesc):
+        return (f'<div class="feat-row">'
+                f'<span class="fname">{fname}</span>'
+                f'<span class="fdesc">{fdesc}</span>'
+                f'</div>')
+
+    right_col = '<div class="box" style="flex:1"><div class="sec-title">Features &amp; Traits</div>'
+
+    if race:
+        right_col += f'<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#0e6a80;letter-spacing:0.1em;text-transform:uppercase;margin:0.3rem 0 0.15rem">{race["name"]} Traits</p>'
+        for t in race.get("traits", []):
+            right_col += feat_item(t["name"], t["description"])
+
+    if cls:
+        cf_data = CLASS_FEATURES.get(cls["id"], {})
+        feats   = [f for f in cf_data.get("features", []) if f["level"] <= level]
+        if feats:
+            right_col += f'<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#0e6a80;letter-spacing:0.1em;text-transform:uppercase;margin:0.5rem 0 0.15rem">{cls["name"]} Features</p>'
+            for feat in feats:
+                right_col += feat_item(f'{feat["name"]} (L{feat["level"]})', feat["description"])
+        if sub:
+            sub_feats = [f for f in sub.get("features", []) if f["level"] <= level]
+            if sub_feats:
+                right_col += f'<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#0e6a80;letter-spacing:0.1em;text-transform:uppercase;margin:0.5rem 0 0.15rem">{sub["name"]}</p>'
+                for feat in sub_feats:
+                    right_col += feat_item(f'{feat["name"]} (L{feat["level"]})', feat["description"])
+
+    if bg:
+        bf = bg.get("feature", {})
+        if bf:
+            right_col += f'<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#0e6a80;letter-spacing:0.1em;text-transform:uppercase;margin:0.5rem 0 0.15rem">Background: {bg["name"]}</p>'
+            right_col += feat_item(bf.get("name","Feature"), bf.get("description",""))
+
+    right_col += '</div>'
+
+    # ── Page 1: assemble ──────────────────────────────────────────────────────
+    _race_name  = race["name"] if race else "—"
+    _cls_name   = cls["name"] if cls else "—"
+    _cls_sub    = f" — {sub['name']}" if sub else ""
+    char_subtitle = f"{_race_name} · Level {level} {_cls_name}{_cls_sub}"
+
+    top_header = f"""
+<div class="top-header">
+  <div class="box">
+    <div class="char-name">{name}</div>
+    <div style="font-family:Cinzel,serif;font-size:0.68rem;color:#3b0d8a;letter-spacing:0.03em;margin:0.18rem 0 0">{char_subtitle}</div>
+  </div>
+  <div class="box">
+    <div class="field-row"><span class="field-lbl">Player Name</span><span class="field-blank"></span></div>
+    <div class="field-row"><span class="field-lbl">Background</span><span class="field-val">{bg["name"] if bg else "—"}</span></div>
+    <div class="field-row"><span class="field-lbl">Alignment</span><span class="field-val">{ss.get("alignment") or "—"}</span></div>
+    <div class="field-row"><span class="field-lbl">Experience Points</span><span class="field-blank"></span></div>
+  </div>
+</div>"""
+
+    main_grid = f"""
+<div class="main-grid">
+  <div style="display:flex;flex-direction:column;gap:0.55rem">{combat_box}{left_col}</div>
+  <div style="display:flex;flex-direction:column;gap:0.55rem">{atk_mid}{mid_bottom}</div>
+  <div style="display:flex;flex-direction:column">{right_col}</div>
+</div>"""
+
+    # ── Page 2+: spells, tactics, details, equipment ──────────────────────────
+    def sec_box(title, body):
+        return f'<div class="sec-box"><div class="sec-title">{title}</div>{body}</div>'
+
+    page2_parts = []
+
+    # ── Sev'rinn class content ────────────────────────────────────────────────
+    if cls and cls["id"] == "sevrinn" and sub:
+        sv_mech = cls.get("mechanics", {})
+
+        # Resources header
+        lvl_data = None
+        for row in sv_mech.get("level_table", []):
+            if row["min_level"] <= level <= row["max_level"]:
+                lvl_data = row; break
+        sv_res_html = ""
+        if lvl_data:
+            sv_res_html += (f'<p style="font-size:0.85rem;margin-bottom:0.4rem">'
+                            f'<b>Charges:</b> {lvl_data["charges"]} &nbsp;·&nbsp; '
+                            f'<b>Techniques Known:</b> {lvl_data["techniques"]}</p>')
+        ws = sv_mech.get("weirding_surge", "")
+        if ws:
+            sv_res_html += feat_item("Weirding Surge", ws)
+        es = sv_mech.get("elemental_shift", {})
+        if es:
+            es_text = (f"Activation: {es.get('activation','')} "
+                       f"Lock Mode: {es.get('lock_mode','')} "
+                       f"Shifted Discount: {es.get('shift_discount','')} "
+                       f"Re-entry: {es.get('reentry','')}")
+            sv_res_html += feat_item("Elemental Shift (Bonus Action, 1 Charge)", es_text)
+        for cf in sv_mech.get("class_features", []):
+            if cf["level"] <= level:
+                sv_res_html += feat_item(f'{cf["name"]} (Level {cf["level"]})', cf["description"])
+        if sv_res_html:
+            page2_parts.append(sec_box("Sev&#x2019;rinn — Elemental Resources", sv_res_html))
+
+        # Weirding Surge Table
+        surge_table = sv_mech.get("weirding_surge_table", [])
+        if surge_table:
+            surge_html = ('<table><tr><th style="width:2rem">d6</th><th>Effect</th></tr>'
+                          + "".join(f'<tr><td class="an">{i}</td><td>{effect}</td></tr>'
+                                    for i, effect in enumerate(surge_table, 1))
+                          + '</table>')
+            page2_parts.append(sec_box("Weirding Surge Table (roll d6 on every Charge spend)", surge_html))
+
+        # Shift Table
+        shift_table = sub.get("shift_table", [])
+        if shift_table:
+            form_name = sub["features"][0]["name"] if sub.get("features") else "Elemental Form"
+            form_desc = sub["features"][0].get("description", "") if sub.get("features") else ""
+            shift_html = (f'<p class="fdesc" style="margin-bottom:0.4rem">{form_desc}</p>'
+                          '<table><tr><th>Roll</th><th>Form</th><th>Effect</th></tr>'
+                          + "".join(f'<tr><td class="an">{s["roll"]}</td>'
+                                    f'<td class="ar">{s["name"]}</td>'
+                                    f'<td class="ad">{s["effect"]}</td></tr>'
+                                    for s in shift_table)
+                          + '</table>')
+            page2_parts.append(sec_box(f"{form_name} — Shift Table (Bonus Action, 1 Charge)", shift_html))
+
+        # Combat Techniques
+        techs = [t for t in sub.get("techniques", []) if t["level"] <= level]
+        if techs:
+            tech_html = ""
+            for tech in techs:
+                usage     = tech.get("usage", "")
+                tech_lvl  = tech["level"]
+                if usage == "Elemental Shift use":
+                    cost_str = "[Shift use]"
+                elif any(x in usage for x in ["/Short Rest", "/Long Rest", "/7 days", "proficiency bonus"]):
+                    cost_str = f"[{usage}]"
+                elif tech_lvl <= 3:
+                    cost_str = "[1 Charge]"
+                elif tech_lvl <= 10:
+                    cost_str = "[2C / 1C Shifted]"
+                else:
+                    cost_str = "[3C / 2C Shifted]"
+                tech_html += feat_item(
+                    f'[Lv.{tech_lvl}] {tech["name"]} '
+                    f'<span style="font-weight:400;color:#5a4a7a;font-size:0.68rem">{cost_str}</span>',
+                    tech.get("description", "")
+                )
+            page2_parts.append(sec_box("Combat Techniques", tech_html))
+
+    # Spellcasting — full descriptions + slots always go to page 2
+    if sc_data and (ss.get("chosen_cantrips") or ss.get("chosen_spells")):
+        sc_ab   = sc_data.get("ability", "Wisdom")
+        sc_key2 = {"Wisdom":"WIS","Intelligence":"INT","Charisma":"CHA"}.get(sc_ab, "WIS")
+        sc_mod2 = modn(sc_key2)
+        sp_dc2  = 8 + prof + sc_mod2
+        sp_atk2 = f"+{prof+sc_mod2}" if (prof+sc_mod2) >= 0 else str(prof+sc_mod2)
+        sp_html = (f'<p style="font-size:0.8rem;margin-bottom:0.5rem">'
+                   f'<b>Spellcasting Ability:</b> {sc_ab} &nbsp;·&nbsp; '
+                   f'<b>Spell Save DC:</b> {sp_dc2} &nbsp;·&nbsp; '
+                   f'<b>Spell Attack Bonus:</b> {sp_atk2}</p>')
+        # Spell slots table
+        slots, is_pact = _build_slot_dict(sc_data, level)
+        if slots:
+            slot_label = "PACT MAGIC SLOTS" if is_pact else "SPELL SLOTS PER LEVEL"
+            sp_html += (f'<p style="font-family:Cinzel,serif;font-size:0.55rem;color:#3b0d8a;'
+                        f'letter-spacing:0.1em;margin:0 0 0.2rem">{slot_label}</p>'
+                        '<table style="width:auto;margin-bottom:0.6rem"><tr style="background:#ede8f5">')
+            for slvl in sorted(slots.keys()):
+                suffix = {"1": "st", "2": "nd", "3": "rd"}.get(str(slvl), "th")
+                sp_html += f'<th style="text-align:center;padding:0.15rem 0.45rem;font-family:Cinzel,serif;font-size:0.52rem">{slvl}{suffix}</th>'
+            sp_html += '</tr><tr>'
+            for slvl in sorted(slots.keys()):
+                sp_html += f'<td style="text-align:center;padding:0.15rem 0.45rem;font-size:0.85rem;font-weight:700">{slots[slvl]}</td>'
+            sp_html += '</tr></table>'
+        # Full spell descriptions
+        cantrips = ss.get("chosen_cantrips", [])
+        spells   = ss.get("chosen_spells", [])
+        if cantrips:
+            sp_html += ('<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#3b0d8a;'
+                        'letter-spacing:0.1em;margin:0.3rem 0 0.2rem">CANTRIPS</p>')
+            for cn in cantrips:
+                sp_html += _spell_block_html(cn, "Cantrip")
+        if spells:
+            sp_html += ('<p style="font-family:Cinzel,serif;font-size:0.58rem;color:#3b0d8a;'
+                        'letter-spacing:0.1em;margin:0.5rem 0 0.2rem">SPELLS</p>')
+            for sn in spells:
+                sp_html += _spell_block_html(sn)
+        page2_parts.append(sec_box("Spellcasting", sp_html))
+
+    # Combat Tactics
+    _ct = ss.get("combat_tactics", {})
+    if _ct:
+        ct_html = ""
+        if _ct.get("role"):
+            ct_html += f'<p style="font-style:italic;color:#5a4a7a;margin-bottom:0.4rem;font-size:0.85rem">{_ct["role"]}</p>'
+        for tac in _ct.get("tactics", []):
+            ct_html += (f'<div class="feat-row">'
+                        f'<span class="fname">{tac["phase"]}</span>'
+                        f'<span class="fdesc">{tac["text"]}</span></div>')
+        page2_parts.append(sec_box("Combat Tactics", ct_html))
+
+    # Character Details
+    details_html = ""
+    for label, val in [("Personality Traits", ss.get("personality","")),
+                       ("Ideals",             ss.get("ideals","")),
+                       ("Bonds",              ss.get("bonds","")),
+                       ("Flaws",              ss.get("flaws","")),
+                       ("Additional Notes",   ss.get("notes",""))]:
+        if val:
+            details_html += f'<div style="margin:0.35rem 0"><span class="lbl">{label}</span>{val}</div>'
+    if details_html:
+        page2_parts.append(sec_box("Character Details", details_html))
+
+    # Equipment & Inventory (only on page 2 if not already shown in mid col)
+    if not _mid_has_equip:
+        eq_fixed   = mech.get("equipment_fixed", [])
+        eq_choices = mech.get("equipment_choices", [])
+        eq_items   = list(eq_fixed)
+        for choice in eq_choices:
+            idx = ss.get("equip_choices", {}).get(choice["id"], 0)
+            if idx < len(choice["options"]):
+                eq_items.extend(choice["options"][idx]["items"])
+        if bg:
+            eq_items.append(bg.get("equipment", ""))
+        if main_wep: eq_items.append(f"{main_wep['name']} (main hand)")
+        if off_wep:  eq_items.append(f"{off_wep['name']} (off-hand)")
+        eq_html = "<ul>" + "".join(f"<li>{i}</li>" for i in eq_items if i) + "</ul>"
+        page2_parts.append(sec_box("Equipment &amp; Inventory", eq_html))
+
+    # Languages & Proficiencies (only on page 2 if not already shown in mid col)
+    if not _mid_has_lang:
+        all_langs = list(dict.fromkeys(
+            (race.get("languages", []) if race else []) +
+            (bg.get("languages", []) if bg else []) +
+            ss.get("chosen_languages", [])
+        ))
+        prof_html = ""
+        if all_langs:
+            prof_html += f'<span class="lbl">Languages</span>{", ".join(all_langs)}<br style="margin-bottom:0.2rem">'
+        if bg and bg.get("tool_proficiencies"):
+            prof_html += f'<span class="lbl" style="margin-top:0.35rem">Tools</span>{", ".join(bg["tool_proficiencies"])}<br>'
+        if cls:
+            aw = cls.get("armor", []) + cls.get("weapons", [])
+            if aw:
+                prof_html += f'<span class="lbl" style="margin-top:0.35rem">Armor &amp; Weapons</span>{", ".join(aw)}'
+        if prof_html:
+            page2_parts.append(sec_box("Languages &amp; Proficiencies", prof_html))
+
+    page2_html = ""
+    if page2_parts:
+        page2_html = f'<div class="page-break">{"".join(page2_parts)}</div>'
+
+    fonts = ("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900"
+             "&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap")
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{name} — Character Sheet</title>
+  <link href="{fonts}" rel="stylesheet">
+  <style>{CSS}</style>
+</head>
+<body>
+  <button class="print-btn" onclick="window.print()">&#x1F5A8; Print / Save as PDF</button>
+  {top_header}
+  {main_grid}
+  {page2_html}
+</body>
+</html>"""
+
+
 def generate_character_pdf():
     """Generate a formatted PDF character sheet. Returns bytes."""
     try:
@@ -1575,12 +2347,12 @@ def generate_character_pdf():
     STAT_KEYS = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
     STAT_FULL = ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"]
 
-    # ── Colour palette (mirrors Spell Details section) ──
-    C_HDR_FILL = (44, 30, 58)      # section header background
-    C_HDR_TEXT = (196, 181, 253)   # section header text / bold labels
-    C_SUB      = (160, 140, 200)   # italic sub-labels
-    C_STAT     = (180, 165, 220)   # stat values / key-value pairs
-    C_BODY     = (200, 190, 220)   # body text / list items
+    # ── Colour palette ──
+    C_HDR_FILL = (30, 30, 30)      # section header background (near-black)
+    C_HDR_TEXT = (255, 255, 255)   # section header text (white on dark)
+    C_SUB      = (80, 80, 80)      # italic sub-labels (dark grey)
+    C_STAT     = (50, 50, 50)      # stat values / key-value pairs
+    C_BODY     = (30, 30, 30)      # body text / list items
 
     def _sec(title):
         """Render a styled section header bar."""
@@ -1603,7 +2375,7 @@ def generate_character_pdf():
     bg_name   = bg["name"]   if bg   else "Unknown Background"
     alignment = st.session_state.alignment or ""
 
-    pdf.set_text_color(*C_HDR_TEXT)
+    pdf.set_text_color(0, 0, 0)
     pdf.set_font("Helvetica", "B", 22)
     pdf.cell(0, 11, _pdf_safe(char_name), ln=True, align="C")
     pdf.set_text_color(*C_SUB)
@@ -4775,17 +5547,48 @@ elif st.session_state.step == 10:
                 st.session_state[k] = v
             st.rerun()
     with col3:
-        pdf_bytes = generate_character_pdf()
-        if pdf_bytes:
-            fname = f"{(st.session_state.char_name or 'character').lower().replace(' ', '_')}_sheet.pdf"
-            st.download_button("⬇ Download PDF", data=pdf_bytes, file_name=fname,
-                               mime="application/pdf", use_container_width=True)
-        else:
-            st.info("Install fpdf2 to enable PDF download.", icon="ℹ")
+        import base64 as _b64
+        _html_sheet = build_print_html()
+        _b64_str = _b64.b64encode(_html_sheet.encode("utf-8")).decode("ascii")
+        st.components.v1.html(f"""
+<html><head><style>
+  body {{ margin:0; padding:0; background:transparent; }}
+  button {{
+    width:100%; height:42px;
+    background: rgba(124,58,237,0.12);
+    color: #a99cbf;
+    border: 1px solid rgba(124,58,237,0.4);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Cinzel', Georgia, serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: background 0.2s, color 0.2s;
+  }}
+  button:hover {{
+    background: rgba(124,58,237,0.25);
+    color: #c4b5fd;
+    border-color: rgba(124,58,237,0.7);
+  }}
+</style></head>
+<body>
+<script>
+var _b64 = "{_b64_str}";
+function openSheet() {{
+  var bytes = Uint8Array.from(atob(_b64), function(c) {{ return c.charCodeAt(0); }});
+  var html  = new TextDecoder("utf-8").decode(bytes);
+  var blob  = new Blob([html], {{type: "text/html;charset=utf-8"}});
+  var url   = URL.createObjectURL(blob);
+  window.open(url, "_blank");
+}}
+</script>
+<button onclick="openSheet()">&#x1F5A8; Save Character Sheet</button>
+</body></html>""", height=46)
 
     # Save character JSON
     save_data = {k: st.session_state.get(k, v) for k, v in defaults.items() if k != "step"}
     save_json = json.dumps(save_data, indent=2)
     save_fname = f"{(st.session_state.char_name or 'character').lower().replace(' ', '_')}_character.json"
-    st.download_button("💾 Save Character", data=save_json, file_name=save_fname,
+    st.download_button("💾 Download JSON", data=save_json, file_name=save_fname,
                        mime="application/json", use_container_width=True)
