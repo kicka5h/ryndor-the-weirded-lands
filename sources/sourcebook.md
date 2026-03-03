@@ -2062,6 +2062,46 @@ temporal echoes and fractured memories. But one thing remains certain—**those
 who step into Ban Mynydd’s shadowed depths are never the same when they emerge—
 if they emerge at all.**
 
+### DM Tools — Ban Mynydd
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | A timepiece in a party member's possession skips forward 1d6 days without warning. The date is clearly in the future. The mechanism continues ticking normally. |
+| 3–4 | A tunnel entered from one direction exits in a completely different part of the city. The journey felt like 10 minutes. Locals estimate the party was in the tunnel for 3 hours. |
+| 5–6 | A pocket of warped air drifts through the tunnel. The party member it passes through makes a DC 13 CON save or takes 1d6 psychic damage and surfaces with a vivid memory of a future event that may or may not come to pass. |
+| 7–8 | A hybrid beast blocks the tunnel — its form flickering between two states. Not aggressive; confused. DC 13 Animal Handling to calm it enough to pass. On a failure it lunges — not from malice, but from panic. |
+| 9–10 | A cluster of coins in a party member's purse has aged centuries — corroded, bearing dates hundreds of years in the future. The face on the coins belongs to no known ruler. |
+| 11–12 | A section of tunnel loops. The party walks 20 minutes and returns to a familiar junction. DC 15 Survival to identify the correct exit; each failed attempt costs 30 minutes. |
+| 13–14 | A fire wyrm emerges from a side shaft with a second head, both burning at different temperatures. One head ignores the party; the other watches them. The miner who was leading it has not appeared. |
+| 15–16 | A stranger emerges from a collapsed shaft dressed in Ban Mynydd mining gear from 30 years ago. They believe they've been gone for one shift. They carry a sealed letter addressed to someone dead for 25 years. |
+| 17–18 | A mineral vein in the tunnel wall pulses with light. DC 13 Arcana on touch: a precise vision of something valuable deeper in the mine — the location is clear. What the thing is, exactly, is not. |
+| 19–20 | The entire tunnel shifts. The party's location on any map is now incorrect. The shift takes 2 seconds and produces no sensation. They are not in danger. They have no idea where they are. |
+
+#### Encounter Ideas
+
+- **The Permit Problem.** The party arrives at Ban Mynydd's gates without Custodian permits. The permit office is in the city. The city requires permits to enter. The gate official is not unsympathetic — but the rules are the rules. There is an unofficial entrance on the northeast wall used by off-shift miners.
+- **The Missing Team.** A mining team entered the lower tunnels six days ago and has not returned. The Custodians claim they are still working. The foreman knows better — she sent three runners after them; only two returned, both with no memory of what they saw.
+- **The Emerged Stranger.** A miner has walked out of a shaft sealed for 40 years. He believes he went down yesterday. He is carrying contracts and correspondence the Custodians urgently want back. The party is hired to escort him to the Custodians — or help him avoid them.
+- **The Mineral Buyer.** An artificer hires the party to acquire a specific Weirded mineral vein from a contested tunnel — contested because two mining crews from two different eras are working it simultaneously, each unaware the other exists.
+
+#### Travel Options
+
+- 🥾 **By Foot.** Main road from Eveltoft — 3 days. The gate requires permits; the road is increasingly watched near the walls.
+- ⛏️ **By Mine-Cart.** Underground rail links Ban Mynydd's lower levels to outlying extraction sites. Unreliable since the Weirding.
+- 🦅 **By Air.** Legal, but landing outside designated platforms requires a secondary permit.
+- 🚢 **No Water Route.** Ban Mynydd is inland.
+- ⚠️ **Unofficial Entry.** Northeast wall entrance used by off-shift miners. Requires the current passphrase — DC 14 Persuasion with the right contact.
+
+#### Landmarks
+
+- **The Custodians' Fortress** — *1 hour · 100 XP.* Headquarters of the Custodians of Prosperity, built over Ban Mynydd's central vault. No unauthorized visitor has seen the sub-basement level. Those who claim to know what's down there do not agree on what they saw.
+- **The Deep Shaft** — *3 hours · 175 XP.* The deepest accessible point in the mine network, sealed after a temporal event swallowed a crew of twelve. The seal has been broken twice — both times from the inside.
+- **The Flickering Market** — *30 min · 50 XP.* A district where time-slippage affects commerce. Stalls open and close on schedules that match no clock. Some vendors sell items from tomorrow's shipment. A few of those claims have proved accurate.
+- **The Artificers' Quarter** — *1 hour · 75 XP.* Where Ban Mynydd's arcane researchers work. Two buildings on the eastern edge have been quarantined for six months. No official explanation has been given for what is inside.
+- **The Lost Registry** — *2 hours · 125 XP.* A Custodian records office listing every miner who entered the tunnels and didn't return. Currently at 847 entries. Some have been crossed out recently — not because the miners were found dead, but because they walked back out of shafts sealed for decades.
+
 ## Bennard Peak
 
 Benard Peak
@@ -2143,6 +2183,46 @@ For those who dare to ascend the peak, the journey offers no guarantees—only
 the promise of transformation, for better or worse. At Benard Peak, where gods, giants,
 and strangeness meet, every step forward is both a prayer and a risk, and every
 offering a bargain with forces that do not obey mortal rules.
+
+### DM Tools — Bennard Peak
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | Time slips. A climb that should take one hour stretches into a full day — the party arrives exhausted and short one Long Rest's worth of time. |
+| 3–4 | The path rearranges. Ledges shift and handholds vanish. Every member must succeed on a DC 12 Athletics check or spend an extra hour navigating. |
+| 5–6 | A flickering apparition — titan, god, or warrior — manifests in the mist and appears to look directly at the party. Each character makes a DC 11 Wisdom save or is frightened until end of next turn. |
+| 7–8 | Invisible whisper-rivers carry memories that don't belong to anyone present. One random character makes a DC 13 Wisdom save or has disadvantage on their next attack roll or ability check. |
+| 9–10 | A mist-pool forms underfoot. The first character to look down sees a feared future (DM's choice); they suffer −1d4 to their next saving throw unless they succeed on DC 14 Wisdom. |
+| 11–12 | Canyon gnomes flicker into view beside the party for a few seconds, clearly startled, before vanishing. They leave behind a small carved stone of unknown purpose. |
+| 13–14 | An offering changes form. Any item intentionally set down transforms — a coin becomes a wildflower, a weapon becomes a river stone, a scroll becomes ash. The original cannot be found. |
+| 15–16 | A twisted blessing. One character who prays gains advantage on their next saving throw but takes 1d6 psychic damage as the boon arrives with an edge. |
+| 17–18 | Time compression. A Short Rest passes in moments — the party recovers no Hit Dice and any spell slots spent during it are lost. |
+| 19–20 | The peak watches. A vast, stone-still face becomes visible in the cliff for one round. All Weirded creatures on Bennard Peak treat the party as non-hostile for the next hour. |
+
+#### Encounter Ideas
+
+- **Shrine Guardians.** Translucent-winged sprites and flickering gnomes defend an ancient offering circle. Not hostile unless an offering is touched; Persuasion DC 13 or a matching offering can stand them down.
+- **The Apparition.** A titanic ghostly warrior manifests at dusk and replays ancient combat. It cannot perceive the party, but its strikes deal 2d8 force damage to anyone in its path (DC 14 Dexterity save for half). Ends when the replay concludes.
+- **The Time-Locked Traveller.** A pilgrim near the summit repeats the same five steps in an endless loop. Breaking it requires identifying what anchors them — a dropped item, an unspoken name, an unfulfilled vow. Roleplay and Investigation, not combat.
+- **The Cursed Seekers.** Four worshippers whose blessings have all inverted are becoming hostile toward newcomers. De-escalation (Insight DC 12, Persuasion DC 14) reveals their predicament; combat is possible but missing the point.
+
+#### Travel Options
+
+- 🥾 **Mountain Ascent (2 days).** Standard overland route from Mt. Bannockwyrm's base. Each day requires DC 14 Athletics or the character gains one level of exhaustion from shifting terrain.
+- 🌊 **Canyon River Approach (1 day).** Follow the river through the canyon below. Faster, but sprites and gnomes make navigation unpredictable — arrival point may vary from intent.
+- 🦅 **Aerial Approach (half day).** Aviari, mounts, or *fly* spells bypass the lower distortions. The summit still affects time regardless, but the physical climb is avoided.
+- 🪬 **Canyon Gnome Guide (variable).** A flickering gnome who knows safe routes can prevent terrain rearrangements. Convincing one requires Persuasion DC 12 and a personal offering — not coin.
+- ✨ **Magical Transit (unreliable).** Teleportation within five miles requires a DC 15 spellcasting check. On a failure the party arrives somewhere on Bennard Peak of the DM's choosing.
+
+#### Landmarks
+
+- **The Shard Circle** — *2 hours · 150 XP.* Seven enormous boulder fragments form a ring at the canyon's edge. Offerings vanish by morning and sometimes reappear altered. Ten minutes of meditation here grants advantage on the next Insight check.
+- **The Mist-Pool of Remembrance** — *3 hours · 200 XP.* A still pool of reflective mist showing strangers' memories. DC 13 Wisdom save or gain a short-term dread; on a success, receive a fragment of useful information at the DM's discretion.
+- **The Apparition Plateau** — *4 hours · 250 XP.* Flat ledge where ghostly battles replay at dusk. A suit of ancient armour (AC 16, damaged — 200 gp to a collector) is wedged in a crevice at the north edge.
+- **The Summit Altar** — *6 hours · 300 XP.* The sacred apex, rearranged since any previous visit. Praying and leaving an offering grants +1d6 to a saving throw of choice within 24 hours. The hidden cost arrives before the bonus is used.
+- **The Whisper Canyon** — *1 hour · 100 XP.* Canyon where invisible rivers of memories drift through the air. DC 15 Perception (one minute of stillness) extracts a coherent fragment — clue, warning, or exposition — relevant to the current quest.
 
 ## Eveltoft
 

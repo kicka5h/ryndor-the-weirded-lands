@@ -259,6 +259,13 @@
       font-size: 1rem;
       font-weight: 600;
       color: var(--weird-glow);
+      margin-bottom: 0.2rem;
+    }
+    .card-subtitle {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--text-mute);
       margin-bottom: 0.75rem;
     }
 
@@ -916,7 +923,7 @@
 
     <!-- Hero -->
     <div class="hero">
-      <div class="hero-eyebrow">A World Sourcebook</div>
+      <div class="hero-eyebrow">A World Sourcebook for D&D 5e</div>
       <h1 class="hero-title">Ryndor</h1>
       <p class="hero-subtitle">The Weirded Lands</p>
       <div class="hero-divider">
@@ -1998,6 +2005,68 @@
         </div>
       </div>
 
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Ban Mynydd</div>
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>A timepiece in a party member's possession skips forward 1d6 days without warning. The date is clearly in the future. The mechanism continues ticking normally.</td></tr>
+              <tr><td>3–4</td><td>A tunnel entered from one direction exits in a completely different part of the city. The journey felt like 10 minutes. Locals estimate the party was in the tunnel for 3 hours.</td></tr>
+              <tr><td>5–6</td><td>A pocket of warped air drifts through the tunnel. The party member it passes through makes a DC 13 CON save or takes 1d6 psychic damage and surfaces with a vivid memory of a future event that may or may not come to pass.</td></tr>
+              <tr><td>7–8</td><td>A hybrid beast blocks the tunnel — its form flickering between two states. It is not aggressive; it seems confused. DC 13 Animal Handling to calm it enough to pass. On a failure it lunges — not from malice, but from panic.</td></tr>
+              <tr><td>9–10</td><td>A cluster of coins in a party member's purse has aged centuries — corroded, bearing dates hundreds of years in the future. The face on the coins belongs to no known ruler.</td></tr>
+              <tr><td>11–12</td><td>A section of tunnel loops. The party walks for 20 minutes and returns to a familiar junction. DC 15 Survival to identify the correct exit; each failed attempt costs 30 minutes.</td></tr>
+              <tr><td>13–14</td><td>A fire wyrm emerges from a side shaft with a second head, both burning at different temperatures. One head ignores the party; the other watches them. The miner who was leading it has not appeared.</td></tr>
+              <tr><td>15–16</td><td>A stranger emerges from a collapsed shaft — dressed in Ban Mynydd mining gear from at least 30 years ago. They believe they have been gone for one shift. They carry a sealed letter addressed to someone dead for 25 years.</td></tr>
+              <tr><td>17–18</td><td>A mineral vein in the tunnel wall pulses with light. DC 13 Arcana on touch: a precise vision of something valuable deeper in the mine — the location is clear. What the thing is, exactly, is not.</td></tr>
+              <tr><td>19–20</td><td>The entire tunnel shifts. The party's current location on any map is now incorrect. The shift takes 2 seconds and produces no sensation. They are not in danger. They have no idea where they are.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>The Permit Problem.</strong> The party arrives at Ban Mynydd's gates without the required Custodian permits. The permit office is in the city. The city requires permits to enter. The gate official is not unsympathetic — he has seen this before — but the rules are the rules. There is, however, an unofficial entrance the city's own miners use during the night shift.</div>
+          <div class="encounter-item"><strong>The Missing Team.</strong> A mining team entered the lower tunnels six days ago and has not returned. The Custodians' official position is that they are still working. The foreman knows better — she has sent three runners after them and only two returned, both with no memory of what they saw.</div>
+          <div class="encounter-item"><strong>The Emerged Stranger.</strong> A miner has walked out of a shaft sealed for 40 years. He believes he went down yesterday. He is carrying contracts, maps, and correspondence that the Custodians urgently want back. The miner doesn't understand why. The party is hired either to escort him to the Custodians — or to help him avoid them.</div>
+          <div class="encounter-item"><strong>The Mineral Buyer.</strong> An artificer hires the party to acquire a specific Weirded mineral vein from a contested tunnel — contested because two mining crews, from two different eras of Ban Mynydd, are working it simultaneously, each unaware the other exists.</div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🥾</span><span><strong>By Foot.</strong> The main road from Eveltoft reaches Ban Mynydd in 3 days. The gate requires permits; the road is well-maintained and increasingly watched the closer you get to the walls.</span></div>
+            <div class="travel-item"><span class="travel-icon">⛏️</span><span><strong>By Mine-Cart.</strong> Underground rail links Ban Mynydd's lower levels to outlying extraction sites. Unreliable since the Weirding, but faster than surface travel between adjacent shafts.</span></div>
+            <div class="travel-item"><span class="travel-icon">🦅</span><span><strong>By Air.</strong> Legal, but landing outside designated platforms requires a secondary permit. The city's walls are tall and the guards watch the sky.</span></div>
+            <div class="travel-item"><span class="travel-icon">🚢</span><span><strong>No Water Route.</strong> Ban Mynydd is inland. No water travel connects directly to the city.</span></div>
+            <div class="travel-item"><span class="travel-icon">⚠️</span><span><strong>Unofficial Entry.</strong> A secondary entrance on the northeast wall is used by off-shift miners. It requires the current passphrase, which changes weekly — DC 14 Persuasion with the right contact to obtain it.</span></div>
+          </div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header"><span class="landmark-name">The Custodians' Fortress</span><span class="landmark-meta">1 hour · 100 XP</span></div>
+            <div class="landmark-desc">Headquarters of the Custodians of Prosperity, built over Ban Mynydd's central vault. Nullification fields keep the lower levels stable — mostly. No unauthorized visitor has seen the sub-basement level. Those who claim to know what's down there do not agree on what they saw.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header"><span class="landmark-name">The Deep Shaft</span><span class="landmark-meta">3 hours · 175 XP</span></div>
+            <div class="landmark-desc">The deepest accessible point in Ban Mynydd's mine network, sealed after a temporal event swallowed a crew of twelve. The seal has been broken twice since — both times from the inside.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header"><span class="landmark-name">The Flickering Market</span><span class="landmark-meta">30 min · 50 XP</span></div>
+            <div class="landmark-desc">A district where the Weirding's time-slippage affects commerce directly. Stalls open and close on schedules that match no clock. Some vendors claim to sell items from tomorrow's shipment. A few of those claims have proved accurate.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header"><span class="landmark-name">The Artificers' Quarter</span><span class="landmark-meta">1 hour · 75 XP</span></div>
+            <div class="landmark-desc">Where Ban Mynydd's arcane researchers work. Buildings are marked with active-experiment sigils. Two structures on the eastern edge have been quarantined for six months. No official explanation has been given for what is inside them.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header"><span class="landmark-name">The Lost Registry</span><span class="landmark-meta">2 hours · 125 XP</span></div>
+            <div class="landmark-desc">A Custodian records office containing the name and last-known location of every miner who entered the tunnels and did not return. Currently at 847 entries. Some have been crossed out in recent years — not because the miners were found dead, but because they walked back out of shafts sealed for decades.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── Bennard Peak ──────────────────────────────────────────── -->
       <div class="subsection-title" id="wl-bennard">Bennard Peak</div>
       <div class="card">
@@ -2006,6 +2075,88 @@
           <p>The towering rock formation known as Bennard Peak — "Firehouse Neck" — stands across from the highest summit of Mt. Bannockwyrm, a monument of stone born, according to legend, from a battle between giants and gods. When the giant chief hurled a colossal boulder at Thor, one strike of his hammer shattered it into a thousand pieces that formed these looming cliffs and the deep canyon below. Since the Weirding, the peak rearranges itself when no one is watching. Strange, flickering apparitions — giants, gods, and warriors frozen in moments from forgotten battles — appear within the mist only to vanish. Time itself falters near the summit, with journeys that should take hours stretching into days, or passing in the blink of an eye.</p>
           <p>The canyon beneath is home to gnomes that <strong>flicker like candle flames</strong>, sprites with translucent wings humming with otherworldly resonance, and trees with twisted branches that seem to reach for travelers. Invisible rivers of whispers flow through the air, and pools of reflective mist show memories that do not belong to the viewer — or sometimes visions of futures they wish not to see.</p>
           <p>Bennard Peak remains a sacred site for those seeking divine guidance, though blessings now come tinged with uncertainty. Offerings left at the summit — stones etched with runes, flowers woven with charms, carved wooden figurines — sometimes shift in form or vanish entirely, only to reappear elsewhere. <strong>Blessings sometimes twist into curses</strong>, and boons often arrive with hidden costs. For those who dare to ascend, the journey offers no guarantees — only the promise of transformation, for better or worse.</p>
+        </div>
+      </div>
+
+      <!-- DM Tools: Bennard Peak -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Bennard Peak</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>Time slips. A climb that should take one hour stretches into a full day with no explanation — the party arrives at their destination exhausted and short one Long Rest's worth of time.</td></tr>
+              <tr><td>3–4</td><td>The path rearranges. Ledges shift, handholds vanish, and a new route appears where solid rock stood before. Every member must succeed on a DC 12 Athletics check or spend an extra hour navigating.</td></tr>
+              <tr><td>5–6</td><td>A flickering apparition — a titan, a god, a warrior frozen mid-strike — materialises in the mist and appears to look directly at the party before dissolving. Morale check: each character must make a DC 11 Wisdom save or be frightened until the end of their next turn.</td></tr>
+              <tr><td>7–8</td><td>Invisible whisper-rivers. The air carries memories that do not belong to anyone present. One random character must succeed on a DC 13 Wisdom save or be distracted by a stranger's grief — they have disadvantage on their next attack roll or ability check.</td></tr>
+              <tr><td>9–10</td><td>A mist-pool forms underfoot without warning. The first character to look down sees a vision of a feared future — a specific dread of the DM's choosing. They are rattled (−1d4 to their next saving throw) unless they succeed on DC 14 Wisdom.</td></tr>
+              <tr><td>11–12</td><td>Canyon gnomes flicker. Several gnomes materialise beside the party for a few seconds — visible, audible, and clearly startled — before vanishing. They leave behind a small carved stone of unknown purpose.</td></tr>
+              <tr><td>13–14</td><td>An offering changes form. Any item intentionally set down on a flat surface transforms — a coin becomes a wildflower, a weapon becomes a river stone, a scroll becomes a handful of ash. The original item cannot be found.</td></tr>
+              <tr><td>15–16</td><td>A twisted blessing. One character who prays or makes an offering gains advantage on their next saving throw but takes 1d6 psychic damage as the boon arrives with an edge.</td></tr>
+              <tr><td>17–18</td><td>Time compression. A Short Rest passes in moments — the party recovers no Hit Dice. Any spell slot spent during that rest period is lost. The DM decides which rest was affected.</td></tr>
+              <tr><td>19–20</td><td>The peak watches. A face — vast, stone-still, and ancient — becomes visible in the cliff face for one round before the rock resettles. All Weirded creatures on Bennard Peak treat the party as non-hostile for the next hour.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>Shrine Guardians.</strong> A cluster of translucent-winged sprites and flickering gnomes defend an ancient offering circle. They are not inherently hostile, but any character who touches or takes an offering triggers an immediate defensive response. Negotiation (Persuasion DC 13) or a matching offering can stand down the encounter.</div>
+          <div class="encounter-item"><strong>The Apparition.</strong> A titanic ghostly warrior — a god or giant from the founding battle — fully manifests at dusk and replays a moment of ancient combat. It cannot perceive the party, but its swings and footfalls deal 2d8 force damage to anyone in its path (DC 14 Dexterity save for half). The encounter ends when the replay concludes or the party escapes the plateau.</div>
+          <div class="encounter-item"><strong>The Time-Locked Traveller.</strong> Near the summit, the party finds a pilgrim repeating the same five steps in an endless loop — speaking the same words, reaching for the same stone, turning back. Breaking the loop requires identifying what is anchoring them (a dropped item, an unspoken name, an unfulfilled vow) and resolving it. This is a roleplay and Investigation encounter, not a combat one.</div>
+          <div class="encounter-item"><strong>The Cursed Seekers.</strong> A group of four worshippers who climbed Bennard Peak for divine guidance now find every blessing they received has inverted. They are becoming desperate — and increasingly hostile toward newcomers who might "take" the peak's remaining boons. Combat is possible but de-escalation (Insight DC 12, Persuasion DC 14) reveals their true predicament and opens a more interesting path forward.</div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🥾</span><span><strong>Mountain Ascent (2 days).</strong> The standard overland route from the base of Mt. Bannockwyrm. Gruelling but direct — each day requires a DC 14 Athletics check or the character gains one level of exhaustion from the shifting terrain.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌊</span><span><strong>Canyon River Approach (1 day).</strong> Follow the river through the canyon below the peak. Faster, but sprites and gnomes make navigation unpredictable — the party may emerge further from or closer to their target destination than expected (DM's discretion).</span></div>
+            <div class="travel-item"><span class="travel-icon">🦅</span><span><strong>Aerial Approach (half day).</strong> Aviari, mounted flyers, or <em>fly</em> spells can bypass the lower time distortions. The summit itself still affects time regardless of approach vector, but the physical climb is avoided entirely.</span></div>
+            <div class="travel-item"><span class="travel-icon">🪬</span><span><strong>Canyon Gnome Guide (variable).</strong> A flickering gnome who knows the safe routes can lead the party without triggering terrain rearrangements. Convincing one requires a Persuasion check (DC 12) and a genuine offering — not coin, something personal.</span></div>
+            <div class="travel-item"><span class="travel-icon">✨</span><span><strong>Magical Transit (unreliable).</strong> Any teleportation spell used within five miles of the peak requires a DC 15 spellcasting check. On a failure, the party arrives somewhere on Bennard Peak chosen by the DM rather than their intended destination.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Shard Circle</span>
+              <span class="landmark-meta">2 hours · 150 XP</span>
+            </div>
+            <div class="landmark-desc">Seven enormous rock shards from the original shattered boulder form a rough ring at the canyon's edge. Offerings left here always vanish by morning and sometimes reappear altered in form or location. Any character who spends ten minutes meditating here gains advantage on their next Insight check.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Mist-Pool of Remembrance</span>
+              <span class="landmark-meta">3 hours · 200 XP</span>
+            </div>
+            <div class="landmark-desc">A perfectly still pool of reflective mist that shows the memories of strangers rather than the viewer's own reflection. Gazing in requires a DC 13 Wisdom saving throw or the character becomes fixated on a stranger's grief, gaining a random short-term dread. A successful save yields a fragment of useful information — a face, a place, a name — at the DM's discretion.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Apparition Plateau</span>
+              <span class="landmark-meta">4 hours · 250 XP</span>
+            </div>
+            <div class="landmark-desc">A flat ledge halfway up the peak where ghostly battles replay every dusk. Wedged in a crevice at the plateau's north edge is a suit of ancient armour (AC 16, damaged — worth 200 gp to a collector or historian). Retrieving it requires navigating the apparitions' replay without taking a hit.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Summit Altar</span>
+              <span class="landmark-meta">6 hours · 300 XP</span>
+            </div>
+            <div class="landmark-desc">The sacred apex of the peak, rearranged since any previous visit. Praying here for ten minutes and leaving an offering grants one character a +1d6 bonus to a saving throw of their choice within the next 24 hours. The hidden cost — determined by the DM — arrives sometime before the bonus is used.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Whisper Canyon</span>
+              <span class="landmark-meta">1 hour · 100 XP</span>
+            </div>
+            <div class="landmark-desc">The canyon beneath the peak where invisible rivers of whispers flow through the air. A character who succeeds on a DC 15 Perception check while standing still for one minute can extract a coherent fragment — a clue, a warning, or a piece of exposition relevant to a current quest — from the ambient memories drifting past.</div>
+          </div>
         </div>
       </div>
 
@@ -2023,49 +2174,56 @@
       <div class="grid-2">
 
         <div class="card">
-          <div class="card-title">🏛️ Central District — Heart of Power and the Rift</div>
+          <div class="card-title">🏛️ Central District</div>
+          <div class="card-subtitle">Heart of Power and the Rift</div>
           <div class="card-body">
             <p>At the core of Eveltoft, political authority and commerce converge with the Rift to Nebernoria. Powerful nullification fields — powered by the hydro engines of the Fenchong Falls — are built directly into Eveltoft City Hall, which sits over the roaring waterfall itself. Every so often, fluctuations in flow cause momentary interruptions called <strong>Rift Reverberations</strong>: objects vanish and reappear, clocks behave erratically, and brief portals to Nebernoria flicker open. Black market rumors abound of engineers willing to disable the nullification fields for the right price.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">🪵 Chipping-Gong — Woodlands at the Edge of the Crystal City</div>
+          <div class="card-title">🪵 Chipping-Gong</div>
+          <div class="card-subtitle">Woodlands at the Edge of the Crystal City</div>
           <div class="card-body">
             <p>Named for a legendary bear once roaming nearby forests, Chipping-Gong is Eveltoft's lumber and woodworking heart. The Weirding has given rise to <strong>Weirdwood</strong> — timber whose patterns shift like flowing rivers beneath the grain — now a coveted material whose latent magic may alter owners' thoughts or dreams. Buildings have taken on a life of their own, walls tightening against storms, floors softening underfoot. Several unfortunate incidents have involved houses sealing their occupants inside.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">🛍️ Dogun — Shopping, Food, Entertainment &amp; Unpredictable Anomalies</div>
+          <div class="card-title">🛍️ Dogun</div>
+          <div class="card-subtitle">Shopping, Food, Entertainment &amp; Unpredictable Anomalies</div>
           <div class="card-body">
             <p>Dogun's famous marketplace thrives but strange sights grow common: <strong>silk scarves turn to metal in the rain</strong>, spices shift taste mid-cooking, and purchased objects vanish by nightfall. Temporary stalls appear overnight, run by beings touched by the astral plane, their wares vanishing with them. The phrase <strong>"Dogun will provide"</strong> captures both its unpredictability and its potential for surprising good fortune. Lanterns from the annual Festival of Light multiply into hundreds and disappear into strange constellations.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">🐟 Fiskmark — Center for Waterfront Fun &amp; Strange Maritime Encounters</div>
+          <div class="card-title">🐟 Fiskmark</div>
+          <div class="card-subtitle">Center for Waterfront Fun &amp; Strange Maritime Encounters</div>
           <div class="card-body">
             <p>Fiskmark's markets and restaurants still thrive, but fishermen return with odd catches — fish that glow faintly in moonlight, crabs with extra limbs, eels that sing eerie melodies. Dishes have become legendary: <strong>mirrored cod</strong> that displays shifting images of the past as it cooks, <strong>ember prawns</strong> that warm the eater from inside. Some meals whisper strange thoughts or cause temporary transformations — skin taking on a sea-green hue or hair shifting to translucent strands. The Utfordring league holds competitions in the district's underwater arenas.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">⚔️ Heibury — Day Passes Required for Entry</div>
+          <div class="card-title">⚔️ Heibury</div>
+          <div class="card-subtitle">Day Passes Required for Entry</div>
           <div class="card-body">
             <p>Named for the legendary shield wall once defending the city, Heibury remains Eveltoft's military heart. Training grounds shift underfoot, forcing recruits to adapt mid-spar. Some soldiers develop strange Weirded abilities — <strong>reflexes heightened as if guided by unseen hands</strong>, weapons glowing with residual energy — but too much exposure leads to fractured memories. The district's blacksmiths create weapons that hum with strange vibrations; some <strong>develop minds of their own</strong>, refusing to be wielded by those they deem unworthy.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">💰 Gullborg — Timeless Splendor Suspended</div>
+          <div class="card-title">💰 Gullborg</div>
+          <div class="card-subtitle">Timeless Splendor Suspended</div>
           <div class="card-body">
             <p>Once the pinnacle of luxury and opulence, Gullborg District now lies frozen in time, held captive by a slow-time anomaly. From outside, it appears untouched — grand markets bustle, musicians play in courtyards, half-finished meals linger on tables. But for those outside, years have passed without seeing trapped loved ones. Only two individuals have ever escaped since the anomaly began — both returned disoriented, younger than their children trapped outside. Crystal Scholars have yet to find a way to neutralize it.</p>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-title">🌿 Kieferden — A Tranquil Oasis Beneath the Veil of the Weirding</div>
+          <div class="card-title">🌿 Kieferden</div>
+          <div class="card-subtitle">A Tranquil Oasis Beneath the Veil of the Weirding</div>
           <div class="card-body">
             <p>Once a peaceful retreat, Kieferden's lush greenery, spas, and the <strong>Ferden Pool</strong> — a natural hot spring — now carry a subtle unease. The pool drains one moment and brims over the next; some visitors find immersion warps time, making moments feel like entire days. Massages trigger visions of other lives; herbal teas produce dreams impossible to forget. Rumors persist of a cult devoted to Nebernoria conducting rituals in the district's hidden groves — and the disappearance of several Crystal Scholar investigators investigating those rumors.</p>
           </div>
