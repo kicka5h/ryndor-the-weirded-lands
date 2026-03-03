@@ -1,12 +1,12 @@
-# 🐉 Ryndor: Character Maker
+# 🐉 Ryndor, the Weirded Lands.
 
-> An aesthetic D&D 5e character sheet builder for **Ryndor: The Weirded Lands** — a homebrew sourcebook set in a dark, elemental fantasy world.
+> A complete sourcebook with custom content, and a character sheet maker for **Ryndor: The Weirded Lands** — a homebrew sourcebook set in a dark, cosmic fantasy world.
 
-[**→ Launch the App**](https://ryndor-character-maker-git-164613525255.us-west1.run.app/) &nbsp;·&nbsp; [**→ Sourcebook**](https://kicka5h.github.io/ryndor-character-maker)
+[**→ Character Sheet Maker**](https://ryndor-character-maker-git-164613525255.us-west1.run.app/) &nbsp;·&nbsp; [**→ Ryndor Sourcebook**](https://kicka5h.github.io/ryndor-character-maker)
 
 ---
 
-## Features
+## Character Maker Features
 
 - **6-step guided builder** — walk through race, class, background, ability scores, and more
 - **Ryndor-exclusive content** — custom races, classes (including the Sev'rinn), subclasses, and backgrounds drawn from the sourcebook
