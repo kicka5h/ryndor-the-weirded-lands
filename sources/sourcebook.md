@@ -2781,6 +2781,59 @@ disconnection from time and place. What Kieferden offers in peace, it takes in
 certainty—for in this oasis touched by the Weirding, nothing is ever truly what it
 seems.
 
+### DM Tools — Eveltoft
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | An astral shadow detaches from a random party member and begins mimicking their actions one round late. It lasts 1 hour before dissolving; frightened creatures treat it as hostile. |
+| 3–4 | A nearby bridge pivots 90 degrees, redirecting foot traffic to an unintended district. The party must spend an extra 30 minutes navigating back to their destination. |
+| 5–6 | A canal reverses direction for 1 minute. Any vessel or swimming creature is pushed 60 feet upstream. After 1 minute the flow snaps back to normal. |
+| 7–8 | A rogue enchantment seizes one random magical item among the party — it floats, spins, and hums for 1 minute. While airborne, the item cannot be used or retrieved. |
+| 9–10 | A mundane object nearby — a clock, a chair, a lantern — briefly awakens with simple intelligence, speaks one cryptic sentence in a language of the DM's choosing, then goes permanently inert. |
+| 11–12 | A Weird Zone pops up in a 30-foot radius around the party. For 1 minute, spell attack rolls are made with advantage but saving throws against spells are also made with advantage. Then it collapses. |
+| 13–14 | A magical storm erupts overhead. Any character caught outdoors must succeed on a DC 12 Strength saving throw or be pushed 10 feet in a random direction and knocked prone. |
+| 15–16 | A planter or park nearby erupts with astral flora. Any character who touches a flower must succeed on a DC 13 Constitution save or have disadvantage on their next Wisdom check. |
+| 17–18 | A Rift Reverberation ripples out from Central District. A portal flickers open for 6 seconds, through which a confused astral creature stumbles. Roll d6: 1–3 the creature is harmless and frightened; 4–6 it is hostile. |
+| 19–20 | The streets align perfectly. For the next 4 hours the party moves through Eveltoft without navigational difficulty — locals are cooperative, shortcuts appear obvious, and no further Weirdings occur in that window. |
+
+#### Encounter Ideas
+
+- **Rift Reverberation Crisis.** The nullification fields in Central District fail — a five-minute portal tears open, drawing astral creatures into the streets. City Hall engineers recruit nearby fighters. The party has ten minutes to repel the creatures or evacuate civilians before the portal closes.
+- **Sealed House (Chipping-Gong).** A Weirdwood building has locked itself shut with three occupants inside. It is frightened, not hostile. Persuasion DC 14 (spoken aloud, knocking gently) or Animal Handling DC 13 can coax it open. Forced entry causes walls to tighten and floors to buckle.
+- **The Vanishing Merchant (Dogun).** A trader the party just transacted with vanishes mid-exchange — stall, goods, and coin all gone. Arcana DC 14 or Perception DC 16 finds an astral residue trail leading two streets over to a temporary Weird Zone where the merchant crouches, confused and terrified.
+- **The Singing Catch (Fiskmark).** A fisherman drags in a bioluminescent eel that begins singing in Nebernorian. It sings for three minutes, then dies. Arcana DC 15 identifies the language; History DC 16 yields a partial translation — a prophecy connected to something the party is already pursuing.
+- **The Reluctant Weapon (Heibury).** A blacksmith's newly forged sword refuses its buyer — humming discordantly and glowing red when touched. The smith hires the party to negotiate. The sword is sentient, arrogant, and wants a worthy wielder. Charisma and Insight encounter; the sword cannot be destroyed unless a Weirding changes it.
+
+#### Travel Options
+
+- 🏙️ **On Foot Through the Districts (variable).** Roughly 30 minutes per district. DC 10 Perception in unfamiliar areas — failure means a wrong turn into an adjacent district.
+- 🚤 **Canal Boat (fast, unreliable).** Canal boats cross in minutes when waterways behave. Roll a d6 at departure: on a 1, the canal reverses during transit and the party must disembark early or arrive at the wrong terminus.
+- 📜 **Heibury Day Pass (required for district entry).** Obtained from City Hall. Valid identification is sufficient; a party member with a criminal record must succeed on Persuasion DC 14 or Deception DC 12 with a forged document. Single-use.
+- ⚠️ **Gullborg (effectively inaccessible).** The slow-time anomaly prevents safe entry. Crystal Scholars sell anti-anomaly amulets for 200 gp each, with no guarantee they hold for more than one hour. Attempting entry without one risks being frozen in the anomaly indefinitely.
+- 🌿 **Kieferden Hidden Paths (fast, risky).** Grove shortcuts halve travel time to the eastern districts. Each use carries a 1-in-6 chance of an unplanned encounter with Nebernoria devotees in the hidden groves.
+
+#### Landmarks
+
+- **Eveltoft City Hall & Fenchong Falls** — *30 min · 200 XP.* The seat of city government sits directly above Fenchong Falls, drawing its nullification power from the water below. Arcana proficiency and one minute of concentration near the hydro engines — DC 14 check — reveals the current Rift stability and whether a Reverberation is imminent.
+- **The Ferden Pool** — *Kieferden · 1 hour · 150 XP.* The famed natural hot spring. Immersion for ten minutes requires a DC 13 Constitution save — on a failure, one hour passes unnoticed. On a success, the character gains the benefits of a Short Rest and removes one level of exhaustion.
+- **The Utfordring Arena** — *Fiskmark · 1 hour · 100 XP.* An underwater aquatic competition venue. A bout requires DC 15 Athletics — a win earns 25 gp and 150 XP; a loss earns 5 gp and the permanent affectionate nickname "Drowned One" among Fiskmark locals.
+- **The Weirdwood Market** — *Chipping-Gong · 1 hour · 100 XP.* Exclusively Weirdwood goods, priced 50% above standard. Items have a 1-in-20 chance of being mildly sentient. Carpenter's Tools or Woodcarver's Tools proficiency allows a DC 12 appraisal check to haggle down the premium.
+- **The Amber Vaults** — *Gullborg, visible from outside · 0 XP.* Clearly visible through the anomaly — doors open, coin untouched, attendants frozen. Thieves have tried. None returned. Crystal Scholars offer 500 gp for a single intact ledger page as proof of a viable new method to breach the anomaly.
+
+#### Guilds of Eveltoft
+
+Each district of Eveltoft has a guild that player characters may join. Membership grants a mechanical benefit in addition to social and narrative access.
+
+- **The Rift Wardens' Compact** *(Central District)* — A joint body of Crystal Scholar volunteers and City Hall officials who monitor the Rift and coordinate emergency response to Rift Reverberations. They maintain exclusive access to the nullification engine rooms and the only official log of portal activity. *Benefit: Gain proficiency in Arcana (expertise if already proficient). Once per long rest, spend 1 minute attuning to local Rift energy — for the next hour you sense the presence and direction of any active portal or Weird Zone within 300 feet.*
+- **The Weirdwood Wrights** *(Chipping-Gong)* — Master craftspeople and foresters who have made a trade of Weirdwood's unpredictability. The Wrights are the first call whenever a structure in Chipping-Gong misbehaves — which is increasingly often. *Benefit: Gain proficiency with Carpenter's Tools. Once per long rest, spend 1 minute touching any wooden structure or object to learn one piece of its history — its last owner, a significant event, or whether it has been altered by Weirding energy.*
+- **The Shifting Bazaar Consortium** *(Dogun)* — An informal network of merchants and astral-goods dealers who profit from Dogun's chaos, sharing intelligence on vanishing stalls, transforming wares, and the locations of overnight astral vendors. *Benefit: Advantage on Persuasion checks in marketplaces and trade negotiations. Once per day, when you fail a Deception or Persuasion check during a commercial exchange, immediately reroll it and take the higher result.*
+- **The Tidebound Fellowship** *(Fiskmark)* — A brotherhood of fishermen, maritime traders, and Utfordring competitors united by the sea and the increasingly strange things that come out of it. The cumulative effect of Fiskmark's Weirded seafood has left all members with subtle aquatic affinities they can no longer fully explain. *Benefit: Gain proficiency with water vehicles and Survival checks near bodies of water. Once per long rest, consuming a piece of Fiskmark's strange seafood grants you the ability to breathe underwater for 1 hour.*
+- **The Ironveil Order** *(Heibury)* — Eveltoft's military elite, overseeing the district's shifting training grounds and its Weirded arsenal. Membership requires surviving a sparring session on ground that will not stay still. *Benefit: Once per short rest, when a creature hits you with an attack, use your reaction to reduce the damage by 1d10 + your proficiency bonus. You must be wearing medium or heavy armour.*
+- **The Amber Circle** *(Gullborg)* — Financiers and agents who operate from outside Gullborg's frozen borders, keeping the district's business interests alive while funding research into breaking the anomaly — and profiting handsomely from the uncertainty in the meantime. *Benefit: Your guild connections generate 10 gp per week in passive income. Advantage on Intelligence (History) checks and Intelligence-based checks to appraise the monetary or magical value of an object.*
+- **The Veil Tenders** *(Kieferden)* — Healers and herbalists who harvest Kieferden's strange medicinal plants and tend the Ferden Pool, walking a careful line between legitimate wellness practice and the cult activity spreading through the district's hidden groves. *Benefit: Gain proficiency with an Herbalism Kit. Once per long rest, spend 10 minutes applying Veil Tender techniques to a willing creature, removing one level of exhaustion. Cannot remove exhaustion caused by magical compulsion or curse.*
+
 ## Dollow Canyon
 
 Dollow Canyon
@@ -2864,6 +2917,46 @@ tread carefully, for here, even the plants have memories, and time itself seems 
 tricks on the mind. Will you find the treasures you seek—or become just another lost
 soul among the verdant maze, swallowed by the tangled grip of the Weirding?
 
+### DM Tools — Dollow Canyon
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | Time slips outward. The party emerges from the canyon to find several hours have passed in the outside world — enough to miss a meeting, lose daylight, or alarm anyone waiting for them. |
+| 3–4 | A path seals itself. A wall of dense vines grows across the route ahead within seconds. Hacking through requires ten minutes and a DC 13 Athletics check, or the party must backtrack. |
+| 5–6 | A plant blooms, withers, and regrows directly underfoot within one minute. Any character in the affected area must succeed on a DC 12 Dexterity save or be restrained until the start of their next turn. |
+| 7–8 | The canyon responds to intent. One character carrying stolen goods, harbouring a secret betrayal, or acting under false pretences finds their path closing while companions' paths open. The DM chooses who and need not explain why. |
+| 9–10 | Hypnotic spore cloud. A flytrap-sized plant releases golden pollen. All characters within 20 feet must succeed on a DC 14 Constitution save or be charmed for 1 minute — convinced the canyon is safe and beautiful, unwilling to leave or take hostile actions. |
+| 11–12 | A new river appears. An entirely new waterway cuts across the party's path, knee-deep and fast-moving. Crossing requires a DC 11 Athletics check; failure sweeps the character 30 feet downstream. |
+| 13–14 | Bioluminescent cascade. The serpents in the canopy illuminate simultaneously, bathing the party in eerie blue-green light for one minute. Stealth checks are made with disadvantage during this time. |
+| 15–16 | A jungle troll blinks into reality beside the party for one round — aware, watchful, and clearly evaluating them — before vanishing again. Whether it acts on what it observed is the DM's decision. |
+| 17–18 | Healing moss erupts underfoot. A patch of the rare instant-heal moss blooms beneath one character's feet. They regain 1d8 hit points — then the moss withers to dust within seconds. |
+| 19–20 | The canyon opens. A clear, straight path appears through otherwise impenetrable undergrowth, leading directly toward the party's destination. It remains open for one hour before the jungle reclaims it. |
+
+#### Encounter Ideas
+
+- **The Flytrap Ambush.** A carriage-sized predatory plant conceals itself as a flowering clearing. Characters must succeed on a DC 14 Wisdom save upon entering or spend their first action moving closer. The plant attacks when a character is within 10 feet. Burning the root cluster (AC 12, 30 HP, vulnerability to fire) collapses the trap.
+- **The Troll That Learns.** A time-Weirded jungle troll has encountered the party before — in a future they haven't lived yet. It anticipates one character's fighting style and opens with a perfect counter, adapting in real time. Defeating it requires improvisation.
+- **Lost Herbalist.** A potion-maker has been wandering the canyon for what they believe was two days — context clues suggest far longer. They carry half-finished notes on three rare plants and are beginning to hallucinate. Getting them out safely requires navigating at least two Weirdings without losing them to another time slip.
+- **The Iridescent Swarm.** A vast swarm of Weirded insects descends, drawn to magical energy. Any active spell effect or magical item attracts them; they begin dismantling enchantments. The party must extinguish their magical signature or outrun the swarm before items are temporarily drained.
+
+#### Travel Options
+
+- 🥾 **On Foot Through the Canyon Floor (variable).** DC 12 Survival each hour; failure loses the path and adds 1d4 hours. A character with Nature proficiency can assist, granting advantage.
+- 🌿 **Following the Canopy Line (faster, exposed).** Aviari or climbers move through the upper canopy, bypassing sealed ground paths — travel time halved. Each hour requires a DC 11 Perception check to avoid disturbing a bioluminescent serpent nest.
+- 🌊 **River Route (unreliable).** When a navigable river exists — which changes day to day — following it downstream is fast and clear. Roll a d6 at the start of each hour: on a 1 the river vanishes or reverses, forcing the party ashore.
+- 🧪 **Herbalist's Guide (reliable).** A local potion-maker or Dollow regular who knows the canyon's rhythms can lead the party without triggering path closures. DC 13 Investigation in the nearest settlement to find one; they charge 5 gp per day.
+- ✨ **Magical Transit (unreliable).** Teleportation within the canyon requires a DC 16 spellcasting ability check. On a failure, the caster and all targets arrive at a random location within the canyon chosen by the DM.
+
+#### Landmarks
+
+- **The Flytrap Grove** — *2 hours · 150 XP.* A cluster of carriage-sized predatory plants occupying a wide clearing thick with golden hypnotic spores (DC 14 Constitution save on entry). Between the plants, half-digested gear from previous victims yields a potion of growth and a waterproof satchel worth 40 gp — DC 13 Perception to spot.
+- **The Moonbloom Field** — *3 hours · 100 XP.* A rare open patch of glowing moonbloom flowers. DC 13 Nature and thirty minutes of careful work yields enough material for two potions of healing. Failing the check by 5 or more triggers confusion (as the spell) for 1 minute.
+- **The Vanishing Falls** — *4 hours · 200 XP.* A waterfall that appears and disappears on no discernible schedule. When present, immersion for one minute in its pool restores 2d6 hit points from the healing moss on every submerged stone.
+- **The Troll's Clearing** — *5 hours · 250 XP.* A wide, suspiciously clear area littered with objects the time-Weirded troll has collected from future encounters — items that won't exist for weeks, belonging to people who haven't arrived yet. A DC 15 Arcana or History check can identify one and infer its implied origin.
+- **The Old Cartographer's Camp** — *1 hour · 100 XP.* The ruins of a surveyor who tried and failed to map Dollow Canyon. Dozens of contradictory maps pin a rotting frame. DC 14 History (twenty minutes of study) extracts the approximate location of one landmark of the DM's choosing, valid for the next 24 hours.
+
 ## Hurstwold Forest
 
 Hurstwold Forest
@@ -2936,6 +3029,46 @@ traps. They carry charms carved from Hurstwold wood and leave offerings to the f
 spirits to ensure safe passage. These offerings often consist of candles or personal
 tokens, placed at the entrances of the forest. Without such rituals, even a short journey
 can result in a lifetime of wandering through warped realities.
+
+### DM Tools — Hurstwold Forest
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | The trail loops. The party walks for an hour only to return to their starting point. DC 14 Survival to break the loop; each failure costs another hour. Leaving a personal offering before attempting grants advantage. |
+| 3–4 | The moss turns red beneath one character's feet — the forest responding to a fear or guilt they carry. The DM chooses who and what it reflects. That character has disadvantage on Wisdom saving throws for the next hour. |
+| 5–6 | A faerie weaves an illusion of an alternate future. DC 13 Wisdom save or the character is stunned until the end of their next turn, unable to look away. |
+| 7–8 | A sprite takes the face of one character's deceased or absent loved one and beckons them deeper. DC 14 Insight to recognise the deception; on a failure the character must be physically restrained or they move toward it on their next turn. |
+| 9–10 | A shadow-stag crosses the path. Its antlers leach light, dropping the area into magical darkness in a 15-foot radius for 1 minute. Any character who ends their turn in the darkness takes 1d6 necrotic damage. |
+| 11–12 | The trunks breathe. A low rhythmic pulse moves through every tree in sight. All Perception and Investigation checks are made with disadvantage for the next 10 minutes. |
+| 13–14 | The threshold requires a toll. A ring of moss and burned-down candles blocks the path ahead. Any character who crosses without leaving something personally valued is silently deposited 100 feet back with no memory of crossing. |
+| 15–16 | The mist thickens. Visibility drops to 10 feet for 10 minutes — darkvision does not penetrate it. Separated characters must succeed on DC 12 Perception each minute or lose track of the group entirely. |
+| 17–18 | A Weirded unicorn appears, its form stuttering between solid and translucent. It regards the party for one round, then vanishes. Any character of demonstrably pure intent gains advantage on their next Charisma check made within Hurstwold. |
+| 19–20 | The grove points the way. For one hour the moss on the north-facing side of every tree glows brighter than usual, creating a navigational guide. No Survival checks are required for forest travel during this window. |
+
+#### Encounter Ideas
+
+- **The Faerie's Bargain.** A faerie offers something the party genuinely needs — directions, a lost item, information about the sorcerer's grove. The price sounds reasonable. DC 15 Insight reveals a secondary clause: the faerie has worded it to claim a soul, an undefined future favour, or a memory the character cannot name until it is gone. Negotiation is possible; refusing outright makes the faerie hostile.
+- **The Doppelgänger Sprint.** Sprites simultaneously take the forms of loved ones belonging to different party members, beckoning each in a different direction. Resolution requires either a group DC 13 Insight check to see through all illusions at once, or tracking down and confronting each sprite individually.
+- **Shadow-Stag at the Waterhole.** A shadow-stag stands over a wounded traveller. It is not feeding — it appears to be guarding. Its darkness aura makes close approach dangerous (1d6 necrotic per round). DC 14 Animal Handling reveals the traveller struck it first and the stag is waiting for an apology it cannot ask for.
+- **The Witch's Price.** A witch who has made Hurstwold her home offers shelter, healing, and directions. Her price is always small and specific — a childhood memory, the sound of a particular laugh, the ability to recall a certain face. What she takes is gone permanently.
+
+#### Travel Options
+
+- 🥾 **On Foot (unreliable).** DC 13 Survival each hour. On a failure the trail loops or deposits the party somewhere unintended — add 1d4 hours. Leaving an offering at the forest entrance grants advantage on the first check.
+- 🕯️ **The Offering Path (one guaranteed passage).** A traveller who leaves something genuinely valued — not coin, something personal — at the forest threshold is permitted one unimpeded passage through Hurstwold. This works once per person; the forest remembers.
+- 🧚 **Faerie Escort (fast, binding).** A faerie guide halves travel time but will propose a deal. The DM should prepare the terms carefully — the faerie honours the letter of any agreement, not the spirit.
+- 🌿 **Druid or Witch Guide (reliable).** Finding one requires DC 14 Investigation at the forest edge or prior knowledge. They ask for nothing immediately — but they will remember the favour.
+- 🦅 **Above the Canopy (partial).** Aviari or mounted flyers can navigate by landmarks above the treeline, avoiding trail-based Weirdings. The forest's mist rises above the canopy at night, removing this advantage entirely after dusk.
+
+#### Landmarks
+
+- **The Sorcerer's Grove** — *6 hours · 400 XP.* The legendary doorway to nowhere and everywhere, deep in Hurstwold's heart. Stepping through is one-way. Spells cast in the grove are maximised, but saving throws against them are also made with advantage. DC 17 Arcana (one hour of study without entering) yields one fact about a specific plane of the DM's choosing.
+- **The Offering Gate** — *30 min · 75 XP.* The forest threshold hung with burned candle stubs, knotted ribbon, and carved tokens. Leaving an offering before entering grants advantage on the first Survival check inside. Taking any existing offering triggers an immediate hostile reaction from the nearest Weirded creature.
+- **The Whispering Moss Hollow** — *3 hours · 175 XP.* A depression blanketed in glowing moss that responds to thought and emotion. Ten minutes of stillness and a DC 13 Wisdom check receives a genuine fragment — a truth, a clue, or a warning. On a failure, the same fragment arrives but the character cannot trust whether it is real or a faerie's invention.
+- **The Shadow-Stag's Waterhole** — *4 hours · 200 XP.* A clear pool where the water reflects the forest as it was before the Weirding — ordinary trees, daylight, familiar stars. Drinking from it (DC 14 Constitution save) either clears one condition affecting the character or triggers a vision of Hurstwold as it once was.
+- **The Witch's Refuge** — *5 hours · 150 XP.* An impossibly tidy cottage that should not exist this deep in the forest. The witch serves tea that removes one level of exhaustion and bread that tastes like whatever the eater is most homesick for. Her collection of taken memories fills dozens of small glass vials on the shelves. Her price is named after the party has accepted her hospitality.
 
 ## Innerstifla Sound
 
@@ -3029,6 +3162,46 @@ For those brave enough to attempt the crossing, the sound offers both peril and
 possibility, a glimpse into a world where nothing is certain, and even the stars may not
 shine as they should.
 
+### DM Tools — Innerstifla Sound
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | Ice forms without warning. Water around the vessel freezes solid, halting all movement for 1d6 minutes. Anything dropped overboard during that window is locked beneath it. |
+| 3–4 | A phantom storm erupts from clear sky and lasts exactly three minutes before vanishing. Barnacled artifacts and otherworldly bones rain down. Roll a d6: on a 5–6, one item is genuinely useful (DM's choice). |
+| 5–6 | A stretch of the water turns reflective as glass, showing the party's vessel in a different timeline — same hull, different crew, different damage. The mirror lasts one minute. |
+| 7–8 | A mermaid's song reaches the vessel. DC 14 Wisdom save or carry a fragment of the melody for 24 hours — disadvantage on Perception checks as attention keeps drifting toward it. |
+| 9–10 | A sea serpent surfaces nearby. Its phosphorescent scales suppress any magic item within 30 feet for 1 minute (items only, as *antimagic field*). The serpent dives again after two rounds. |
+| 11–12 | The submerged rift pulses. Characters in contact with the vessel must succeed on a DC 12 Constitution save or take 1d8 psychic damage from a flash of Nebernorian imagery. |
+| 13–14 | Time reverses locally. The vessel is pushed 300 feet back along its own wake — exactly where it was three minutes ago. No damage, no warning; only position changes. |
+| 15–16 | A barnacled artifact rises and bobs against the hull. It radiates faint magic (Arcana DC 13 to identify the school). Its actual function is the DM's to determine. |
+| 17–18 | The ice sings. A sheet of ice forms briefly and produces a clear, resonant tone before shattering. A DC 14 Arcana check identifies the note as identical to frequencies recorded near the main Rift in Eveltoft. |
+| 19–20 | The waters calm completely. For the next two hours, the sound is glassy and still — no Weirdings, no serpents, no phantom weather. The Fishermen's Guild pays 10 gp for advance notice of when these windows occur. |
+
+#### Encounter Ideas
+
+- **The Mirrored Ship.** The party's vessel encounters its own timeline reflection sailing the opposite heading. If they communicate, they learn something about where their current course leads. Boarding the reflection (DC 15 Arcana to stabilise the crossing) gives ten minutes before it dissolves.
+- **The Mermaid's Warning.** A mermaid sings directly at the vessel — not a lure, but an alert. DC 15 Arcana or DC 16 Insight to translate fully: the submerged rift is destabilising and something has started moving toward the surface. One hour until it arrives.
+- **Serpent at the Trade Lane.** A Weirded sea serpent has coiled around the primary crossing lane, suppressing all magic within its aura. Three Guild vessels are stranded. The Guild offers 150 gp to move it — but it cannot be killed without triggering a Rift pulse, as the Keepers of the Rift will make emphatically clear.
+- **Keepers' Recruitment.** A Keepers patrol vessel intercepts the party, having observed their reaction to a Weirding. They offer information, safe passage, and a retainer — in exchange for a single unspecified favour to be called in later.
+
+#### Travel Options
+
+- ⛵ **Fishermen's Guild Crossing (standard, organised).** Regular crossings timed around known calm windows. 2 gp per person. Guild crews are experienced with Weirdings but are not fighters; their contracts do not cover serpent encounters.
+- 🧊 **Ice Bridge (rare, temporary).** When the sound freezes over completely, the ice is thick enough to walk across in under an hour. A DC 12 Nature check at the shore determines whether it will hold for the full crossing.
+- 🌊 **Private Vessel (faster, unescorted).** Skips the Guild schedule but means no experienced Weirding crew. Each hour requires a DC 11 Water Vehicles check; failure triggers a random Weirding.
+- 🔱 **Mermaid Escort (fast, conditional).** A mermaid who trusts the party can guide a vessel across in half the normal time, steering clear of active rift zones. They will not escort anyone they judge to be acting against the sound's interests.
+- 🦅 **Aerial Crossing (safest).** Avoids all water-based Weirdings. Phantom storms still affect aerial travellers — DC 12 Acrobatics check to stay on course if one erupts mid-crossing.
+
+#### Landmarks
+
+- **The Rift Faultline** — *Open water · 300 XP.* The suspected submerged secondary rift, marked on Keepers charts with a red cross. Diving within 30 feet and succeeding on a DC 16 Arcana check confirms the rift's existence and estimates its stability — information the Crystal Scholars pay 100 gp to receive.
+- **The Debris Shelf** — *Shore of Norwycke · 1 hour · 150 XP.* A stretch of shore where phantom storms deposit otherworldly debris regularly. Locals leave it alone. DC 13 Investigation over one hour recovers one barnacled artifact that always radiates detectable magic.
+- **The Mirror Stretch** — *Mid-crossing · 200 XP.* A section roughly a mile from Leighmore's shore where timeline reflections occur most frequently. DC 14 Arcana (ten minutes of study) extracts one piece of information about an alternate version of events relevant to something the party is pursuing.
+- **The Keepers' Watch Station** — *Leighmore shore · 30 min · 75 XP.* A fortified stone post maintaining the most complete log of Weirding activity on the water. The station holds two sending stones linked to the Eveltoft chapter house — the Keepers will loan one to a party they trust.
+- **The Serpent's Coil** — *Open water · 250 XP.* A semi-permanent formation of churned water and phosphorescent foam where a Weirded serpent rests near the surface. Approaching within 60 feet reveals the serpent phases partially into another plane on each breath. A DC 15 Arcana check suggests it is being slowly pulled through the faultline and may not survive the week.
+
 ## Inverlinn Coast
 
 Inverlinn Coast
@@ -3118,6 +3291,46 @@ Weirding makes no promises, and what one finds beneath the ashen skies and glowi
 rivers may be treasure or torment. Yet, despite the dangers, the allure of discovery
 persists, and those who understand the balance between risk and reward may find their
 greatest opportunities waiting within the fire and shadow of Inverlinn.
+
+### DM Tools — Inverlinn Coast
+
+#### Weirdings (d20)
+
+| d20 | Effect |
+|-----|--------|
+| 1–2 | An eruption without warning. Every character within 60 feet must succeed on a DC 13 Dexterity save or take 2d6 fire damage from ejected rock and ash. The vent goes quiet within one minute. |
+| 3–4 | Magma flows uphill. A lava river reverses course and climbs a slope, cutting off the party's route. They have two rounds to cross before the channel is impassable for ten minutes. |
+| 5–6 | A fire elemental pulses erratically through colours never seen in ordinary fire — violet, white, deep blue. A DC 12 Arcana check identifies one hue as Nebernorian in origin. |
+| 7–8 | Starlight webs. A lava spider's shimmering web drops across the path. Contact deals 1d4 psychic damage and briefly fills the character's mind with images of deep space. |
+| 9–10 | A phantom beast passes through. Scorched footprints appear beside the party — visible and audible, but belonging to nothing present. The hum it leaves behind lasts one minute. |
+| 11–12 | The volcano listens. A low rhythmic vibration rolls through the ground. Every character in contact with the earth succeeds on a DC 11 Wisdom save or feels certain something vast and ancient is aware of their presence. |
+| 13–14 | Magma spirals into a glowing whirlpool for thirty seconds. A DC 13 Arcana check reveals a shape at its centre corresponding to a symbol found elsewhere in Ryndor's history — the DM decides which. |
+| 15–16 | A magma drake circles overhead, its Weirded state causing erratic flight. It will not attack unless provoked, but each round it remains there is a 1-in-6 chance it loses control and dives. |
+| 17–18 | Ash memory. A volcanic ash cloud drifts through the party. DC 12 Constitution save or experience a thirty-second vivid hallucination of a Nordica ritual performed at this exact location, possibly centuries ago. |
+| 19–20 | The spirits are appeased. The ground steadies, lava slows, and the hum drops to silence for one hour. Weirdings do not occur during this window and native creatures are non-hostile. |
+
+#### Encounter Ideas
+
+- **The Fused Drake.** A magma drake partially incorporeal from the Weirding — its attacks pass through armour on a 19–20. A DC 14 Arcana check reveals the Weirding energy can be disrupted by targeting the violet seam along its spine.
+- **The Reclusive Community.** A settlement refuses to evacuate before an imminent eruption, insisting the correct ritual will protect them. The ritual requires components scattered across three dangerous locations and they are too few to gather them in time.
+- **The Lost Relic Seeker.** An adventurer returns from the Great Volcano alive but non-verbal, with fragmented memories and a relic they cannot describe finding. It radiates unstable Weirding energy. They will not release it voluntarily.
+- **Spirit Appeasement.** A Nordica descendant community hires the party to perform a ritual at a volcano vent. The ritual is real — but the Weirding has altered the spirits' expectations. Each step goes slightly wrong, requiring improvisation (Arcana DC 13, Religion DC 12, or Performance DC 14) without breaking the sequence.
+
+#### Travel Options
+
+- 🥾 **Overland Through the Lava Fields (slow, hazardous).** DC 13 Survival check each hour. On a failure, a new lava flow forces a detour — add 1 hour. Failure by 5 or more leads into a Weirding encounter.
+- 🏘️ **Guided by Locals (reliable).** Reclusive coastal communities guide travellers through safe corridors for 3 gp per day. They know lava flow patterns, creature territories, and which vents are due to erupt.
+- ⛵ **Coastal Vessel (fast, exposed).** Avoids the lava fields but keeps the party within range of eruptions landing in the water — each creates a scalding steam burst (DC 12 Dexterity save, 1d6 fire damage) in a 30-foot radius. Roll for eruptions once per hour.
+- 🦅 **Aerial (fastest, drake risk).** Clears the terrain entirely. Each hour of aerial travel has a 1-in-6 chance of attracting a Weirded magma drake, which will pursue beyond the coast's edge.
+- ✨ **Magical Transit (unreliable).** Volcanic Weirding energy interferes with teleportation. DC 15 spellcasting ability check; on a failure the caster and targets arrive at a random location in the lava fields.
+
+#### Landmarks
+
+- **The Great Volcano** — *2 days · 400 XP.* The dominant peak of Inverlinn, deeply changed by the Weirding. Each hour inside requires a DC 14 Constitution save or gain one level of exhaustion. Characters who reach the lower chambers find Nordica inscriptions — DC 15 History reveals a piece of Ryndor's pre-Weirding past the DM has held in reserve.
+- **The Nordica Ritual Site** — *6 hours · 200 XP.* A ring of blackened standing stones on a stable plateau. The Weirding has made the site active again. A ten-minute ritual and DC 13 Religion check grants the effects of a short rest and advantage on saving throws against fire damage for 24 hours.
+- **The Starlight Web Warren** — *8 hours · 250 XP.* A network of lava tubes colonised by Weirded lava spiders whose webs are worth 50 gp a strand to the right collector. Harvesting one (DC 13 Sleight of Hand) risks psychic contact with the spider's consciousness — 1d6 psychic damage on a failure. Three previous collectors are desiccated here.
+- **The Magma Whirlpool** — *4 hours · 175 XP.* A self-sustaining Weirding loop where magma spirals indefinitely. A DC 14 Arcana check confirms it is stable magical energy. Disrupting it releases a burst of raw magical force equivalent to a *fireball* centred on the whirlpool.
+- **The Phantom Footprint Trail** — *3 hours · 150 XP.* A line of scorched footprints — always fresh, never accumulating — crossing a stretch of cooled black rock near the coast. Following it (DC 12 Survival each hour) leads toward the Great Volcano. A DC 15 Arcana check at the origin detects a recurring Weirding signature: something passes here on a consistent schedule that no one has yet identified.
 
 ## Isles of Holmea
 

@@ -822,6 +822,78 @@
       line-height: 1.6;
     }
 
+    /* ── Guild block (Eveltoft DM Tools) ────────────────────────── */
+    .guild-item {
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(245, 158, 11, 0.07);
+    }
+    .guild-item:last-child { border-bottom: none; }
+
+    .guild-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      margin-bottom: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .guild-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--ember-glow);
+    }
+
+    .guild-district {
+      font-size: 0.7rem;
+      color: var(--text-mute);
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.04em;
+    }
+
+    .guild-desc {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .guild-benefit {
+      font-size: 0.83rem;
+      color: var(--text-dim);
+      margin-top: 0.4rem;
+      padding: 0.35rem 0.65rem;
+      border-left: 2px solid rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.04);
+      line-height: 1.55;
+    }
+
+    .guild-benefit strong { color: var(--ember-glow); }
+
+    /* ── In-card guild display ───────────────────────────────────── */
+    .card-guild {
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(245, 158, 11, 0.12);
+    }
+
+    .card-guild-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--ember-glow);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.35rem;
+    }
+
+    .card-guild-label {
+      font-size: 0.68rem;
+      font-family: 'Cinzel', serif;
+      color: var(--text-mute);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
     /* ── Dim non-matching content during search ─────────────────── */
     body.is-searching .card:not(.has-match),
     body.is-searching .faction-card:not(.has-match),
@@ -914,6 +986,15 @@
     <a href="#cyf-races" class="nav-link">Races</a>
     <a href="#cyf-backgrounds" class="nav-link">Backgrounds</a>
     <a href="#cyf-classes" class="nav-link">Classes</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Of Roots and Ruin</div>
+    <a href="#rar-overview" class="nav-link">Campaign Overview</a>
+    <a href="#rar-ep1" class="nav-link">Ep. 1 — Going Green</a>
+    <a href="#rar-ep2" class="nav-link">Ep. 2 — Creeping Death</a>
+    <a href="#rar-ep3" class="nav-link">Ep. 3 — The Machine Dreams Still</a>
+    <a href="#rar-ep45" class="nav-link">Ep. 4 &amp; 5 — Coming Soon</a>
   </div>
 </nav>
 
@@ -2179,6 +2260,12 @@
           <div class="card-subtitle">Heart of Power and the Rift</div>
           <div class="card-body">
             <p>At the core of Eveltoft, political authority and commerce converge with the Rift to Nebernoria. Powerful nullification fields — powered by the hydro engines of the Fenchong Falls — are built directly into Eveltoft City Hall, which sits over the roaring waterfall itself. Every so often, fluctuations in flow cause momentary interruptions called <strong>Rift Reverberations</strong>: objects vanish and reappear, clocks behave erratically, and brief portals to Nebernoria flicker open. Black market rumors abound of engineers willing to disable the nullification fields for the right price.</p>
+            <p>A joint body of Crystal Scholar volunteers and City Hall officials, the Compact maintains the only official log of portal activity in Eveltoft and holds exclusive access to the nullification engine rooms beneath City Hall.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Rift Wardens' Compact</div>
+            <div class="guild-benefit">Gain proficiency in Arcana (expertise if already proficient). Once per long rest, spend 1 minute attuning to local Rift energy — for the next hour you sense the presence and direction of any active portal or Weird Zone within 300 feet.</div>
           </div>
         </div>
 
@@ -2187,6 +2274,12 @@
           <div class="card-subtitle">Woodlands at the Edge of the Crystal City</div>
           <div class="card-body">
             <p>Named for a legendary bear once roaming nearby forests, Chipping-Gong is Eveltoft's lumber and woodworking heart. The Weirding has given rise to <strong>Weirdwood</strong> — timber whose patterns shift like flowing rivers beneath the grain — now a coveted material whose latent magic may alter owners' thoughts or dreams. Buildings have taken on a life of their own, walls tightening against storms, floors softening underfoot. Several unfortunate incidents have involved houses sealing their occupants inside.</p>
+            <p>Master craftspeople and foresters who have made a trade of Weirdwood's unpredictability, the Wrights are the first call whenever a structure in Chipping-Gong decides to misbehave — which is increasingly often.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Weirdwood Wrights</div>
+            <div class="guild-benefit">Gain proficiency with Carpenter's Tools. Once per long rest, spend 1 minute touching any wooden structure or object to learn one piece of its history — its last owner, a significant event, or whether it has been altered by Weirding energy.</div>
           </div>
         </div>
 
@@ -2195,6 +2288,12 @@
           <div class="card-subtitle">Shopping, Food, Entertainment &amp; Unpredictable Anomalies</div>
           <div class="card-body">
             <p>Dogun's famous marketplace thrives but strange sights grow common: <strong>silk scarves turn to metal in the rain</strong>, spices shift taste mid-cooking, and purchased objects vanish by nightfall. Temporary stalls appear overnight, run by beings touched by the astral plane, their wares vanishing with them. The phrase <strong>"Dogun will provide"</strong> captures both its unpredictability and its potential for surprising good fortune. Lanterns from the annual Festival of Light multiply into hundreds and disappear into strange constellations.</p>
+            <p>An informal network of merchants and astral-goods dealers who profit from Dogun's chaos, sharing intelligence on which stalls have vanished, which wares are likely to transform, and where the overnight vendors will appear next.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Shifting Bazaar Consortium</div>
+            <div class="guild-benefit">Advantage on Persuasion checks in marketplaces and trade negotiations. Once per day, when you fail a Deception or Persuasion check during a commercial exchange, immediately reroll it and take the higher result.</div>
           </div>
         </div>
 
@@ -2203,6 +2302,12 @@
           <div class="card-subtitle">Center for Waterfront Fun &amp; Strange Maritime Encounters</div>
           <div class="card-body">
             <p>Fiskmark's markets and restaurants still thrive, but fishermen return with odd catches — fish that glow faintly in moonlight, crabs with extra limbs, eels that sing eerie melodies. Dishes have become legendary: <strong>mirrored cod</strong> that displays shifting images of the past as it cooks, <strong>ember prawns</strong> that warm the eater from inside. Some meals whisper strange thoughts or cause temporary transformations — skin taking on a sea-green hue or hair shifting to translucent strands. The Utfordring league holds competitions in the district's underwater arenas.</p>
+            <p>A brotherhood of fishermen, maritime traders, and Utfordring competitors united by the sea and the increasingly strange things that come out of it — the cumulative effect of Fiskmark's Weirded seafood has left all members with subtle aquatic affinities they can no longer fully explain.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Tidebound Fellowship</div>
+            <div class="guild-benefit">Gain proficiency with water vehicles and Survival checks near bodies of water. Once per long rest, consuming a piece of Fiskmark's strange seafood grants you the ability to breathe underwater for 1 hour.</div>
           </div>
         </div>
 
@@ -2211,6 +2316,12 @@
           <div class="card-subtitle">Day Passes Required for Entry</div>
           <div class="card-body">
             <p>Named for the legendary shield wall once defending the city, Heibury remains Eveltoft's military heart. Training grounds shift underfoot, forcing recruits to adapt mid-spar. Some soldiers develop strange Weirded abilities — <strong>reflexes heightened as if guided by unseen hands</strong>, weapons glowing with residual energy — but too much exposure leads to fractured memories. The district's blacksmiths create weapons that hum with strange vibrations; some <strong>develop minds of their own</strong>, refusing to be wielded by those they deem unworthy.</p>
+            <p>Eveltoft's premier military order, the Ironveil oversee the district's shifting training grounds and manage its Weirded arsenal — membership requires surviving a sparring session on ground that will not stay still.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Ironveil Order</div>
+            <div class="guild-benefit">Once per short rest, when a creature hits you with an attack, use your reaction to reduce the damage by 1d10 + your proficiency bonus. You must be wearing medium or heavy armour.</div>
           </div>
         </div>
 
@@ -2219,6 +2330,12 @@
           <div class="card-subtitle">Timeless Splendor Suspended</div>
           <div class="card-body">
             <p>Once the pinnacle of luxury and opulence, Gullborg District now lies frozen in time, held captive by a slow-time anomaly. From outside, it appears untouched — grand markets bustle, musicians play in courtyards, half-finished meals linger on tables. But for those outside, years have passed without seeing trapped loved ones. Only two individuals have ever escaped since the anomaly began — both returned disoriented, younger than their children trapped outside. Crystal Scholars have yet to find a way to neutralize it.</p>
+            <p>Operating entirely from outside the frozen district, the Amber Circle keeps Gullborg's financial interests alive while quietly funding every credible attempt to break the anomaly — and profiting handsomely from the uncertainty in the meantime.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Amber Circle</div>
+            <div class="guild-benefit">Your guild connections generate 10 gp per week in passive income. Advantage on Intelligence (History) checks and Intelligence-based checks to appraise the monetary or magical value of an object.</div>
           </div>
         </div>
 
@@ -2227,10 +2344,100 @@
           <div class="card-subtitle">A Tranquil Oasis Beneath the Veil of the Weirding</div>
           <div class="card-body">
             <p>Once a peaceful retreat, Kieferden's lush greenery, spas, and the <strong>Ferden Pool</strong> — a natural hot spring — now carry a subtle unease. The pool drains one moment and brims over the next; some visitors find immersion warps time, making moments feel like entire days. Massages trigger visions of other lives; herbal teas produce dreams impossible to forget. Rumors persist of a cult devoted to Nebernoria conducting rituals in the district's hidden groves — and the disappearance of several Crystal Scholar investigators investigating those rumors.</p>
+            <p>Healers and herbalists who harvest Kieferden's strange medicinal plants and tend the Ferden Pool, the Veil Tenders walk a careful line between legitimate wellness practice and the cult activity spreading through the district's hidden groves.</p>
+          </div>
+          <div class="card-guild">
+            <div class="card-guild-label">Guild</div>
+            <div class="card-guild-name">The Veil Tenders</div>
+            <div class="guild-benefit">Gain proficiency with an Herbalism Kit. Once per long rest, spend 10 minutes applying Veil Tender techniques to a willing creature, removing one level of exhaustion. Cannot remove exhaustion caused by magical compulsion or curse.</div>
           </div>
         </div>
 
       </div><!-- /grid-2 -->
+
+      <!-- DM Tools: Eveltoft -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Eveltoft</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>An astral shadow detaches from a random party member and begins mimicking their actions one round late. It lasts 1 hour before dissolving; frightened creatures treat it as hostile.</td></tr>
+              <tr><td>3–4</td><td>A nearby bridge pivots 90 degrees, redirecting foot traffic to an unintended district. The party must spend an extra 30 minutes navigating back to their destination.</td></tr>
+              <tr><td>5–6</td><td>A canal reverses direction for 1 minute. Any vessel or swimming creature is pushed 60 feet upstream. After 1 minute the flow snaps back to normal.</td></tr>
+              <tr><td>7–8</td><td>A rogue enchantment seizes one random magical item among the party — it floats, spins, and hums for 1 minute. While airborne, the item cannot be used or retrieved.</td></tr>
+              <tr><td>9–10</td><td>A mundane object nearby — a clock, a chair, a lantern — briefly awakens with simple intelligence, speaks one cryptic sentence in a language of the DM's choosing, then goes permanently inert.</td></tr>
+              <tr><td>11–12</td><td>A Weird Zone pops up in a 30-foot radius around the party. For 1 minute, spell attack rolls are made with advantage but saving throws against spells are also made with advantage. Then it collapses.</td></tr>
+              <tr><td>13–14</td><td>A magical storm erupts overhead. Any character caught outdoors must succeed on a DC 12 Strength saving throw or be pushed 10 feet in a random direction and knocked prone.</td></tr>
+              <tr><td>15–16</td><td>A planter or park nearby erupts with astral flora — blooms of impossible colour and faint phosphorescence. Any character who touches a flower must succeed on a DC 13 Constitution save or have disadvantage on their next Wisdom check.</td></tr>
+              <tr><td>17–18</td><td>A Rift Reverberation ripples out from Central District. A portal flickers open for 6 seconds, through which a confused astral creature stumbles before it snaps shut. Roll d6: 1–3 the creature is harmless and frightened; 4–6 it is hostile.</td></tr>
+              <tr><td>19–20</td><td>The streets align perfectly. For the next 4 hours the party moves through Eveltoft without navigational difficulty — locals are cooperative, shortcuts appear obvious, and no further Weirdings occur in that window.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>Rift Reverberation Crisis.</strong> The nullification fields in Central District fail — a five-minute portal tears open, drawing astral creatures into the streets. City Hall engineers send a runner recruiting capable fighters. The party has ten minutes to repel the creatures or evacuate civilians before the portal closes on its own.</div>
+          <div class="encounter-item"><strong>Sealed House (Chipping-Gong).</strong> A Weirdwood building has locked itself shut with three occupants inside. It is not hostile — it is frightened. A Persuasion check (DC 14, made by speaking aloud and knocking gently) or an Animal Handling check (DC 13) can coax it open. Forced entry triggers a defensive response: walls tighten and floors buckle.</div>
+          <div class="encounter-item"><strong>The Vanishing Merchant (Dogun).</strong> A trader the party just transacted with vanishes mid-exchange — stall, goods, and coin all gone. An Arcana check (DC 14) or Perception check (DC 16) finds an astral residue trail leading two streets over to a temporary Weird Zone, inside which the merchant crouches, confused and terrified.</div>
+          <div class="encounter-item"><strong>The Singing Catch (Fiskmark).</strong> A fisherman drags in a bioluminescent eel that begins singing in Nebernorian. It sings for three minutes, then dies. A PC with Arcana (DC 15) can identify the language; History (DC 16) yields a partial translation — a prophecy connected to something the party is already pursuing.</div>
+          <div class="encounter-item"><strong>The Reluctant Weapon (Heibury).</strong> A blacksmith's newly forged sword refuses its buyer — humming discordantly and glowing red when touched. The smith hires the party to negotiate. The sword is sentient, arrogant, and wants a worthy wielder. This is an Insight and Charisma encounter; the sword cannot be destroyed unless a Weirding changes it.</div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🏙️</span><span><strong>On Foot Through the Districts (variable).</strong> Moving between districts takes roughly 30 minutes each. The DM may call for a DC 10 Perception check in unfamiliar areas — failure means the party takes a wrong turn and ends up in an adjacent district instead.</span></div>
+            <div class="travel-item"><span class="travel-icon">🚤</span><span><strong>Canal Boat (fast, unreliable).</strong> Canal boats cross Eveltoft in minutes when waterways behave. Roll a d6 at departure: on a 1, the canal reverses during transit and the party must disembark early or arrive at the wrong terminus.</span></div>
+            <div class="travel-item"><span class="travel-icon">📜</span><span><strong>Heibury Day Pass (required for district entry).</strong> Passes are obtained from City Hall. Presenting valid identification is sufficient, but any party member with a criminal record must succeed on a Persuasion check (DC 14) or a forged document with Deception (DC 12). Passes are single-use.</span></div>
+            <div class="travel-item"><span class="travel-icon">⚠️</span><span><strong>Gullborg (effectively inaccessible).</strong> The slow-time anomaly prevents safe entry. Crystal Scholars sell anti-anomaly amulets for 200 gp each — with no guarantee they hold for more than one hour. Attempting entry without one risks being frozen inside the anomaly indefinitely.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌿</span><span><strong>Kieferden Hidden Paths (fast, risky).</strong> Locals know grove shortcuts that halve travel time to the eastern districts. Each use carries a 1-in-6 chance of an unplanned encounter with Nebernoria devotees conducting rituals in the hidden groves.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">Eveltoft City Hall &amp; Fenchong Falls</span>
+              <span class="landmark-meta">30 min · 200 XP</span>
+            </div>
+            <div class="landmark-desc">The seat of city government sits directly above Fenchong Falls, drawing its nullification power from the roaring water below. A character with Arcana proficiency who spends one minute concentrating near the hydro engines can make a DC 14 check to sense the current Rift stability — and whether a Reverberation is imminent.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Ferden Pool</span>
+              <span class="landmark-meta">Kieferden · 1 hour · 150 XP</span>
+            </div>
+            <div class="landmark-desc">The famed natural hot spring has grown unreliable since the Weirding. Immersion for ten minutes requires a DC 13 Constitution save — on a failure, the character loses track of time and one hour passes unnoticed. On a success, they gain the benefits of a Short Rest and remove one level of exhaustion.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Utfordring Arena</span>
+              <span class="landmark-meta">Fiskmark · 1 hour · 100 XP</span>
+            </div>
+            <div class="landmark-desc">An underwater aquatic competition venue. A character who enters a bout must succeed on a DC 15 Athletics check — a win earns 25 gp and 150 XP; a loss earns 5 gp and the permanent, affectionate nickname "Drowned One" among Fiskmark locals.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Weirdwood Market</span>
+              <span class="landmark-meta">Chipping-Gong · 1 hour · 100 XP</span>
+            </div>
+            <div class="landmark-desc">A market dealing exclusively in Weirdwood goods — furniture, weapon handles, structural panels. Prices are 50% above standard, but items have a 1-in-20 chance of being mildly sentient. A character with Woodcarver's Tools or Carpenter's Tools proficiency can appraise items (DC 12) and potentially haggle down the premium.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Amber Vaults</span>
+              <span class="landmark-meta">Gullborg (visible from outside) · 0 XP</span>
+            </div>
+            <div class="landmark-desc">Gullborg's grand vault complex is clearly visible through the anomaly's haze — doors open, coin untouched, attendants frozen in place. Thieves have tried. None returned. Crystal Scholars offer 500 gp for a single intact ledger page from the Vaults as proof that a new method to breach the anomaly is viable.</div>
+          </div>
+        </div>
+
+      </div>
 
       <!-- ── Dollow Canyon ──────────────────────────────────────────── -->
       <div class="subsection-title" id="wl-dollow">Dollow Canyon</div>
@@ -2240,6 +2447,88 @@
           <p>Dollow Canyon, stretching between Mt. Bannockwyrm and Benard Peak, is a lush and humid anomaly in Ryndor's otherwise cool and rugged landscape. Warm air currents funnel into the canyon, making it one of the warmest places in Ryndor, where tropical flora and fauna flourish unchecked. Yet beneath its vibrant beauty, the Weirding makes this jungle treacherous — a living maze where paths open one day and close the next under walls of vines. Plants bloom, wither, and regrow within hours. <strong>What seems like a day within the canyon might be only moments outside</strong>, and some explorers return with memories of events they cannot explain.</p>
           <p>The creatures here are equally unusual. Gigantic predatory plants — flytraps the size of carriages — lurk in the undergrowth, their tendrils exuding hypnotic scent. Insect swarms shimmer with iridescent wings, serpents with bioluminescent scales weave through the branches, and <strong>jungle trolls twisted by time and magic</strong> can blend into any environment with chameleon-like skin, blinking in and out of reality and seemingly learning from future encounters.</p>
           <p>Despite the dangers, rare herbs and plants with powerful medicinal properties grow only here — flowers that glow under moonlight, mosses that heal wounds instantly. Potions brewed from Dollow's plants grant immense power or strange dreams, though prolonged use blurs the lines between reality and hallucination. The environment shifts so frequently it is almost impossible to map: new rivers appear overnight, waterfalls cascade from seemingly nowhere. The jungle seems alive, responding to the thoughts of those within it — paths opening for those with pure intentions, closing abruptly for those weighed down by greed or fear.</p>
+        </div>
+      </div>
+
+      <!-- DM Tools: Dollow Canyon -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Dollow Canyon</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>Time slips outward. The party emerges from the canyon to find several hours have passed in the outside world — enough to miss a meeting, lose daylight, or alarm anyone waiting for them.</td></tr>
+              <tr><td>3–4</td><td>A path seals itself. A wall of dense vines grows across the route ahead within seconds. Hacking through requires ten minutes and a DC 13 Athletics check, or the party must backtrack and find another way.</td></tr>
+              <tr><td>5–6</td><td>A plant blooms, withers, and regrows in the space of one minute directly underfoot. Any character standing in the affected area must succeed on a DC 12 Dexterity save or be momentarily entangled and restrained until the start of their next turn.</td></tr>
+              <tr><td>7–8</td><td>The canyon responds to intent. One character carrying stolen goods, harbouring a secret betrayal, or acting under false pretences finds the path ahead closing while it opens for companions. The DM chooses who and need not explain why.</td></tr>
+              <tr><td>9–10</td><td>Hypnotic spore cloud. A flytrap-sized plant releases a burst of golden pollen. All characters within 20 feet must succeed on a DC 14 Constitution save or be charmed for 1 minute, convinced the canyon is safe and beautiful — they will not willingly leave or take hostile actions during that time.</td></tr>
+              <tr><td>11–12</td><td>A new river appears. An entirely new waterway cuts across the party's path, knee-deep and fast-moving. Crossing requires a DC 11 Athletics check; failure sweeps the character 30 feet downstream before they can find footing.</td></tr>
+              <tr><td>13–14</td><td>Bioluminescent cascade. The serpents in the canopy above illuminate simultaneously, bathing the party in eerie blue-green light for one minute. Stealth checks are made with disadvantage during this time.</td></tr>
+              <tr><td>15–16</td><td>A jungle troll blinks into reality beside the party for one round — aware, watchful, and clearly evaluating them — before vanishing again. It has observed something. Whether it acts on that observation is the DM's decision.</td></tr>
+              <tr><td>17–18</td><td>Healing moss erupts underfoot. A patch of the rare instant-heal moss blooms beneath one character's feet. They regain 1d8 hit points — then the moss withers to dust within seconds.</td></tr>
+              <tr><td>19–20</td><td>The canyon opens. A clear, straight path appears through otherwise impenetrable undergrowth, leading directly toward the party's destination. It will remain open for one hour before the jungle reclaims it.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>The Flytrap Ambush.</strong> A carriage-sized predatory plant conceals itself as a flowering clearing, its hypnotic scent drawing in the party. Characters must succeed on a DC 14 Wisdom save upon entering the clearing or spend their first action moving closer. The plant attacks when a character is within 10 feet. Burning the root cluster (AC 12, 30 HP, vulnerability to fire) collapses the trap.</div>
+          <div class="encounter-item"><strong>The Troll That Learns.</strong> A time-Weirded jungle troll has encountered the party before — in a future they haven't lived yet. It anticipates one character's fighting style and opens with a perfect counter. As the fight progresses, the DM can have it adapt in real time: moving before characters act, shrugging off the first damage type used against it, targeting whoever healed last round. Defeating it requires improvisation.</div>
+          <div class="encounter-item"><strong>Lost Herbalist.</strong> A potion-maker from a nearby settlement has been wandering the canyon for what they believe was two days — the party can tell from context clues it has been far longer. They carry half-finished notes on three rare plants and are starting to hallucinate from prolonged exposure to Dollow's flora. Getting them out safely requires navigating at least two Weirdings without losing them to another time slip.</div>
+          <div class="encounter-item"><strong>The Iridescent Swarm.</strong> A vast swarm of Weirded insects descends — not to feed, but drawn to magical energy. Any active spell effect or magical item attracts them; they begin dismantling enchantments by landing on them. The party must either extinguish their magical signature (dispel magic, doffing items) or outrun the swarm before items are temporarily drained of their properties.</div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🥾</span><span><strong>On Foot Through the Canyon Floor (variable).</strong> The standard route — and the most unreliable. Each hour of travel requires a DC 12 Survival check; on a failure, the party loses the path and adds 1d4 hours to their journey. A character with Nature proficiency can assist, granting advantage.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌿</span><span><strong>Following the Canopy Line (faster, exposed).</strong> Aviari or climbers can move through the upper canopy, bypassing sealed ground paths entirely. Travel time is halved, but the bioluminescent serpents nest here — each hour requires a DC 11 Perception check to avoid disturbing a nest.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌊</span><span><strong>River Route (unreliable).</strong> When a navigable river exists — which changes day to day — following it downstream is fast and relatively clear. Roll a d6 at the start of each hour: on a 1, the river vanishes or reverses, forcing the party ashore.</span></div>
+            <div class="travel-item"><span class="travel-icon">🧪</span><span><strong>Herbalist's Guide (reliable).</strong> A local potion-maker or Dollow regular who knows the canyon's rhythms can lead the party without triggering path closures. Finding one requires a DC 13 Investigation check in the nearest settlement, and they charge 5 gp per day.</span></div>
+            <div class="travel-item"><span class="travel-icon">✨</span><span><strong>Magical Transit (unreliable).</strong> Teleportation within the canyon requires a DC 16 spellcasting ability check. On a failure, the caster and all targets arrive at a random location within the canyon chosen by the DM — potentially deeper in, not further out.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Flytrap Grove</span>
+              <span class="landmark-meta">2 hours · 150 XP</span>
+            </div>
+            <div class="landmark-desc">A cluster of carriage-sized predatory plants occupying a wide clearing. The air here is thick with golden hypnotic spores — DC 14 Constitution save on entry or the character is charmed into stillness. Between the plants, half-digested gear from previous victims litters the ground: among it, a character who succeeds on a DC 13 Perception check can recover a potion of growth and a waterproof satchel of trade goods worth 40 gp.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Moonbloom Field</span>
+              <span class="landmark-meta">3 hours · 100 XP</span>
+            </div>
+            <div class="landmark-desc">A rare open patch where the glowing moonbloom flowers grow in dense clusters. Harvesting them requires a DC 13 Nature check and thirty minutes of careful work; a success yields enough raw material for two potions of healing (or their equivalent in trade value). Failing the check by 5 or more triggers a minor hallucinogenic reaction — the character is confused (as the spell) for 1 minute.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Vanishing Falls</span>
+              <span class="landmark-meta">4 hours · 200 XP</span>
+            </div>
+            <div class="landmark-desc">A waterfall that appears and disappears on no discernible schedule. When present, its pool contains healing moss on every submerged stone — immersion for one minute restores 2d6 hit points. The falls also act as a reliable landmark: local guides use them as a fixed meeting point precisely because everyone knows they might not be there.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Troll's Clearing</span>
+              <span class="landmark-meta">5 hours · 250 XP</span>
+            </div>
+            <div class="landmark-desc">A wide, suspiciously clear area where one of the time-Weirded jungle trolls makes its territory. The clearing floor is littered with objects the troll has collected from future encounters — items that won't exist for weeks or months, belonging to people who haven't arrived yet. A DC 15 Arcana or History check can identify any of these objects and their implied origins, yielding a fragment of intelligence about an event yet to come.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Old Cartographer's Camp</span>
+              <span class="landmark-meta">1 hour · 100 XP</span>
+            </div>
+            <div class="landmark-desc">The ruins of a camp belonging to a surveyor who tried — and failed — to map Dollow Canyon. Dozens of contradictory maps are pinned to a rotting wooden frame, each showing a completely different layout. A character who spends twenty minutes studying them and succeeds on a DC 14 History check extracts one genuinely useful piece of information: the approximate location of one landmark of the DM's choosing, valid for the next 24 hours.</div>
+          </div>
         </div>
       </div>
 
@@ -2254,6 +2543,88 @@
         </div>
       </div>
 
+      <!-- DM Tools: Hurstwold Forest -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Hurstwold Forest</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>The trail loops. The party walks for an hour only to find themselves back where they started. A DC 14 Survival check breaks the loop; each failure costs another hour. A character who leaves a personal offering at a tree before attempting gains advantage.</td></tr>
+              <tr><td>3–4</td><td>The moss turns red. The glowing ground moss flares crimson beneath one character's feet — the forest responding to a fear or guilt they carry. The DM chooses who and what it reflects. That character has disadvantage on Wisdom saving throws for the next hour.</td></tr>
+              <tr><td>5–6</td><td>A faerie weaves an illusion. One character sees a vivid, convincing vision of an alternate future — a path not taken, a loss not yet suffered. DC 13 Wisdom save or they are stunned until the end of their next turn, unable to look away.</td></tr>
+              <tr><td>7–8</td><td>A sprite takes a familiar face. One character's deceased or absent loved one appears ahead, beckoning them deeper into the trees. DC 14 Insight to recognise the deception; on a failure the character must be physically restrained or they move toward it on their next turn.</td></tr>
+              <tr><td>9–10</td><td>A shadow-stag crosses the path. Its antlers leach light from the air, dropping the area into magical darkness in a 15-foot radius for 1 minute. Any character who ends their turn in the darkness takes 1d6 necrotic damage.</td></tr>
+              <tr><td>11–12</td><td>The trunks breathe. A low rhythmic pulse moves through every tree in sight. All Perception and Investigation checks are made with disadvantage for the next 10 minutes as the sound and movement overwhelm the senses.</td></tr>
+              <tr><td>13–14</td><td>The threshold requires a toll. The path ahead passes through a ring of moss and burned-down candles. Any character who crosses without leaving something personally valued is silently deposited 100 feet back the way they came, with no memory of crossing.</td></tr>
+              <tr><td>15–16</td><td>The mist thickens. Visibility drops to 10 feet for 10 minutes — darkvision does not penetrate it. Characters who become separated must succeed on a DC 12 Perception check each minute or lose track of the group entirely.</td></tr>
+              <tr><td>17–18</td><td>A Weirded unicorn appears. Its form stutters between solid and translucent as it regards the party for one round, then vanishes. Any character of good alignment or demonstrably pure intent gains advantage on their next Charisma check made within Hurstwold.</td></tr>
+              <tr><td>19–20</td><td>The grove points the way. For the next hour, the moss on the north-facing side of every tree glows brighter than usual, creating a reliable navigational guide. No Survival checks are required for forest travel during this window.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>The Faerie's Bargain.</strong> A faerie approaches the party offering something they genuinely need — accurate directions, a lost item, information about the sorcerer's grove. The price sounds reasonable. A DC 15 Insight check reveals a secondary clause in the deal: the faerie has worded it to claim a soul, a future favour with no defined limit, or a memory the character cannot name until it is already gone. Negotiation is possible; refusing outright causes the faerie to become hostile.</div>
+          <div class="encounter-item"><strong>The Doppelgänger Sprint.</strong> Sprites simultaneously take the forms of loved ones belonging to different party members, beckoning each in a different direction. The party must decide in the moment whether to chase or regroup — and any character who gives chase faces the forest alone. Resolution requires either a group DC 13 Insight check to see through all the illusions at once, or tracking down and confronting each sprite individually.</div>
+          <div class="encounter-item"><strong>Shadow-Stag at the Waterhole.</strong> A shadow-stag is standing over a wounded traveller in a small clearing. It is not feeding — it appears to be guarding. The stag will not move and its darkness pulse makes close approach increasingly dangerous (1d6 necrotic per round in the aura). Communicating with it requires a DC 14 Animal Handling check; success reveals the traveller struck it first and the stag is waiting for an apology it cannot ask for.</div>
+          <div class="encounter-item"><strong>The Witch's Price.</strong> A witch who has made Hurstwold her home offers the party shelter, healing, and directions to their destination. Her price is always something small and specific — a childhood memory, the sound of a particular person's laugh, the ability to recall a specific face. She is not villainous; she is lonely and collecting. But what she takes is gone permanently.</div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🥾</span><span><strong>On Foot (unreliable).</strong> Each hour of travel requires a DC 13 Survival check. On a failure, the trail loops or deposits the party somewhere unintended — add 1d4 hours to the journey. Leaving an offering of a candle or personal token at the forest entrance grants advantage on the first check.</span></div>
+            <div class="travel-item"><span class="travel-icon">🕯️</span><span><strong>The Offering Path (one guaranteed passage).</strong> A traveller who leaves something genuinely valued — not coin, something personal — at the forest threshold is permitted one unimpeded passage through Hurstwold. The path opens clearly and closes behind them. This works once per person; the forest remembers.</span></div>
+            <div class="travel-item"><span class="travel-icon">🧚</span><span><strong>Faerie Escort (fast, binding).</strong> A faerie guide can lead the party through in a fraction of the time. They will propose a deal. The DM should prepare the terms carefully — the faerie will honour the letter of any agreement, not the spirit. Travel time is halved; the cost is whatever was agreed.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌿</span><span><strong>Druid or Witch Guide (reliable).</strong> One of Hurstwold's renegade residents can lead the party safely. Finding them requires a DC 14 Investigation check at the forest edge or prior knowledge of their location. They ask for nothing immediately — but they will remember the favour.</span></div>
+            <div class="travel-item"><span class="travel-icon">🦅</span><span><strong>Above the Canopy (partial).</strong> The canopy is dense enough to block most aerial travel, but Aviari or mounted flyers can skim above it to navigate by landmarks. This avoids trail-based Weirdings but the forest's mist rises above the canopy at night, removing this advantage entirely after dusk.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Sorcerer's Grove</span>
+              <span class="landmark-meta">6 hours · 400 XP</span>
+            </div>
+            <div class="landmark-desc">The legendary doorway to nowhere and everywhere, deep in Hurstwold's heart. Stepping through is a one-way journey — the destination is unknown and unknowable. The grove itself is a place of extraordinary magical power: spells cast here are maximised, but saving throws against them are also made at advantage. Any character who spends one hour studying the grove without entering can make a DC 17 Arcana check to learn one fact about the multiverse or a specific plane of the DM's choosing.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Offering Gate</span>
+              <span class="landmark-meta">30 min · 75 XP</span>
+            </div>
+            <div class="landmark-desc">The informal threshold at Hurstwold's most-used entrance — a gap between two ancient oaks hung with burned candle stubs, knotted ribbon, and small carved tokens left by generations of travellers. Leaving an offering here before entering grants advantage on the first Survival check made inside the forest. Taking any of the existing offerings triggers an immediate hostile reaction from the nearest Weirded creature.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Whispering Moss Hollow</span>
+              <span class="landmark-meta">3 hours · 175 XP</span>
+            </div>
+            <div class="landmark-desc">A depression in the forest floor blanketed in glowing moss that responds to thought and emotion. A character who lies still here for ten minutes and succeeds on a DC 13 Wisdom check receives a fragment of genuine information — a truth about themselves, a clue relevant to a current quest, or a warning about something ahead. On a failure, they receive the same fragment but cannot trust whether it is real or a faerie's invention.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Shadow-Stag's Waterhole</span>
+              <span class="landmark-meta">4 hours · 200 XP</span>
+            </div>
+            <div class="landmark-desc">A clear pool deep in the forest where a shadow-stag drinks and rests. Approaching openly and non-threateningly (DC 12 Animal Handling) allows the party to observe it undisturbed — and notice that the water in the pool reflects what was here before the Weirding: ordinary forest, no mist, daylight, familiar stars. Drinking from the pool (DC 14 Constitution save) either clears one condition affecting the character or triggers a vision of Hurstwold as it once was.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Witch's Refuge</span>
+              <span class="landmark-meta">5 hours · 150 XP</span>
+            </div>
+            <div class="landmark-desc">A compact, impossibly tidy cottage that should not exist this deep in Hurstwold. The witch who lives here knows the forest better than anyone alive and will share that knowledge willingly — for a price she names after the party has accepted her hospitality. She serves tea that removes one level of exhaustion and bread that tastes exactly like whatever the eater is most homesick for. Her collection of taken memories fills dozens of small glass vials on her shelves.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── Innerstifla Sound ──────────────────────────────────────── -->
       <div class="subsection-title" id="wl-innerstifla">Innerstifla Sound</div>
       <div class="card">
@@ -2265,6 +2636,88 @@
         </div>
       </div>
 
+      <!-- DM Tools: Innerstifla Sound -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Innerstifla Sound</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>Ice forms without warning. The water around the vessel freezes solid in seconds, halting all movement. The ice holds for 1d6 minutes before cracking and melting — but anything dropped overboard during that window is locked beneath it.</td></tr>
+              <tr><td>3–4</td><td>A phantom storm erupts. Thunder, lightning, and driving rain appear from clear sky and last exactly three minutes before vanishing. Debris — barnacled artifacts, bones of unrecognisable creatures — rains down onto the deck. Roll a d6: on a 5–6, one item among the debris is genuinely useful (DM's choice).</td></tr>
+              <tr><td>5–6</td><td>The sound mirrors another time. A stretch of the water turns reflective as glass, showing the party's vessel as it exists in a different timeline — crewed by strangers, flying an unknown flag, bearing damage it hasn't yet taken. The mirror lasts one minute before the water returns to normal.</td></tr>
+              <tr><td>7–8</td><td>A mermaid's song reaches the vessel. Every character must succeed on a DC 14 Wisdom save or carry a fragment of the melody in their mind for the next 24 hours — during which they have disadvantage on Perception checks as their attention keeps drifting to the sound.</td></tr>
+              <tr><td>9–10</td><td>A sea serpent surfaces nearby. It is not immediately aggressive but its phosphorescent scales pulse with Rift energy — any magic item within 30 feet of it flickers and is suppressed for 1 minute (as antimagic field, items only). The serpent dives again after two rounds.</td></tr>
+              <tr><td>11–12</td><td>The submerged rift pulses. Every character on the water feels a deep vibration through the hull — those in physical contact with the vessel must succeed on a DC 12 Constitution save or take 1d8 psychic damage as a flash of Nebernorian imagery overloads their senses.</td></tr>
+              <tr><td>13–14</td><td>Time reverses locally. The vessel is pushed 300 feet back along its own wake — exactly where it was three minutes ago. No damage, no warning. Cargo, passengers, and the ship are unaffected; only position changes.</td></tr>
+              <tr><td>15–16</td><td>A barnacled artifact surfaces. Something rises from the deep and bobs against the hull — clearly not of this world, crusted with impossible sea growth. It radiates faint magic (Arcana DC 13 to identify its school). Its actual function is for the DM to determine.</td></tr>
+              <tr><td>17–18</td><td>The ice sings. A sheet of ice forms briefly across one section of the sound and produces a clear, resonant tone before shattering. Any character who succeeds on a DC 14 Arcana check recognises the note as identical to frequencies recorded near the main Rift in Eveltoft.</td></tr>
+              <tr><td>19–20</td><td>The waters calm completely. For the next two hours, the sound is glassy and still — no Weirdings, no serpents, no phantom weather. The Fishermen's Guild calls these windows "gift crossings" and will pay 10 gp for advance notice of when they occur.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>The Mirrored Ship.</strong> The party's vessel encounters its own timeline reflection sailing the opposite heading — same hull, different crew, bearing visible damage. The reflected crew attempts to hail them. If the party communicates, they learn something about where their current course leads. If they board the reflection (DC 15 Arcana to stabilise the crossing), they have 10 minutes before it dissolves back into the water.</div>
+          <div class="encounter-item"><strong>The Mermaid's Warning.</strong> A mermaid surfaces and sings directly at the vessel — not a lure, but a genuine alert. The song is too complex to parse without a DC 15 Arcana or DC 16 Insight check, but the urgency is unmistakable. Translating it fully reveals the submerged rift is destabilising and something has started moving toward the surface. The party has one hour before it arrives.</div>
+          <div class="encounter-item"><strong>Serpent at the Trade Lane.</strong> A Weirded sea serpent has coiled around the primary Fishermen's Guild crossing lane, suppressing all magic within its aura. Three Guild vessels are stranded and unable to use their navigation enchantments. The Guild is offering 150 gp to anyone who can move the serpent — it cannot be killed without triggering a Rift pulse, a fact the Keepers of the Rift will make very clear if present.</div>
+          <div class="encounter-item"><strong>Keepers' Recruitment.</strong> A Keepers of the Rift patrol vessel intercepts the party, having observed their reaction to a Weirding. The Keepers want capable people who can function near Rift energy without panicking. They offer information, safe passage, and a modest retainer — in exchange for a single unspecified favour to be called in later.</div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">⛵</span><span><strong>Fishermen's Guild Crossing (standard, organised).</strong> The Guild runs regular crossings on a posted schedule, timed around known calm windows. Passage costs 2 gp per person. Guild crews are experienced with Weirdings and will not panic — but they are also not fighters, and their contracts do not cover serpent encounters.</span></div>
+            <div class="travel-item"><span class="travel-icon">🧊</span><span><strong>Ice Bridge (rare, temporary).</strong> When the sound freezes over completely — which happens unpredictably and briefly — the ice is thick enough to walk across in under an hour. A DC 12 Nature check at the shore determines whether the ice will hold for the full crossing. On a failure, the DM decides when it gives way.</span></div>
+            <div class="travel-item"><span class="travel-icon">🌊</span><span><strong>Private Vessel (faster, unescorted).</strong> Hiring a private boat skips the Guild schedule but means no experienced Weirding crew. Each hour on the water requires a DC 11 Water Vehicles check from whoever is navigating; failure triggers a random Weirding from the table.</span></div>
+            <div class="travel-item"><span class="travel-icon">🔱</span><span><strong>Mermaid Escort (fast, conditional).</strong> A mermaid who trusts the party — earned through prior interaction or a DC 15 Persuasion check made from the water's edge — can guide a vessel across in half the normal time, steering clear of the rift's active zones. They will not escort anyone they judge to be acting against the sound's interests.</span></div>
+            <div class="travel-item"><span class="travel-icon">🦅</span><span><strong>Aerial Crossing (safest).</strong> Flying above the sound avoids all water-based Weirdings entirely. Phantom storms still affect aerial travellers — a DC 12 Acrobatics check is required to stay on course if one erupts mid-crossing.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Rift Faultline</span>
+              <span class="landmark-meta">Open water · 300 XP</span>
+            </div>
+            <div class="landmark-desc">The suspected location of the submerged secondary rift, marked on Keepers of the Rift charts with a red cross. The water here is slightly warmer than the surrounding sound, glows faintly at depth, and suppresses non-magical navigation tools. A character who dives within 30 feet of the faultline and succeeds on a DC 16 Arcana check can confirm the rift's existence and estimate its current stability — information the Crystal Scholars will pay 100 gp to receive.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Debris Shelf</span>
+              <span class="landmark-meta">Shore of Norwycke · 1 hour · 150 XP</span>
+            </div>
+            <div class="landmark-desc">A stretch of Norwycke's shore where the phantom storms deposit otherworldly debris with regularity. Locals leave it strictly alone. A character who spends an hour searching the shelf and succeeds on a DC 13 Investigation check recovers one barnacled artifact — its origin and function are the DM's to define, but it always radiates detectable magic.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Mirror Stretch</span>
+              <span class="landmark-meta">Mid-crossing · 200 XP</span>
+            </div>
+            <div class="landmark-desc">A section of the sound roughly a mile from Leighmore's shore where timeline reflections occur most frequently. Fishermen navigate around it when possible. A character who studies the reflections for ten minutes and succeeds on a DC 14 Arcana check can extract one piece of information about an alternate version of events — a decision made differently, a route taken, an outcome avoided — relevant to something the party is currently pursuing.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Keepers' Watch Station</span>
+              <span class="landmark-meta">Leighmore shore · 30 min · 75 XP</span>
+            </div>
+            <div class="landmark-desc">A fortified stone post on the Leighmore shoreline where a rotating team of Keepers of the Rift monitors the sound. They maintain the most complete log of Weirding activity on the water and will share summaries with trusted travellers. The station also holds two sending stones linked to the Eveltoft chapter house — the Keepers will loan one to a party they trust, for use in emergencies.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Serpent's Coil</span>
+              <span class="landmark-meta">Open water · 250 XP</span>
+            </div>
+            <div class="landmark-desc">A semi-permanent formation of churned water and phosphorescent foam where one of the Weirded sea serpents rests near the surface. The Fishermen's Guild routes all crossings around it. A character who approaches within 60 feet can observe that the serpent appears to be in distress — its body phases partially into another plane on each breath. A DC 15 Arcana check suggests it is being slowly pulled through the faultline and may not survive the week.</div>
+          </div>
+        </div>
+      </div>
+
       <!-- ── Inverlinn Coast ─────────────────────────────────────────── -->
       <div class="subsection-title" id="wl-inverlinn">Inverlinn Coast</div>
       <div class="card">
@@ -2273,6 +2726,88 @@
           <p>The southeastern coast of Ryndor, known as Inverlinn, is a desolate volcanic expanse where fire and earth meet in perpetual unrest. Its name, drawn from ancient Nordica words for fire and mountain, reflects the volatile landscape of eruptions, lava flows, and seismic upheaval. Long ago, the Nordica people believed powerful spirits dwelled within these mountains and performed rituals to appease them. Today, the Weirding has made the ancient energies even more unstable, transforming the region into a place of chaotic magic and unpredictable danger.</p>
           <p>Only a few small, reclusive communities scatter across the volcanic coast. Magma drakes, fire elementals, and lava spiders still stalk the craggy terrain, but these creatures have changed — <strong>fused with strange energies</strong> from the Weirding. Some lava spiders spin webs that shimmer like starlight, while fire elementals pulse erratically with colors unseen in ordinary fire. Locals report phantom beasts — creatures that shift in and out of existence, leaving only scorched footprints and an uneasy hum.</p>
           <p>Even the volcanoes seem affected. Some erupt without warning while others dormant for centuries now rumble in strange patterns, as if alive and listening. Occasionally magma rivers twist into impossible shapes, flowing uphill or spiraling into glowing whirlpools. Adventurers seeking glory are drawn to the coast hoping to discover lost relics or new forms of magic — many return only with fragmented memories, or not at all. The Great Volcano holds ancient knowledge not meant to be uncovered, and every step in Inverlinn is a gamble.</p>
+        </div>
+      </div>
+
+      <!-- DM Tools: Inverlinn Coast -->
+      <div class="dm-section">
+        <div class="dm-header">⚙ Dungeon Master's Tools — Inverlinn Coast</div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚡ Weirdings — d20 Table</div>
+          <table class="weirding-table">
+            <thead><tr><th>d20</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>1–2</td><td>An eruption without warning. A dormant vent nearby detonates without seismic precursor. Every character within 60 feet must succeed on a DC 13 Dexterity save or take 2d6 fire damage from ejected rock and ash. The vent goes quiet again within one minute.</td></tr>
+              <tr><td>3–4</td><td>Magma flows uphill. A nearby lava river reverses course and begins climbing a slope, cutting off the party's route. They have two rounds to cross before the channel is impassable for the next ten minutes.</td></tr>
+              <tr><td>5–6</td><td>A fire elemental pulses erratically. One of the coast's Weirded elementals flares through colours never seen in ordinary fire — violet, white, deep blue — before stabilising. Any character who succeeds on a DC 12 Arcana check recognises one of the hues as Nebernorian in origin.</td></tr>
+              <tr><td>7–8</td><td>Starlight webs. A lava spider's web, shimmering with strange stellar light, drops across the path. It is not a trap — the spider seems unaware — but contact with it deals 1d4 psychic damage and briefly fills the character's mind with images of deep space.</td></tr>
+              <tr><td>9–10</td><td>A phantom beast passes through. Something scorches a line of footprints across the ground directly beside the party — visible, audible, but not present. The prints are too large for any creature the party can name. The hum it leaves behind lasts one minute.</td></tr>
+              <tr><td>11–12</td><td>The volcano listens. A low, resonant vibration rolls through the ground — not seismic, rhythmic. Every character in contact with the earth must succeed on a DC 11 Wisdom save or feel certain, briefly, that something vast and ancient beneath them is aware of their presence.</td></tr>
+              <tr><td>13–14</td><td>Magma spirals. A flowing lava channel twists into a perfect glowing whirlpool for thirty seconds before collapsing. Any character who observes it and succeeds on a DC 13 Arcana check sees a shape at its centre that corresponds to a symbol found elsewhere in Ryndor's history — the DM decides which.</td></tr>
+              <tr><td>15–16</td><td>A magma drake circles overhead. It is not hunting — it appears confused, its Weirded fused-energy state causing it to fly erratically. It will not attack unless provoked, but each round it remains overhead there is a 1-in-6 chance it loses control and dives.</td></tr>
+              <tr><td>17–18</td><td>Ash memory. A cloud of volcanic ash drifts through the party. Any character who breathes it must succeed on a DC 12 Constitution save or experience a thirty-second vivid hallucination of a Nordica ritual performed at this exact location — possibly centuries ago.</td></tr>
+              <tr><td>19–20</td><td>The spirits are appeased. The ground steadies, lava flows slow, and the hum drops to silence for one hour. Locals who witness this call it a blessing. Weirdings do not occur during this window, and creatures native to Inverlinn are non-hostile.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Encounter Ideas</div>
+          <div class="encounter-item"><strong>The Fused Drake.</strong> A magma drake whose Weirding-fused energy has made it partially incorporeal — its attacks pass through armour on a roll of 19–20 on its attack die. It cannot be driven off by conventional means; a DC 14 Arcana check reveals the Weirding energy sustaining its aggression can be disrupted by targeting the violet seam running along its spine.</div>
+          <div class="encounter-item"><strong>The Reclusive Community.</strong> A small settlement of Inverlinn locals refuses to evacuate despite an imminent eruption, insisting the volcano will not harm those who perform the correct ritual. They are right — but the ritual requires components scattered across three dangerous locations, and they are too few to gather them in time. This is a logistics and roleplay encounter with a hard deadline.</div>
+          <div class="encounter-item"><strong>The Lost Relic Seeker.</strong> An adventurer returning from the Great Volcano's interior arrives at the party's camp in the night — alive but non-verbal, with fragmented memories and a relic they cannot describe finding. The relic radiates unstable Weirding energy. The adventurer will not release it voluntarily. Identifying what it is and deciding what to do with it is the encounter.</div>
+          <div class="encounter-item"><strong>Spirit Appeasement.</strong> A Nordica descendant community hires the party to perform a ritual at a volcano vent to prevent a destabilising eruption. The ritual is real and functional — but the Weirding has altered the spirits' expectations. Each step of the ritual goes slightly wrong in a new way, requiring improvisation (Arcana DC 13, Religion DC 12, or Performance DC 14) to adapt on the fly without breaking the sequence.</td></div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">🧭 Travel Options</div>
+          <div class="travel-list">
+            <div class="travel-item"><span class="travel-icon">🥾</span><span><strong>Overland Through the Lava Fields (slow, hazardous).</strong> The standard route requires a DC 13 Survival check each hour. On a failure, the party's path is cut by a new lava flow and must detour — add 1 hour. On a failure by 5 or more, the detour leads into a Weirding encounter.</span></div>
+            <div class="travel-item"><span class="travel-icon">🏘️</span><span><strong>Guided by Locals (reliable).</strong> Any of the reclusive coastal communities will guide travellers through the safe corridors between active vents for 3 gp per day. They know the lava flow patterns, the creature territories, and which vents are due to vent — knowledge the party cannot replicate.</span></div>
+            <div class="travel-item"><span class="travel-icon">⛵</span><span><strong>Coastal Vessel (fast, exposed).</strong> Sailing along the coast avoids the lava fields entirely but keeps the party within range of eruptions landing in the water — each creates a scalding steam burst (DC 12 Dexterity save, 1d6 fire damage) in a 30-foot radius. Roll for eruptions once per hour of sailing.</span></div>
+            <div class="travel-item"><span class="travel-icon">🦅</span><span><strong>Aerial (fastest, drake risk).</strong> Flying above the terrain is fast and clear — until a magma drake notices. Each hour of aerial travel has a 1-in-6 chance of attracting one. The Weirded drakes are harder to outmanoeuvre than ordinary ones and will pursue beyond the coast's edge.</span></div>
+            <div class="travel-item"><span class="travel-icon">✨</span><span><strong>Magical Transit (unreliable).</strong> The volcanic Weirding energy interferes with teleportation. Any teleportation spell requires a DC 15 spellcasting ability check; on a failure the caster and targets arrive at a random location within the lava fields, determined by the DM.</span></div>
+          </div>
+        </div>
+
+        <div class="dm-block">
+          <div class="dm-block-label">📍 Landmarks</div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Great Volcano</span>
+              <span class="landmark-meta">2 days · 400 XP</span>
+            </div>
+            <div class="landmark-desc">The dominant peak of Inverlinn, ancient beyond reckoning and deeply changed by the Weirding. Its interior holds knowledge that predates Ryndor's recorded history — accessible to those who descend far enough and survive. Each hour inside requires a DC 14 Constitution save against the heat; failure inflicts one level of exhaustion. Characters who reach the lower chambers find Nordica inscriptions that, if studied for one hour (DC 15 History), reveal a piece of Ryndor's pre-Weirding past the DM has been holding in reserve.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Nordica Ritual Site</span>
+              <span class="landmark-meta">6 hours · 200 XP</span>
+            </div>
+            <div class="landmark-desc">A ring of blackened standing stones on a stable plateau above the lava fields — the site where Nordica communities once appeased the volcanic spirits. The Weirding has made the site active again: offerings left here are consumed within the hour, and the ground hums audibly in response. A character who performs a ten-minute ritual and succeeds on a DC 13 Religion check gains the effects of a short rest and has advantage on saving throws against fire damage for 24 hours.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Starlight Web Warren</span>
+              <span class="landmark-meta">8 hours · 250 XP</span>
+            </div>
+            <div class="landmark-desc">A network of lava tubes colonised by Weirded lava spiders whose webs shimmer with stellar light. The webs are extraordinarily valuable — a single harvested strand is worth 50 gp to the right collector — but each attempt to harvest one (DC 13 Sleight of Hand) risks psychic contact with the spider's Weirded consciousness, dealing 1d6 psychic damage on a failure. The warren also contains the desiccated remains of three previous collectors.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Magma Whirlpool</span>
+              <span class="landmark-meta">4 hours · 175 XP</span>
+            </div>
+            <div class="landmark-desc">A depression in the lava fields where magma spirals into a glowing whirlpool rather than flowing outward. It has been spiralling in the same direction, at the same speed, without interruption for as long as locals can remember. A DC 14 Arcana check reveals it is a stable Weirding loop — self-sustaining magical energy. Disrupting it (possible but requiring significant effort) would release a burst of raw magical force equivalent to a fireball centred on the whirlpool.</div>
+          </div>
+          <div class="landmark-item">
+            <div class="landmark-header">
+              <span class="landmark-name">The Phantom Footprint Trail</span>
+              <span class="landmark-meta">3 hours · 150 XP</span>
+            </div>
+            <div class="landmark-desc">A line of scorched footprints — always fresh, never accumulating — that crosses a stretch of cooled black rock near the coast. No creature has been seen making them. Following the trail requires a DC 12 Survival check each hour; success leads the party toward the Great Volcano. Failure leads them in a circle. A character who succeeds on a DC 15 Arcana check at the trail's apparent origin point detects a recurring Weirding signature — something passes here on a schedule, invisible and consistent, that no one has yet identified.</div>
+          </div>
         </div>
       </div>
 
@@ -3527,6 +4062,380 @@
           </div>
           <p style="font-size:0.88rem; color:var(--text-dim); margin-bottom:0.5rem;">Core mechanics use <strong>Elemental Charges</strong> (regain on short/long rest) to power <strong>Combat Techniques</strong> — bonus actions and reactions that enhance attacks and control the battlefield. At 2nd level, <strong>Elemental Shift</strong> lets a Sev'rinn temporarily embody their element's essence, choosing or rolling from a d6 table of dynamic effects each turn. A <strong>Weirding Surge</strong> can occur on a natural 1 when using a Combat Technique — chaotic effects that warp reality around the Sev'rinn, with escalating DCs as they level.</p>
           <p style="font-size:0.82rem; color:var(--ember-glow); border:1px solid var(--ember); border-radius:4px; padding:0.4rem 0.7rem; display:inline-block;">⚠️ The Sev'rinn class is currently under active development. Full technique lists and attunement rules are forthcoming.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section: Of Roots and Ruin -->
+    <section class="section" id="roots-and-ruin">
+      <div class="section-header">
+        <span class="section-icon">🌿</span>
+        <h2 class="section-title">Of Roots and Ruin</h2>
+        <div class="section-header-line"></div>
+      </div>
+
+      <!-- Overview -->
+      <div class="subsection-title" id="rar-overview">Campaign Overview</div>
+
+      <div class="card" style="border-color: rgba(124,58,237,0.25); background: rgba(22,8,48,0.7);">
+        <div class="card-title" style="color:var(--ember-glow);">⚠️ Dungeon Masters Only</div>
+        <div class="card-body">
+          <p>No players allowed beyond this point — spoilers abound, revealing the full arc of the campaign and what awaits the heroes.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-title">🌿 A Five-Episode Campaign for Levels 1–5</div>
+        <div class="card-body">
+          <p>Welcome to the campaign that will carry your characters from humble beginnings to uncovering a web of corruption buried beneath the surface of Ryndor's seemingly perfect society. In <em>Of Roots and Ruin</em>, adventurers embark on a journey shaped by hard truths, shifting power, and ethical dilemmas — where magic and nature are on the brink of annihilation.</p>
+          <p>The campaign begins at <strong>Level 1</strong> and progresses with each completed episode, culminating in an epic confrontation by <strong>Level 5</strong>. This design ensures the pace remains fast and players stay engaged, with challenges scaling alongside their growing abilities.</p>
+          <p>Whenever a creature, NPC, or item appears in <strong>bold</strong>, it indicates the name is listed in the appendix. Consult the appendix for detailed stats and abilities to keep your session running smoothly.</p>
+        </div>
+      </div>
+
+      <!-- Episode Guide -->
+      <div class="subsection-title" style="margin-top:2rem;">Episode Guide</div>
+      <div class="grid-2" style="margin-bottom:0.5rem;">
+
+        <div class="card">
+          <div class="card-title">📖 Episode 1 — Follow the Rumors</div>
+          <div class="card-subtitle">Level 1 · Norwycke &amp; the Innerstifla Sound</div>
+          <div class="card-body">
+            <p>The adventurers start small, following strange reports of missing animals and unsettling occurrences near Norwycke and the Hurstwold. Players encounter clues — fragmented local stories, mysterious symbols, and traces of creatures corrupted by something other than the Weirding. Just as they get close to something, a mysterious figure makes it clear they aren't welcome to be poking around where they don't belong.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📖 Episode 2 — Uncover the Dead Creatures</div>
+          <div class="card-subtitle">Level 2 · Edge of the Hurstwold</div>
+          <div class="card-body">
+            <p>As the heroes delve deeper, they discover the remains of magical beings — unicorn horns, mermaid scales, and other remnants harvested with surgical precision. Who is responsible for these atrocities, and how far does their reach extend?</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📖 Episode 3 — Discover the Technology</div>
+          <div class="card-subtitle">Level 3 · Deep Hurstwold</div>
+          <div class="card-body">
+            <p>The adventurers stumble upon new, unsettling technology — a mix of Ullac Regime machinery and Weirded enchantments. This twisted innovation uses magical creatures as fuel, destabilising the environment and sowing chaos in nearby settlements.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📖 Episode 4 — Find the Thread of the Ullac</div>
+          <div class="card-subtitle">Level 4 · Coming Soon</div>
+          <div class="card-body">
+            <p>Tracking the remains of this operation leads the adventurers closer to the heart of the Ullac Regime's last vestiges. Strange allies and dangerous enemies stand in their way, and decisions must be made — whether to destroy or co-opt this powerful but deadly technology.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📖 Episode 5 — Encounter the Baddies, Make Your Choice</div>
+          <div class="card-subtitle">Level 5 · Coming Soon</div>
+          <div class="card-body">
+            <p>In the climactic final encounter, the adventurers face Ullac loyalists — individuals corrupted by both their beliefs and the Weirding's influence. Do they dismantle this dark enterprise entirely, or wrest control and attempt to reshape it for the better?</p>
+          </div>
+        </div>
+
+      </div><!-- /grid-2 -->
+
+      <!-- ── Episode 1 ──────────────────────────────────────────────── -->
+      <div class="subsection-title" id="rar-ep1" style="margin-top:2rem;">Episode 1 — Going Green</div>
+
+      <div class="card">
+        <div class="card-title">📋 Summary</div>
+        <div class="card-body">
+          <p>The adventure begins at the <strong>Holmean Magical Creature Society</strong> headquarters in Wyrmbost. During a morning meeting, field coordinator <strong>Ardella Lentris</strong> is interrupted by a ranger who drags in a farmer covered in invasive green growth. As the Society investigates, the characters are sent to Norwycke, where rumors of the same growths persist. They travel across the Innerstifla Sound under the guidance of captain <strong>Brun Furlow</strong>.</p>
+          <p>Upon arrival in Norwycke, the players find a town struggling against the overwhelming spread of green growths and discover hints that a mysterious <strong>Greensalve</strong> temporarily halts the infection. While searching for Greensalve, they find the proprietor of <strong>Feddel's Apothecary</strong> has gone missing under suspicious circumstances — and a hooded figure named <strong>Halric</strong> suspects the suppliers created the plague themselves to profit from the cure.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-title">🌿 There's Green on Everything</div>
+        <div class="card-subtitle">Background Context</div>
+        <div class="card-body">
+          <p>The green growth is a side effect of the Ullac Regime's extraction machine, designed to harvest raw magical essence from specific creatures — unicorn horns, pixie wings, and other potent organic sources. The residual energy released from this process, an unstable blend of natural magic and Weirding energies, escapes into the environment, causing uncontrolled fungal growth.</p>
+          <p>The growth acts like a magical parasite, spreading rapidly and corrupting the land while destabilising the local ecosystem. The remnants of the Ullac cabal disregard the danger in their quest for power — a connection that becomes clearer as the players piece together the clues hidden deep within the Hurstwold.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — An Unusual Meeting</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🏛️ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">The day begins like any other at the Holmean Magical Creature Society's headquarters — sunlight through stained-glass windows, caretakers feeding enchanted creatures, apprentices studying under experienced Sev'rinns. As the characters gather for their morning meeting, a disheveled ranger bursts in dragging a half-collapsed farmer. The farmer's clothes are tangled with green tendrils, green fungus creeping up his arms. <em>"It's… growing on everything… the houses, the fields… even… on us."</em></p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; margin-top:0.75rem;">Ardella Lentris snaps into action and sends the players to investigate. She throws them a pack containing gloves, enchanted shears, and vials of solvent. The farmer mutates before containment is complete — his eyes glow with unsettling emerald hue, body still. <em>"You're going to Norwycke. We need to figure out what caused this before it spreads."</em></p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🎲 Skill Challenges</div>
+          <div class="encounter-item"><strong>Medicine DC 10.</strong> Slow the fungal growth on the farmer's body.</div>
+          <div class="encounter-item"><strong>Nature DC 12.</strong> Identify the fungus and its strange properties.</div>
+          <div class="encounter-item"><strong>Arcana DC 13.</strong> Detect the lingering presence of unknown magical energy.</div>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — Crossing the Sound</div>
+        <div class="dm-block">
+          <div class="dm-block-label">⛵ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">The players travel to <strong>Leighmore</strong>, a small fishing village on the southern edge of the Innerstifla Sound. Captain <strong>Brun Furlow</strong> greets them with a skeptical look: <em>"Going across the Sound, eh? Can't say I recommend it this season — but coin's coin."</em> His boat, the <strong>Stone Current</strong>, sets out into thickening mist.</p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; margin-top:0.75rem;">Mid-crossing, Brun is knocked unconscious against the hull railing. The party must take over. Brun's talking points during the crossing include: the growing unease among sailors, trees near the forest that feel wrong, green tendrils appearing on barns overnight, and boats vanishing on calm water.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🎲 Skill Challenges</div>
+          <div class="encounter-item"><strong>Navigate the Sound — Wisdom (Survival) DC 14.</strong> Steer the boat properly. On failure: the boat scrapes rocks, takes 10 damage, and a leak forms.</div>
+          <div class="encounter-item"><strong>Row Against the Current — Strength (Athletics) DC 12.</strong> Keep the boat steady. On failure: the boat drifts further off course.</div>
+          <div class="encounter-item"><strong>Plug the Leak — Dexterity (Sleight of Hand) DC 13.</strong> Stuff cloth into cracks to slow flooding. Without patching: players must bail water (Dexterity DC 10 every round).</div>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — Something's Not Normal in Norwycke</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🏘️ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">As the players arrive, Norwycke teeters on the edge of panic. Tendrils coil up the sides of homes, consuming walls and roofs. The town is nearly vacant — only a few solitary souls scrubbing and slicing at green fungus that grows faster than it can be removed. The green growth is most aggressive at <strong>twilight and just before dawn</strong>; citizens retreat indoors during these hours and rely on Greensalve to seal doorways and windows.</p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; margin-top:0.75rem;">Innkeeper <strong>Oln Trevis</strong> of <em>The Bleeding Bark</em> spots them and waves frantically: <em>"Hey! You there — get inside, quick! Twilight's coming!"</em> He directs them to <strong>Feddel's Apothecary</strong> for Greensalve.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">💬 Oln Trevis — Talking Points</div>
+          <div class="encounter-item">The Greensalve supply is controlled by Feddel's Apothecary — and it always seems to have just enough, no matter how bad the infestation grows.</div>
+          <div class="encounter-item">Some homes ran out of salve this morning. Twilight and dawn are the worst times; staying indoors and travelling only at midday or deep night is safest.</div>
+          <div class="encounter-item">He can provide a rudimentary map to the hollow stone and offer leftover Greensalve, but warns it won't last forever.</div>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — Feddel's Apothecary &amp; Halric</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🏪 Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">The apothecary stands eerily silent, green tendrils creeping along the walls. The front door is slightly ajar. <strong>Feddel is nowhere to be found</strong> — his sign reads "Out for lunch, back at midday." His ledger on the counter logs all Greensalve shipments with a cryptic symbol: <em>a circle with three jagged lines</em>, with no supplier name. A trapdoor behind the counter leads to an underground storage area where half the salve supply is unboxed and fungal growth is visible even here.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🎲 Skill Challenges — Cellar Investigation</div>
+          <div class="encounter-item"><strong>Perception DC 10.</strong> Hear muttering above: <em>"…they'll be back… must be quick… find the ledger…"</em></div>
+          <div class="encounter-item"><strong>Insight DC 12.</strong> Recognise that the hooded figure who enters is lying and terrified of something, not a threat.</div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">💬 Halric — Convincing Him You're Not the Suppliers</div>
+          <div class="encounter-item"><strong>Insight DC 10.</strong> Recognise the figure is acting out of fear rather than aggression — a calm, empathetic approach helps.</div>
+          <div class="encounter-item"><strong>Persuasion DC 10.</strong> Appeal to his sense of reason and explain you're here to investigate, not profit.</div>
+          <div class="encounter-item"><strong>Deception DC 10.</strong> Pose as investigators from the Society to reassure him enough to cooperate.</div>
+          <div class="encounter-item"><strong>Investigation DC 10.</strong> Point out the ledger shows you arrived after the last sale — proof you're not the suppliers.</div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">💬 Halric — Once Convinced</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"It's all too neat, too perfect — the problem and the solution wrapped in one dirty package. But never enough of the solution. Just enough to keep us paying. That's how they've got us by the throat. The shipments always arrive after the growth spreads — like clockwork. And Feddel? He knew. He knew, but kept taking their money."</em></p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Clues to track the suppliers: the cryptic symbol in the ledger, and the last place Halric saw Feddel. The conversation ends when the Rapid Expansion event begins.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — Rapid Expansion</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🌿 Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">A distant rumble shakes the walls. The fungal growth around them quivers. Rushing outside, the party witnesses thick waves of green fungus visibly spreading along the ground — an "<strong>expansion</strong>" event that sends townsfolk scrambling indoors. The surge is faster and more aggressive than before, tendrils slamming down between Halric and the players.</p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; margin-top:0.75rem;">Halric shouts through the rising growth: <em>"If you make it out — meet me at the hollow stone! Old druid marker — east edge of the Hurstwold trail!"</em> Then he's gone, swallowed in a blur of mist and reaching vines. End of Episode 1.</p>
+        </div>
+      </div>
+
+      <!-- ── Episode 2 ──────────────────────────────────────────────── -->
+      <div class="subsection-title" id="rar-ep2" style="margin-top:2rem;">Episode 2 — Creeping Death</div>
+
+      <div class="card">
+        <div class="card-title">📋 Summary</div>
+        <div class="card-body">
+          <p>Following the expansion wave, the players investigate the origin of the fungal surge, leading them into the edge of the Hurstwold Forest. There they find a secluded glade corrupted by vibrant but decaying magic. Embedded in the fungal blooms are bones, horns, feathers, and scales — the remains of magical beings drained, not killed in battle. In the crumbling ruins of a forgotten outpost, the party uncovers the first undeniable signs that the green growth is no natural phenomenon.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — The Hollow Stone</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🪨 Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">The Hollow Stone lies at the edge of the Deep Hurstwold — a clearing flooded with green light even at twilight, accessible only after a steep descent down a moss-slippery ravine and through a tunnel of arching, fungus-laced roots. <strong>Halric is not there.</strong> The air hums faintly, like a wine glass on the edge of shatter.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🎲 Skill Challenges</div>
+          <div class="encounter-item"><strong>Arcana DC 13.</strong> The stone resonates like a tuning fork — it's a magical amplifier, tuned to ley energy.</div>
+          <div class="encounter-item"><strong>Religion DC 12.</strong> This is a watching place where druids once communed with the Weald to ask permission to harvest from the forest.</div>
+          <div class="encounter-item"><strong>History DC 15.</strong> The glyphs match pre-Ullac resistance symbolism — this was once a secret meeting site.</div>
+          <div class="encounter-item"><strong>Perception DC 13.</strong> A thin trail of broken twigs and green residue leads away from the clearing, as if someone left in a hurry.</div>
+          <div class="encounter-item"><strong>Survival DC 14.</strong> Partial boot tracks — adult-sized, erratic — heading deeper into the Hurstwold.</div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🔀 Player Choices</div>
+          <div class="encounter-item"><strong>Follow Halric's Trail (recommended).</strong> Leads toward the abandoned outpost where the first Ullac extraction device was tested.</div>
+          <div class="encounter-item"><strong>Return to Norwycke.</strong> Risks losing Halric entirely, but allows regrouping and a long rest.</div>
+          <div class="encounter-item"><strong>Magical Tracking.</strong> <em>Locate Creature</em>, <em>Sending</em>, or similar spells may reach Halric — if he's still alive.</div>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Encounter — Spore-Touched Elk</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🦌 Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">Following Halric's trail, the party descends into a boggy hollow thick with ankle-deep green sludge. Strange hoofprints churn the mud. From the far side of the clearing, eyes gleam from between the trees — 2–4 <strong>Spore-Touched Elks</strong>, once normal forest guardians, now warped by prolonged exposure to magical pollution. Their bodies are overgrown with glowing fungal plates and spore-vents along the ribs; antlers have splintered into crown-like branches.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Creature Modifications (base: Giant Elk or Dire Wolf)</div>
+          <div class="encounter-item"><strong>AC +1</strong> from fungal plating.</div>
+          <div class="encounter-item"><strong>Spore Bloom (1/day).</strong> 10-ft radius burst when bloodied or killed — DC 13 Constitution save or be poisoned for 1 minute. On success: disadvantage on next attack or check.</div>
+          <div class="encounter-item"><strong>Aggressive Herding Instinct.</strong> If two elks are within 10 ft of the same target, they gain advantage on attacks against that target.</div>
+          <div class="encounter-item"><strong>Fungal Sensitivity.</strong> Vulnerable to fire and radiant damage.</div>
+          <div class="encounter-item"><strong>Speak with Animals / calming magic.</strong> The elk is not feral but driven — by instinct or a larger force. Inspecting the corpses reveals sickened organs and fungal threads in brain tissue consistent with leyline corruption (Arcana DC 13 or Medicine DC 12).</div>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene — The Extraction Site</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🏚️ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6;">After tracking Halric or the fleeing elk, the party descends into a damp gully where the ground shifts underfoot like rotten sponge. Ahead, half-buried in the slope, is the skeletal husk of a metallic outpost: rusted walls, fractured sigils, pipes that pulse green beneath layers of moss and mycelium. The structure has three chambers.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">1. Collapsed Entry Bay</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Crumbled ceilings and fungal growth erupting from cracks. Someone is yelling for help from inside. <strong>Investigation DC 12</strong> finds drag marks — Halric was pulled through here. <strong>Arcana DC 13</strong> reveals traces of forced resonance manipulation. A thick fungal wall blocks deeper access — can be burned (fire), dispelled (radiant), or bypassed with resonance tuning.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">2. Resonance Extraction Room</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Rusted scaffolding surrounds a central plinth where magical creatures were once bound and drained. Coiled tubes hang from the ceiling, some still dripping ichor. A shattered crystal resonance chamber is scorched from within. <strong>Arcana DC 14</strong>: the machine fed on magical biology — horns, feathers, wings — to distill raw essence. <strong>Medicine DC 13</strong>: fungal overgrowth here mimics nerve tissue; the structure itself has become semi-living. <strong>Religion or Nature DC 15</strong>: the Weald is actively resisting this place.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">3. Holding Cell / Drainage Pit</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">A rusted cell with bars bent outward. Inside: the shredded remains of a magical creature — likely a dryad or unicorn — its essence long drained. And <strong>Halric</strong>, beaten badly but alive. A broken piece of crystal is embedded in the corpse. <em>Optional:</em> A Sporebound Husk (CR 2–3) shambles from the drainage hole if disturbed — once a worker or failed test subject, now fused with fungal growth. Abilities: necrotic burst on death, fungal vine grapple, can mimic voices.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">🔧 How to Disable the Machine</div>
+          <div class="encounter-item"><strong>Method 1 — Overload the Leyline Conduit (Arcane Detonation).</strong> Cast multiple high-level spells into the crystal resonance core. Arcana DC 15 reveals this possibility. Consequence: violent shockwave knocks everyone prone (2d6 force); a brief spike in green growth, followed by collapse. Nearby fungal creatures become erratic for one hour.</div>
+          <div class="encounter-item"><strong>Method 2 — Burn the Heart (Sterilization).</strong> Crawl into the core chamber (Athletics DC 12 or Dexterity DC 14), then apply fire damage or radiant-infused liquid. Nature DC 13 or Medicine DC 15 confirms the ichor can be sterilized. Consequence: permanent shutdown, but a poisonous fog vents from the tubing and the burned soil leaves a scarred grey clearing.</div>
+          <div class="encounter-item"><strong>Method 3 — Offer a Resonant Sacrifice (Ritual Unbinding).</strong> Discover the original activation glyphs (Religion or Arcana DC 16), then cast <em>Remove Curse</em>, <em>Greater Restoration</em>, or <em>Dispel Magic</em> while a character channels attuned magic into the stone circle. Consequence: the growth halts completely and the land breathes again — but the conduit permanently loses a spell slot and takes a mutation (bark-skin veins, moss hair, one glowing eye).</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-title">🔍 Clues for Episode 3</div>
+        <div class="card-body">
+          <p>By the end of this episode the players should have found: a coded map in the research logs showing <strong>multiple testing locations</strong> deeper in the Hurstwold; a symbol of the <strong>Ullac Regime</strong> burned into a steel plate; and a damaged journal entry naming <strong>Ardella Lentris</strong> as <em>"project overseer."</em></p>
+          <p>Halric insists they take the broken crystal embedded in the creature's corpse — it contains a residual arcane signature that can be used to trace other machines if studied by the right people.</p>
+        </div>
+      </div>
+
+      <!-- ── Episode 3 ──────────────────────────────────────────────── -->
+      <div class="subsection-title" id="rar-ep3" style="margin-top:2rem;">Episode 3 — The Machine Dreams Still</div>
+
+      <div class="card">
+        <div class="card-title">📋 Summary</div>
+        <div class="card-body">
+          <p>After disabling the Ullac extraction machine and rescuing Halric, the party discovers proof that <strong>Ardella Lentris</strong> — a respected field coordinator from the Holmean Magical Creature Society — was overseeing the site. The machine's purpose is not accidental: it is part of a deliberate, organised effort. The players must now decide how to respond, and their choice shapes how Episode 3 begins.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ End of Episode 2 — Decision Point</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🔀 Three Paths Forward</div>
+          <div class="encounter-item"><strong>Option 1 — Confront Ardella Directly.</strong> <em>"She needs to answer for this."</em> The party seeks Ardella immediately — through diplomatic channels, magical tracking, or by heading to the next extraction site to cut her off. This is the bold, justice-forward path. Risky, fast, and dramatic. Leads into a chase structure; possible combat with loyalists or mercenaries. → Proceed to <strong>Scene 1A: Burned Camp</strong>.</div>
+          <div class="encounter-item"><strong>Option 2 — Contact the HMCS.</strong> <em>"The Society needs to know what's happening inside its own walls."</em> Players alert high-level members, possibly sending Halric or a messenger while continuing forward. The institutionalist path — hoping to rally allies and reveal the corruption from within. Slower Episode 3 start, but opens coded responses, inter-organisational aid, and a subplot: is there anyone else in the HMCS they can trust? → Proceed to <strong>Scene 1B: Message in the Flame</strong>.</div>
+          <div class="encounter-item"><strong>Option 3 — Investigate Alone, Deeper Into the Hurstwold.</strong> <em>"We can't afford to stop. Not yet."</em> The party continues pursuing the map of extraction sites, gathering more evidence before tipping their hand. The rogue investigation path — exposure over confrontation. Greater personal danger, but deeper knowledge gained. → Proceed to <strong>Scene 1C: Unquiet Trees</strong>.</div>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">📌 DM Guidance</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Players may split the response — sending Halric back to alert the HMCS while continuing alone, or using magic to contact a trusted Society figure. They might plan to confront Ardella but discover she's already several steps ahead. Each option is valid and leads into a custom Episode 3 hook based on their choice.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Trail of Ash — Modular Opening Scenes</div>
+        <div class="dm-block">
+          <div class="dm-block-label">Scene 1A — Burned Camp (Option 1)</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"The trees here haven't just burned — they've bled. The ash smells like old spellfire, and the ground is littered with torn Society field kits."</em> <strong>Investigation DC 13</strong>: find a branded Society tool case — but the sigil is a forged version using distorted script. <strong>Arcana DC 14</strong>: trace of a burnt-out teleportation circle. <strong>Survival DC 12</strong>: tracks leading north toward an overgrown ravine — a shortcut to the next site. <em>Optional combat:</em> two Sporefang Stalkers (Shadow Mastiff stats, poison instead of fear).</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">Scene 1B — Message in the Flame (Option 2)</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"As the campfire burns low, an ember rises unnaturally and spins in the air. A voice — clear, deliberate — emerges from the heat."</em> This is <strong>Thalen Dorr</strong>, HMCS internal affairs mage. He confirms Ardella has been under investigation and begs: <em>"Find proof. We'll act if we can — but we need something irrefutable."</em> Reward: HMCS-Sanctioned Tracker Charm (advantage on Survival when following a known magical signature). The party is now being watched — NPC Society watchers may appear later.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">Scene 1C — Unquiet Trees (Option 3)</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"The wind stops. The leaves hang, frozen. Then one falls — but instead of landing, it spins in place, caught in invisible breath."</em> A corrupted leyline wellspring pulses beneath a tree. <strong>Detect Magic</strong>: flickering arcane trail, like static in the weave. <strong>Nature DC 14</strong>: the trail leads to an unnaturally fast-growing fungal spire — a signal post used by Ardella's handlers. Inside: code names, a schedule, and an emblem carved into the bark: <em>a stylised eye inside a spiral</em>.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Shared Scene — Crossroads of Smoke</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🌫️ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Regardless of which path the players took, all stories reach the same encounter. <em>"The trail tightens through a ravine choked in fungal haze. Light bends wrong here — refracted, smeared. And ahead… a figure. Cloaked, staff in hand. Watching."</em></p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">The players meet <strong>Ilgen Durn</strong>, a soft-spoken elven ex-Society scholar who once served with Ardella. He warns that mysterious figures are heading for the <strong>Vault of Ashroot</strong> — an ancient leyline convergence site hidden under the Weald's roots. Ilgen offers aid only if the players commit to stopping the energy bleed into the forest. His gift: a <strong>Resonance Disruptor Rod</strong> (usable 1/day to interrupt any machine's pulse for 10 seconds — enough to break a ritual or free a creature).</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ The Vault of Ashroot</div>
+        <div class="dm-block">
+          <div class="dm-block-label">🌑 Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">The Hurstwold deepens — canopy thick as woven iron, air heavy with moss rot and static tension. The forest opens not upward, but <em>down</em> — revealing a spiral fissure lined with root-bridges and fungal shelves. At the bottom: a sunken ruin, overgrown and humming with ley-resonance. What was once a druidic convergence temple is now corrupted by a modified extraction device, buried into its core like a tumour in a heart.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">1. Vault Entrance</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><strong>Perception DC 13</strong>: hear the distant whine of a machine pulsing with rhythmic energy — like slow breath. <strong>Arcana DC 12</strong>: trace lines of raw ley energy being pulled against their natural flow into the centre chamber.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">2. Outer Ring Chambers</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">Ruined druidic chambers, now repurposed. Players may discover a map of extraction networks, memory fungus that replays echoes of rituals once held here, and a spent summoning circle, burned out and twisted. <em>Optional encounter:</em> Echoform Beasts — creatures that have bled partially into this reality from the resonance pull (Phase Spider stat block, reflavoured with fungal-magic effects).</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">3. At the Vault's Heart</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"A crystal spire rises where the old altar once stood, wrapped in metal tubing and humming green energy. Inside its glass: a massive pulsing creature — too warped to name — being drained of essence."</em></p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">This is the <strong>Threshold Machine</strong> — larger, more refined, and actively testing portal mechanics. It is not just drawing magic; it is testing the boundaries between places, utilising resonance to open a new rift to Nebernoria. <strong>Arcana DC 16</strong>: the machine is trying to form a "resonance bridge" to somewhere else.</p>
+        </div>
+        <div class="dm-block">
+          <div class="dm-block-label">📼 Optional Intel — Ardella's Recording</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">One machine terminal contains a holograph-style memory recording: <em>"Vessel Threshold Engine, target Coordinate: NBNR-Ax13. Begin parallel tests at Vaults 5 and 7. Tell the Ullac: Threshold viability is above 83%."</em> If decoded, this reveals that Ardella is no longer concerned with creatures — she's using them as jump-starts for perpetual magical extraction.</p>
+        </div>
+      </div>
+
+      <div class="dm-section" style="margin-top:1rem;">
+        <div class="dm-header">⚙ Scene 4 — Confrontation: Not Ardella… Yet</div>
+        <div class="dm-block">
+          <div class="dm-block-label">⚔️ Setup</div>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;">As the players make their decision at the Vault's heart, they're not alone. Footsteps echo across the stone. A figure in bone-plated robes and fungal-threaded gloves steps forward — their mask bearing the Spiral's eye sigil, carved into a steel plate. Their voice distorts, like speaking through resonance.</p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><em>"It's always the same. You see what we're building and try to smash it. But smashing the machine won't unmake the need for it. You'll see."</em></p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><strong>Combat:</strong> Ullac Agent + 2 Echoform Beasts. The Agent uses a Warlock/Necromancer build with portal magic and voice mimicry.</p>
+          <p style="font-size:0.88rem; color:var(--text-dim); line-height:1.6; padding:0.4rem 0;"><strong>End of Episode 3:</strong> During or after the fight, the Threshold Machine activates briefly, creating a stable portal for 3 seconds. What's on the other side is hard to perceive — but it's not this world. If not stopped, the machine attempts a full bridge test in 72 hours. Success could mean a new rift to Nebernoria and catastrophic magical consequences.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="card-title">🎁 Episode 3 Rewards &amp; Next Steps</div>
+        <div class="card-body">
+          <p><strong>Ley-anchored Resonance Core</strong> — used to track future machine tests. <strong>Whispervine Charm</strong> — allows the party to send one-way messages through the Weald to known allies. <strong>First clear symbol of the Ullac Regime's return.</strong></p>
+          <p style="margin-top:0.75rem;">Present players with next steps as rumours, messages, or aftermath decision points:</p>
+          <ul style="font-size:0.88rem; color:var(--text-dim); line-height:1.8; margin-top:0.5rem; padding-left:1.2rem;">
+            <li><strong>Send Evidence to the HMCS.</strong> The Society may send reinforcements or institutional support by Episode 5. Thalen Dorr may respond with new intel. Recommended if the players value justice, institutional change, or rallying allies.</li>
+            <li><strong>Track Ardella Directly.</strong> The coded map shows a second active Vault — <em>Vault 7</em> — farther east, near the collapsed ley crater of Duskwither. Ilgen Durn offers to guide them part of the way. Recommended for a high-risk, high-reward pursuit arc.</li>
+            <li><strong>Sabotage the Remaining Machines.</strong> Strike from the shadows using the map to find Vaults 5 and 7. May draw the Spiral's attention — but successful sabotage could permanently destabilise the Rift geometry. Recommended for players who favour tactical resistance or long-game disruption.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ── Episodes 4–5 ────────────────────────────────────────────── -->
+      <div class="subsection-title" id="rar-ep45" style="margin-top:2rem;">Episodes 4 &amp; 5 — Coming Soon</div>
+
+      <div class="grid-2">
+        <div class="card" style="border-color:rgba(124,58,237,0.2);">
+          <div class="card-title" style="color:var(--text-mute);">📖 Episode 4 — Find the Thread of the Ullac</div>
+          <div class="card-subtitle">Level 4 · Under Construction</div>
+          <div class="card-body">
+            <p style="color:var(--text-mute);">Tracking the operation leads deeper toward the heart of the Ullac Regime's last vestiges. Strange allies and dangerous enemies stand in the way, and decisions must be made — whether to destroy or co-opt this powerful but deadly technology. Full episode content forthcoming.</p>
+          </div>
+        </div>
+        <div class="card" style="border-color:rgba(124,58,237,0.2);">
+          <div class="card-title" style="color:var(--text-mute);">📖 Episode 5 — Encounter the Baddies, Make Your Choice</div>
+          <div class="card-subtitle">Level 5 · Under Construction</div>
+          <div class="card-body">
+            <p style="color:var(--text-mute);">In the climactic final encounter, the adventurers face Ullac loyalists corrupted by both their beliefs and the Weirding's influence. Dismantle the dark enterprise entirely, or wrest control and attempt to reshape it for the better? Full episode content forthcoming.</p>
+          </div>
         </div>
       </div>
 

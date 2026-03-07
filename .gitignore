@@ -2,12 +2,15 @@
 .env
 .env.*
 !.env.example
+.vscode/
+.claude/
 
 # Python
 __pycache__/
 *.py[cod]
 .venv/
 venv/
+.venv
 
 # Docker
 *.log
